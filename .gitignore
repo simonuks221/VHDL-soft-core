@@ -65,4 +65,24 @@ xvlog.*
 ## checkpoint files
 *.dcp
 
+<<<<<<< HEAD
 VHDL-soft-core.gen/
+=======
+VHDL-soft-core.gen/
+VHDL-soft-core.ip_user_files/sim_scripts/
+VHDL-soft-core.ip_user_files/bd/
+
+# Ignore simulations but leave preload.txt and /work/
+Simulations/*
+!simulations/rom_preload.txt
+!simulations/work/
+
+## Modelsim
+*.qtl
+*.qdb
+*.qpg
+
+#Cmake
+build/
+Source/Software/Assembler/build/
+>>>>>>> b57c5da (fix:gitignore simulations)
