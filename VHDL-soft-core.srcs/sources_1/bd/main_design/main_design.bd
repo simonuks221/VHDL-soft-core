@@ -1,7 +1,7 @@
 {
   "design": {
     "design_info": {
-      "boundary_crc": "0x25E6A59D25E6A59D",
+      "boundary_crc": "0x25E6A59DF3E02E7F",
       "device": "xc7a35tcpg236-1",
       "gen_directory": "../../../../VHDL-soft-core.gen/sources_1/bd/main_design",
       "name": "main_design",
@@ -11,7 +11,9 @@
       "validated": "true"
     },
     "design_tree": {
-      "main_0": ""
+      "main_0": "",
+      "program_rom_impl_0": "",
+      "pc_0": ""
     },
     "ports": {
       "BTN1": {
@@ -77,6 +79,57 @@
             "direction": "O"
           }
         }
+      },
+      "program_rom_impl_0": {
+        "vlnv": "xilinx.com:module_ref:program_rom_impl:1.0",
+        "ip_revision": "1",
+        "xci_name": "main_design_program_rom_impl_0_0",
+        "xci_path": "ip\\main_design_program_rom_impl_0_0\\main_design_program_rom_impl_0_0.xci",
+        "inst_hier_path": "program_rom_impl_0",
+        "reference_info": {
+          "ref_type": "hdl",
+          "ref_name": "program_rom_impl",
+          "boundary_crc": "0x0"
+        },
+        "ports": {
+          "CLK": {
+            "type": "clk",
+            "direction": "I"
+          },
+          "ADDR": {
+            "direction": "I",
+            "left": "7",
+            "right": "0"
+          },
+          "DATA": {
+            "direction": "O",
+            "left": "7",
+            "right": "0"
+          }
+        }
+      },
+      "pc_0": {
+        "vlnv": "xilinx.com:module_ref:pc:1.0",
+        "ip_revision": "1",
+        "xci_name": "main_design_pc_0_0",
+        "xci_path": "ip\\main_design_pc_0_0\\main_design_pc_0_0.xci",
+        "inst_hier_path": "pc_0",
+        "reference_info": {
+          "ref_type": "hdl",
+          "ref_name": "pc",
+          "boundary_crc": "0x0"
+        },
+        "ports": {
+          "CLK": {
+            "type": "clk",
+            "direction": "I"
+          },
+          "P_COUNTER": {
+            "direction": "O",
+            "left": "7",
+            "right": "0"
+          }
+        }
       }
     },
     "nets": {
@@ -95,7 +148,9 @@
       "CLK_IN_12MHz_0_1": {
         "ports": [
           "CLK_IN_12MHz",
-          "main_0/CLK_IN_12MHz"
+          "main_0/CLK_IN_12MHz",
+          "program_rom_impl_0/CLK",
+          "pc_0/CLK"
         ]
       },
       "main_0_LED1": {
@@ -126,6 +181,12 @@
         "ports": [
           "main_0/RGB_R",
           "RGB_R"
+        ]
+      },
+      "pc_0_P_COUNTER": {
+        "ports": [
+          "pc_0/P_COUNTER",
+          "program_rom_impl_0/ADDR"
         ]
       }
     }
