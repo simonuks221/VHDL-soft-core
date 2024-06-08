@@ -1,0 +1,29 @@
+{
+   "ActiveEmotionalView":"Default View",
+   "Default View_ScaleFactor":"1.25",
+   "Default View_TopLeft":"-313,-45",
+   "ExpandedHierarchyInLayout":"",
+   "guistr":"# # String gsaved with Nlview 7.7.1 2023-07-26 3bc4126617 VDI=43 GEI=38 GUI=JA:21.0
+#  -string -flagsOSRD
+preplace port port-id_BTN1 -pg 1 -lvl 0 -x 0 -y 100 -defaultsOSRD
+preplace port port-id_BTN2 -pg 1 -lvl 0 -x 0 -y 130 -defaultsOSRD
+preplace port port-id_CLK_IN_12MHz -pg 1 -lvl 0 -x 0 -y 70 -defaultsOSRD
+preplace port port-id_LED1 -pg 1 -lvl 2 -x 280 -y 40 -defaultsOSRD
+preplace port port-id_LED2 -pg 1 -lvl 2 -x 280 -y 70 -defaultsOSRD
+preplace port port-id_RGB_B -pg 1 -lvl 2 -x 280 -y 160 -defaultsOSRD
+preplace port port-id_RGB_G -pg 1 -lvl 2 -x 280 -y 130 -defaultsOSRD
+preplace port port-id_RGB_R -pg 1 -lvl 2 -x 280 -y 100 -defaultsOSRD
+preplace inst main_0 -pg 1 -lvl 1 -x 140 -y 100 -defaultsOSRD
+preplace netloc BTN1_0_1 1 0 1 NJ 100
+preplace netloc BTN2_0_1 1 0 1 20J 120n
+preplace netloc CLK_IN_12MHz_0_1 1 0 1 20J 70n
+preplace netloc main_0_LED1 1 1 1 260J 40n
+preplace netloc main_0_LED2 1 1 1 260J 70n
+preplace netloc main_0_RGB_B 1 1 1 260J 140n
+preplace netloc main_0_RGB_G 1 1 1 260J 120n
+preplace netloc main_0_RGB_R 1 1 1 NJ 100
+levelinfo -pg 1 0 140 280
+pagesize -pg 1 -db -bbox -sgen -160 0 390 200
+"
+}
+
