@@ -1,0 +1,133 @@
+{
+  "design": {
+    "design_info": {
+      "boundary_crc": "0x25E6A59D25E6A59D",
+      "device": "xc7a35tcpg236-1",
+      "gen_directory": "../../../../VHDL-soft-core.gen/sources_1/bd/main_design",
+      "name": "main_design",
+      "rev_ctrl_bd_flag": "RevCtrlBdOff",
+      "synth_flow_mode": "Hierarchical",
+      "tool_version": "2024.1",
+      "validated": "true"
+    },
+    "design_tree": {
+      "main_0": ""
+    },
+    "ports": {
+      "BTN1": {
+        "direction": "I"
+      },
+      "BTN2": {
+        "direction": "I"
+      },
+      "CLK_IN_12MHz": {
+        "direction": "I"
+      },
+      "LED1": {
+        "direction": "O"
+      },
+      "LED2": {
+        "direction": "O"
+      },
+      "RGB_B": {
+        "direction": "O"
+      },
+      "RGB_G": {
+        "direction": "O"
+      },
+      "RGB_R": {
+        "direction": "O"
+      }
+    },
+    "components": {
+      "main_0": {
+        "vlnv": "xilinx.com:module_ref:main:1.0",
+        "ip_revision": "1",
+        "xci_name": "main_design_main_0_0",
+        "xci_path": "ip\\main_design_main_0_0\\main_design_main_0_0.xci",
+        "inst_hier_path": "main_0",
+        "reference_info": {
+          "ref_type": "hdl",
+          "ref_name": "main",
+          "boundary_crc": "0x0"
+        },
+        "ports": {
+          "CLK_IN_12MHz": {
+            "direction": "I"
+          },
+          "LED1": {
+            "direction": "O"
+          },
+          "LED2": {
+            "direction": "O"
+          },
+          "BTN1": {
+            "direction": "I"
+          },
+          "BTN2": {
+            "direction": "I"
+          },
+          "RGB_R": {
+            "direction": "O"
+          },
+          "RGB_G": {
+            "direction": "O"
+          },
+          "RGB_B": {
+            "direction": "O"
+          }
+        }
+      }
+    },
+    "nets": {
+      "BTN1_0_1": {
+        "ports": [
+          "BTN1",
+          "main_0/BTN1"
+        ]
+      },
+      "BTN2_0_1": {
+        "ports": [
+          "BTN2",
+          "main_0/BTN2"
+        ]
+      },
+      "CLK_IN_12MHz_0_1": {
+        "ports": [
+          "CLK_IN_12MHz",
+          "main_0/CLK_IN_12MHz"
+        ]
+      },
+      "main_0_LED1": {
+        "ports": [
+          "main_0/LED1",
+          "LED1"
+        ]
+      },
+      "main_0_LED2": {
+        "ports": [
+          "main_0/LED2",
+          "LED2"
+        ]
+      },
+      "main_0_RGB_B": {
+        "ports": [
+          "main_0/RGB_B",
+          "RGB_B"
+        ]
+      },
+      "main_0_RGB_G": {
+        "ports": [
+          "main_0/RGB_G",
+          "RGB_G"
+        ]
+      },
+      "main_0_RGB_R": {
+        "ports": [
+          "main_0/RGB_R",
+          "RGB_R"
+        ]
+      }
+    }
+  }
+}
