@@ -66,3 +66,4 @@ xvlog.*
 *.dcp
 
 VHDL-soft-core.gen/
+VHDL-soft-core.ip_user_files/sim_scripts/
