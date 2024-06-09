@@ -13,7 +13,10 @@
     "design_tree": {
       "main_0": "",
       "program_rom_impl_0": "",
-      "pc_0": ""
+      "pc_0": "",
+      "alu_0": "",
+      "decoder_0": "",
+      "stack_ram_imp_1": ""
     },
     "ports": {
       "BTN1": {
@@ -130,6 +133,118 @@
             "right": "0"
           }
         }
+      },
+      "alu_0": {
+        "vlnv": "xilinx.com:module_ref:alu:1.0",
+        "ip_revision": "1",
+        "xci_name": "main_design_alu_0_0",
+        "xci_path": "ip\\main_design_alu_0_0\\main_design_alu_0_0.xci",
+        "inst_hier_path": "alu_0",
+        "reference_info": {
+          "ref_type": "hdl",
+          "ref_name": "alu",
+          "boundary_crc": "0x0"
+        },
+        "ports": {
+          "CLK": {
+            "type": "clk",
+            "direction": "I"
+          },
+          "EN": {
+            "direction": "I"
+          },
+          "OP_A": {
+            "direction": "I",
+            "left": "7",
+            "right": "0"
+          },
+          "OP_B": {
+            "direction": "I",
+            "left": "7",
+            "right": "0"
+          },
+          "RESULT": {
+            "direction": "O",
+            "left": "7",
+            "right": "0"
+          }
+        }
+      },
+      "decoder_0": {
+        "vlnv": "xilinx.com:module_ref:decoder:1.0",
+        "ip_revision": "1",
+        "xci_name": "main_design_decoder_0_0",
+        "xci_path": "ip\\main_design_decoder_0_0\\main_design_decoder_0_0.xci",
+        "inst_hier_path": "decoder_0",
+        "reference_info": {
+          "ref_type": "hdl",
+          "ref_name": "decoder",
+          "boundary_crc": "0x0"
+        },
+        "ports": {
+          "CLK": {
+            "type": "clk",
+            "direction": "I"
+          },
+          "INSTRUCTION": {
+            "direction": "I",
+            "left": "7",
+            "right": "0"
+          },
+          "DATA_OUT": {
+            "direction": "O",
+            "left": "7",
+            "right": "0"
+          },
+          "EN_ALU": {
+            "direction": "O"
+          },
+          "PUSH": {
+            "direction": "O"
+          },
+          "POP": {
+            "direction": "O"
+          }
+        }
+      },
+      "stack_ram_imp_1": {
+        "vlnv": "xilinx.com:module_ref:stack_ram_imp:1.0",
+        "ip_revision": "1",
+        "xci_name": "main_design_stack_ram_imp_1_0",
+        "xci_path": "ip\\main_design_stack_ram_imp_1_0\\main_design_stack_ram_imp_1_0.xci",
+        "inst_hier_path": "stack_ram_imp_1",
+        "reference_info": {
+          "ref_type": "hdl",
+          "ref_name": "stack_ram_imp",
+          "boundary_crc": "0x0"
+        },
+        "ports": {
+          "CLK": {
+            "type": "clk",
+            "direction": "I"
+          },
+          "DATA_IN": {
+            "direction": "I",
+            "left": "7",
+            "right": "0"
+          },
+          "TOP_DATA": {
+            "direction": "O",
+            "left": "7",
+            "right": "0"
+          },
+          "NEXT_DATA": {
+            "direction": "O",
+            "left": "7",
+            "right": "0"
+          },
+          "PUSH": {
+            "direction": "I"
+          },
+          "POP": {
+            "direction": "I"
+          }
+        }
       }
     },
     "nets": {
@@ -145,12 +260,39 @@
           "main_0/BTN2"
         ]
       },
-      "CLK_IN_12MHz_0_1": {
+      "CLK_IN_12MHz_1": {
         "ports": [
           "CLK_IN_12MHz",
-          "main_0/CLK_IN_12MHz",
+          "pc_0/CLK",
+          "alu_0/CLK",
           "program_rom_impl_0/CLK",
-          "pc_0/CLK"
+          "main_0/CLK_IN_12MHz",
+          "decoder_0/CLK",
+          "stack_ram_imp_1/CLK"
+        ]
+      },
+      "decoder_0_DATA_OUT": {
+        "ports": [
+          "decoder_0/DATA_OUT",
+          "stack_ram_imp_1/DATA_IN"
+        ]
+      },
+      "decoder_0_EN_ALU": {
+        "ports": [
+          "decoder_0/EN_ALU",
+          "alu_0/EN"
+        ]
+      },
+      "decoder_0_POP": {
+        "ports": [
+          "decoder_0/POP",
+          "stack_ram_imp_1/POP"
+        ]
+      },
+      "decoder_0_PUSH": {
+        "ports": [
+          "decoder_0/PUSH",
+          "stack_ram_imp_1/PUSH"
         ]
       },
       "main_0_LED1": {
@@ -187,6 +329,24 @@
         "ports": [
           "pc_0/P_COUNTER",
           "program_rom_impl_0/ADDR"
+        ]
+      },
+      "program_rom_impl_0_DATA": {
+        "ports": [
+          "program_rom_impl_0/DATA",
+          "decoder_0/INSTRUCTION"
+        ]
+      },
+      "stack_ram_imp_1_NEXT_DATA": {
+        "ports": [
+          "stack_ram_imp_1/NEXT_DATA",
+          "alu_0/OP_B"
+        ]
+      },
+      "stack_ram_imp_1_TOP_DATA": {
+        "ports": [
+          "stack_ram_imp_1/TOP_DATA",
+          "alu_0/OP_A"
         ]
       }
     }
