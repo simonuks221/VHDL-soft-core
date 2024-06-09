@@ -2,7 +2,7 @@
 --Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------
 --Tool Version: Vivado v.2024.1 (win64) Build 5076996 Wed May 22 18:37:14 MDT 2024
---Date        : Sat Jun  8 22:04:38 2024
+--Date        : Sun Jun  9 19:32:10 2024
 --Host        : DESKTOP-5JRNHLO running 64-bit major release  (build 9200)
 --Command     : generate_target main_design.bd
 --Design      : main_design
@@ -24,7 +24,7 @@ entity main_design is
     RGB_R : out STD_LOGIC
   );
   attribute CORE_GENERATION_INFO : string;
-  attribute CORE_GENERATION_INFO of main_design : entity is "main_design,IP_Integrator,{x_ipVendor=xilinx.com,x_ipLibrary=BlockDiagram,x_ipName=main_design,x_ipVersion=1.00.a,x_ipLanguage=VHDL,numBlks=3,numReposBlks=3,numNonXlnxBlks=0,numHierBlks=0,maxHierDepth=0,numSysgenBlks=0,numHlsBlks=0,numHdlrefBlks=3,numPkgbdBlks=0,bdsource=USER,synth_mode=Hierarchical}";
+  attribute CORE_GENERATION_INFO of main_design : entity is "main_design,IP_Integrator,{x_ipVendor=xilinx.com,x_ipLibrary=BlockDiagram,x_ipName=main_design,x_ipVersion=1.00.a,x_ipLanguage=VHDL,numBlks=6,numReposBlks=6,numNonXlnxBlks=0,numHierBlks=0,maxHierDepth=0,numSysgenBlks=0,numHlsBlks=0,numHdlrefBlks=6,numPkgbdBlks=0,bdsource=USER,synth_mode=Hierarchical}";
   attribute HW_HANDOFF : string;
   attribute HW_HANDOFF of main_design : entity is "main_design.hwdef";
 end main_design;
@@ -55,30 +55,83 @@ architecture STRUCTURE of main_design is
     P_COUNTER : out STD_LOGIC_VECTOR ( 7 downto 0 )
   );
   end component main_design_pc_0_0;
+  component main_design_alu_0_0 is
+  port (
+    CLK : in STD_LOGIC;
+    EN : in STD_LOGIC;
+    OP_A : in STD_LOGIC_VECTOR ( 7 downto 0 );
+    OP_B : in STD_LOGIC_VECTOR ( 7 downto 0 );
+    RESULT : out STD_LOGIC_VECTOR ( 7 downto 0 )
+  );
+  end component main_design_alu_0_0;
+  component main_design_decoder_0_0 is
+  port (
+    CLK : in STD_LOGIC;
+    INSTRUCTION : in STD_LOGIC_VECTOR ( 7 downto 0 );
+    DATA_OUT : out STD_LOGIC_VECTOR ( 7 downto 0 );
+    EN_ALU : out STD_LOGIC;
+    PUSH : out STD_LOGIC;
+    POP : out STD_LOGIC
+  );
+  end component main_design_decoder_0_0;
+  component main_design_stack_ram_imp_1_0 is
+  port (
+    CLK : in STD_LOGIC;
+    DATA_IN : in STD_LOGIC_VECTOR ( 7 downto 0 );
+    TOP_DATA : out STD_LOGIC_VECTOR ( 7 downto 0 );
+    NEXT_DATA : out STD_LOGIC_VECTOR ( 7 downto 0 );
+    PUSH : in STD_LOGIC;
+    POP : in STD_LOGIC
+  );
+  end component main_design_stack_ram_imp_1_0;
   signal BTN1_0_1 : STD_LOGIC;
   signal BTN2_0_1 : STD_LOGIC;
-  signal CLK_IN_12MHz_0_1 : STD_LOGIC;
+  signal CLK_IN_12MHz_1 : STD_LOGIC;
+  signal decoder_0_DATA_OUT : STD_LOGIC_VECTOR ( 7 downto 0 );
+  signal decoder_0_EN_ALU : STD_LOGIC;
+  signal decoder_0_POP : STD_LOGIC;
+  signal decoder_0_PUSH : STD_LOGIC;
   signal main_0_LED1 : STD_LOGIC;
   signal main_0_LED2 : STD_LOGIC;
   signal main_0_RGB_B : STD_LOGIC;
   signal main_0_RGB_G : STD_LOGIC;
   signal main_0_RGB_R : STD_LOGIC;
   signal pc_0_P_COUNTER : STD_LOGIC_VECTOR ( 7 downto 0 );
-  signal NLW_program_rom_impl_0_DATA_UNCONNECTED : STD_LOGIC_VECTOR ( 7 downto 0 );
+  signal program_rom_impl_0_DATA : STD_LOGIC_VECTOR ( 7 downto 0 );
+  signal stack_ram_imp_1_NEXT_DATA : STD_LOGIC_VECTOR ( 7 downto 0 );
+  signal stack_ram_imp_1_TOP_DATA : STD_LOGIC_VECTOR ( 7 downto 0 );
+  signal NLW_alu_0_RESULT_UNCONNECTED : STD_LOGIC_VECTOR ( 7 downto 0 );
 begin
   BTN1_0_1 <= BTN1;
   BTN2_0_1 <= BTN2;
-  CLK_IN_12MHz_0_1 <= CLK_IN_12MHz;
+  CLK_IN_12MHz_1 <= CLK_IN_12MHz;
   LED1 <= main_0_LED1;
   LED2 <= main_0_LED2;
   RGB_B <= main_0_RGB_B;
   RGB_G <= main_0_RGB_G;
   RGB_R <= main_0_RGB_R;
+alu_0: component main_design_alu_0_0
+     port map (
+      CLK => CLK_IN_12MHz_1,
+      EN => decoder_0_EN_ALU,
+      OP_A(7 downto 0) => stack_ram_imp_1_TOP_DATA(7 downto 0),
+      OP_B(7 downto 0) => stack_ram_imp_1_NEXT_DATA(7 downto 0),
+      RESULT(7 downto 0) => NLW_alu_0_RESULT_UNCONNECTED(7 downto 0)
+    );
+decoder_0: component main_design_decoder_0_0
+     port map (
+      CLK => CLK_IN_12MHz_1,
+      DATA_OUT(7 downto 0) => decoder_0_DATA_OUT(7 downto 0),
+      EN_ALU => decoder_0_EN_ALU,
+      INSTRUCTION(7 downto 0) => program_rom_impl_0_DATA(7 downto 0),
+      POP => decoder_0_POP,
+      PUSH => decoder_0_PUSH
+    );
 main_0: component main_design_main_0_0
      port map (
       BTN1 => BTN1_0_1,
       BTN2 => BTN2_0_1,
-      CLK_IN_12MHz => CLK_IN_12MHz_0_1,
+      CLK_IN_12MHz => CLK_IN_12MHz_1,
       LED1 => main_0_LED1,
       LED2 => main_0_LED2,
       RGB_B => main_0_RGB_B,
@@ -87,13 +140,22 @@ main_0: component main_design_main_0_0
     );
 pc_0: component main_design_pc_0_0
      port map (
-      CLK => CLK_IN_12MHz_0_1,
+      CLK => CLK_IN_12MHz_1,
       P_COUNTER(7 downto 0) => pc_0_P_COUNTER(7 downto 0)
     );
 program_rom_impl_0: component main_design_program_rom_impl_0_0
      port map (
       ADDR(7 downto 0) => pc_0_P_COUNTER(7 downto 0),
-      CLK => CLK_IN_12MHz_0_1,
-      DATA(7 downto 0) => NLW_program_rom_impl_0_DATA_UNCONNECTED(7 downto 0)
+      CLK => CLK_IN_12MHz_1,
+      DATA(7 downto 0) => program_rom_impl_0_DATA(7 downto 0)
+    );
+stack_ram_imp_1: component main_design_stack_ram_imp_1_0
+     port map (
+      CLK => CLK_IN_12MHz_1,
+      DATA_IN(7 downto 0) => decoder_0_DATA_OUT(7 downto 0),
+      NEXT_DATA(7 downto 0) => stack_ram_imp_1_NEXT_DATA(7 downto 0),
+      POP => decoder_0_POP,
+      PUSH => decoder_0_PUSH,
+      TOP_DATA(7 downto 0) => stack_ram_imp_1_TOP_DATA(7 downto 0)
     );
 end STRUCTURE;
