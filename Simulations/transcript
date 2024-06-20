@@ -1,0 +1,487 @@
+# Compile of stack_ram_imp.vhd was successful.
+# Compile of alu.vhd was successful.
+# Compile of decoder.vhd was successful.
+# Compile of pc.vhd was successful.
+# Compile of processor_core.vhd was successful.
+# Compile of program_rom_impl.vhd was successful.
+# Compile of stack_data_bus.vhd was successful.
+# 7 compiles, 0 failed with no errors.
+# Error opening C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/stack_ram_imp.vhd
+# Path name 'C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/stack_ram_imp.vhd' doesn't exist.
+# Compile of alu.vhd was successful.
+# Compile of decoder.vhd was successful.
+# Compile of pc.vhd was successful.
+# Compile of processor_core.vhd failed with 1 errors.
+# Compile of program_rom_impl.vhd was successful.
+# 5 compiles, 2 failed with 1 error.
+# Compile of processor_core.vhd failed with 1 errors.
+# Compile of alu.vhd was successful.
+# Compile of decoder.vhd was successful.
+# Compile of pc.vhd was successful.
+# Compile of processor_core.vhd failed with 1 errors.
+# Compile of stack.vhd was successful.
+# Compile of program_rom.vhd was successful.
+# 6 compiles, 1 failed with 1 error.
+# Compile of alu.vhd was successful.
+# Compile of decoder.vhd was successful.
+# Compile of pc.vhd was successful.
+# Compile of processor_core.vhd failed with 1 errors.
+# Compile of stack.vhd was successful.
+# Compile of program_rom.vhd was successful.
+# 6 compiles, 1 failed with 1 error.
+# Compile of alu.vhd was successful.
+# Compile of decoder.vhd was successful.
+# Compile of pc.vhd was successful.
+# Compile of processor_core.vhd failed with 1 errors.
+# Compile of stack.vhd was successful.
+# Compile of program_rom.vhd was successful.
+# 6 compiles, 1 failed with 1 error.
+# Compile of alu.vhd was successful.
+# Compile of decoder.vhd was successful.
+# Compile of pc.vhd was successful.
+# Compile of processor_core.vhd failed with 1 errors.
+# Compile of stack.vhd was successful.
+# Compile of program_rom.vhd was successful.
+# 6 compiles, 1 failed with 1 error.
+# Compile of alu.vhd was successful.
+# Compile of decoder.vhd was successful.
+# Compile of pc.vhd was successful.
+# Compile of processor_core.vhd was successful.
+# Compile of stack.vhd was successful.
+# Compile of program_rom.vhd was successful.
+# 6 compiles, 0 failed with no errors.
+# Compile of processor_core.vhd was successful.
+# can't read "Startup(-L)": no such element in array
+# Load canceled
+vsim work.alu
+# vsim work.alu 
+# Start time: 19:12:05 on Jun 20,2024
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.numeric_std(body)
+# Loading work.alu(behavioral)
+vsim work.processor_core
+# End time: 19:12:17 on Jun 20,2024, Elapsed time: 0:00:12
+# Errors: 0, Warnings: 0
+# vsim work.processor_core 
+# Start time: 19:12:17 on Jun 20,2024
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.numeric_std(body)
+# Loading work.processor_core(behavioral)
+# Loading work.pc(behavioral)
+# Compile of alu.vhd was successful.
+# Compile of decoder.vhd was successful.
+# Compile of pc.vhd was successful.
+# Compile of processor_core.vhd was successful.
+# Compile of stack.vhd was successful.
+# Compile of program_rom.vhd was successful.
+# Compile of processor.vhd failed with 1 errors.
+# 7 compiles, 1 failed with 1 error.
+# Compile of processor_core.vhd was successful.
+# Compile of processor.vhd failed with 3 errors.
+# 2 compiles, 1 failed with 3 errors.
+# Compile of alu.vhd was successful.
+# Compile of decoder.vhd was successful.
+# Compile of pc.vhd was successful.
+# Compile of processor_core.vhd was successful.
+# Compile of stack.vhd was successful.
+# Compile of program_rom.vhd was successful.
+# Compile of processor.vhd failed with 3 errors.
+# 7 compiles, 1 failed with 3 errors.
+# Compile of alu.vhd was successful.
+# Compile of decoder.vhd was successful.
+# Compile of pc.vhd was successful.
+# Compile of processor_core.vhd was successful.
+# Compile of stack.vhd was successful.
+# Compile of program_rom.vhd was successful.
+# Compile of processor.vhd was successful.
+# 7 compiles, 0 failed with no errors.
+# Compile of stack.vhd was successful.
+# Compile of alu.vhd was successful.
+# Compile of decoder.vhd was successful.
+# Compile of pc.vhd was successful.
+# Compile of processor.vhd was successful.
+# Compile of processor_core.vhd was successful.
+# Compile of program_rom.vhd was successful.
+# Compile of processor_tb.vhd failed with 1 errors.
+# 8 compiles, 1 failed with 1 error.
+# Compile of stack.vhd was successful.
+# Compile of alu.vhd was successful.
+# Compile of decoder.vhd was successful.
+# Compile of pc.vhd was successful.
+# Compile of processor.vhd was successful.
+# Compile of processor_core.vhd was successful.
+# Compile of program_rom.vhd was successful.
+# Compile of processor_tb.vhd was successful.
+# 8 compiles, 0 failed with no errors.
+vsim work.processor_core_tb
+# End time: 19:18:51 on Jun 20,2024, Elapsed time: 0:06:34
+# Errors: 0, Warnings: 0
+# vsim work.processor_core_tb 
+# Start time: 19:18:51 on Jun 20,2024
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.numeric_std(body)
+# Loading work.processor_core_tb(behavioral)
+# Loading work.processor(behavioral)
+# Loading work.processor_core(behavioral)
+# Loading work.pc(behavioral)
+# Loading work.program_rom(behavioral)
+run
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 10 ns  Iteration: 0  Instance: /processor_core_tb/dut/program_rom_1
+# ** Fatal: (vsim-3421) Value 8 is out of range 0 to 7.
+#    Time: 150 ns  Iteration: 0  Process: /processor_core_tb/dut/core_1/pc_1/line__16 File: C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/pc.vhd
+# Fatal error in Process line__16 at C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/pc.vhd line 19
+# 
+# HDL call sequence:
+# Stopped at C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/pc.vhd 19 Process line__16
+# 
+# Compile of stack.vhd was successful.
+# Compile of alu.vhd was successful.
+# Compile of decoder.vhd was successful.
+# Compile of pc.vhd was successful.
+# Compile of processor.vhd was successful.
+# Compile of processor_core.vhd was successful.
+# Compile of program_rom.vhd was successful.
+# Compile of processor_tb.vhd was successful.
+# 8 compiles, 0 failed with no errors.
+restart
+# Loading work.processor_core_tb(behavioral)
+# Loading work.processor(behavioral)
+# Loading work.processor_core(behavioral)
+# Loading work.pc(behavioral)
+# Loading work.program_rom(behavioral)
+add wave sim:/processor_core_tb/dut/*
+run
+# GetModuleFileName: The specified module could not be found.
+# 
+# 
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 10 ns  Iteration: 0  Instance: /processor_core_tb/dut/program_rom_1
+# ** Fatal: (vsim-3421) Value 8 is out of range 0 to 7.
+#    Time: 150 ns  Iteration: 0  Process: /processor_core_tb/dut/core_1/pc_1/line__16 File: C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/pc.vhd
+# Fatal error in Process line__16 at C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/pc.vhd line 19
+# 
+# HDL call sequence:
+# Stopped at C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/pc.vhd 19 Process line__16
+# 
+# Compile of stack.vhd was successful.
+# Compile of alu.vhd was successful.
+# Compile of decoder.vhd was successful.
+# Compile of pc.vhd was successful.
+# Compile of processor.vhd was successful.
+# Compile of processor_core.vhd was successful.
+# Compile of program_rom.vhd was successful.
+# Compile of processor_tb.vhd was successful.
+# 8 compiles, 0 failed with no errors.
+# Compile of stack.vhd was successful.
+# Compile of alu.vhd was successful.
+# Compile of decoder.vhd was successful.
+# Compile of pc.vhd was successful.
+# Compile of processor.vhd was successful.
+# Compile of processor_core.vhd was successful.
+# Compile of program_rom.vhd was successful.
+# Compile of processor_tb.vhd was successful.
+# 8 compiles, 0 failed with no errors.
+restart
+# Loading work.processor_core_tb(behavioral)
+# Loading work.processor(behavioral)
+# Loading work.processor_core(behavioral)
+# Loading work.pc(behavioral)
+# Loading work.program_rom(behavioral)
+run
+# GetModuleFileName: The specified module could not be found.
+# 
+# 
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 10 ns  Iteration: 0  Instance: /processor_core_tb/dut/program_rom_1
+# ** Fatal: (vsim-3421) Value 8 is out of range 0 to 7.
+#    Time: 150 ns  Iteration: 0  Process: /processor_core_tb/dut/core_1/pc_1/line__16 File: C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/pc.vhd
+# Fatal error in Process line__16 at C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/pc.vhd line 19
+# 
+# HDL call sequence:
+# Stopped at C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/pc.vhd 19 Process line__16
+# 
+# Compile of stack.vhd was successful.
+# Compile of alu.vhd was successful.
+# Compile of decoder.vhd was successful.
+# Compile of pc.vhd was successful.
+# Compile of processor.vhd was successful.
+# Compile of processor_core.vhd was successful.
+# Compile of program_rom.vhd was successful.
+# Compile of processor_tb.vhd was successful.
+# 8 compiles, 0 failed with no errors.
+restart
+# Loading work.processor_core_tb(behavioral)
+# Loading work.processor(behavioral)
+# Loading work.processor_core(behavioral)
+# Loading work.pc(behavioral)
+# Loading work.program_rom(behavioral)
+run
+# GetModuleFileName: The specified module could not be found.
+# 
+# 
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 10 ns  Iteration: 0  Instance: /processor_core_tb/dut/program_rom_1
+# ** Fatal: (vsim-3734) Index value 7 is out of range 0 to 6.
+#    Time: 170 ns  Iteration: 0  Process: /processor_core_tb/dut/program_rom_1/line__19 File: C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/program_rom.vhd
+# Fatal error in Process line__19 at C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/program_rom.vhd line 28
+# 
+# HDL call sequence:
+# Stopped at C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/program_rom.vhd 28 Process line__19
+# 
+# Compile of stack.vhd was successful.
+# Compile of alu.vhd was successful.
+# Compile of decoder.vhd was successful.
+# Compile of pc.vhd was successful.
+# Compile of processor.vhd was successful.
+# Compile of processor_core.vhd was successful.
+# Compile of program_rom.vhd was successful.
+# Compile of processor_tb.vhd was successful.
+# 8 compiles, 0 failed with no errors.
+restart
+# Loading work.processor_core_tb(behavioral)
+# Loading work.processor(behavioral)
+# Loading work.processor_core(behavioral)
+# Loading work.pc(behavioral)
+# Loading work.program_rom(behavioral)
+run
+# GetModuleFileName: The specified module could not be found.
+# 
+# 
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 10 ns  Iteration: 0  Instance: /processor_core_tb/dut/program_rom_1
+run
+# Compile of stack.vhd was successful.
+# Compile of alu.vhd was successful.
+# Compile of decoder.vhd was successful.
+# Compile of pc.vhd was successful.
+# Compile of processor.vhd was successful.
+# Compile of processor_core.vhd was successful.
+# Compile of program_rom.vhd was successful.
+# Compile of processor_tb.vhd was successful.
+# 8 compiles, 0 failed with no errors.
+restart
+# Loading work.processor_core_tb(behavioral)
+# Loading work.processor(behavioral)
+# Loading work.processor_core(behavioral)
+# Loading work.pc(behavioral)
+# Loading work.program_rom(behavioral)
+run
+# GetModuleFileName: The specified module could not be found.
+# 
+# 
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 10 ns  Iteration: 0  Instance: /processor_core_tb/dut/program_rom_1
+# Compile of stack.vhd was successful.
+# Compile of alu.vhd was successful.
+# Compile of decoder.vhd was successful.
+# Compile of pc.vhd was successful.
+# Compile of processor.vhd was successful.
+# Compile of processor_core.vhd was successful.
+# Compile of program_rom.vhd was successful.
+# Compile of processor_tb.vhd was successful.
+# 8 compiles, 0 failed with no errors.
+restart
+# Loading work.processor_core_tb(behavioral)
+# Loading work.processor(behavioral)
+# Loading work.processor_core(behavioral)
+# Loading work.pc(behavioral)
+# Loading work.program_rom(behavioral)
+run
+# GetModuleFileName: The specified module could not be found.
+# 
+# 
+# Compile of stack.vhd was successful.
+# Compile of alu.vhd was successful.
+# Compile of decoder.vhd was successful.
+# Compile of pc.vhd was successful.
+# Compile of processor.vhd was successful.
+# Compile of processor_core.vhd was successful.
+# Compile of program_rom.vhd was successful.
+# Compile of processor_tb.vhd was successful.
+# 8 compiles, 0 failed with no errors.
+restart
+# Loading work.processor_core_tb(behavioral)
+# Loading work.processor(behavioral)
+# Loading work.processor_core(behavioral)
+# Loading work.pc(behavioral)
+# Loading work.program_rom(behavioral)
+run
+# GetModuleFileName: The specified module could not be found.
+# 
+# 
+# Compile of stack.vhd was successful.
+# Compile of alu.vhd was successful.
+# Compile of decoder.vhd was successful.
+# Compile of pc.vhd was successful.
+# Compile of processor.vhd was successful.
+# Compile of processor_core.vhd was successful.
+# Compile of program_rom.vhd was successful.
+# Compile of processor_tb.vhd was successful.
+# 8 compiles, 0 failed with no errors.
+# Compile of stack.vhd was successful.
+# Compile of alu.vhd was successful.
+# Compile of decoder.vhd was successful.
+# Compile of pc.vhd was successful.
+# Compile of processor.vhd was successful.
+# Compile of processor_core.vhd was successful.
+# Compile of program_rom.vhd was successful.
+# Compile of processor_tb.vhd was successful.
+# Compile of stack_tb.vhd was successful with warnings.
+# 9 compiles, 0 failed with no errors.
+vsim work.stack_tb
+# End time: 21:34:00 on Jun 20,2024, Elapsed time: 2:15:09
+# Errors: 8, Warnings: 6
+# vsim work.stack_tb 
+# Start time: 21:34:00 on Jun 20,2024
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.numeric_std(body)
+# Loading work.stack_tb(behavioral)
+# Loading work.stack(behavioral)
+add wave -position end  sim:/stack_tb/CLK
+add wave -position end  sim:/stack_tb/DATA_IN
+add wave -position end  sim:/stack_tb/TOP_DATA
+add wave -position end  sim:/stack_tb/NEXT_DATA
+add wave -position end  sim:/stack_tb/PUSH
+add wave -position end  sim:/stack_tb/POP
+restart
+run
+add wave -position end  sim:/stack_tb/dut/stack_top_address
+restart
+add wave -position end  sim:/stack_tb/dut/stack_next_address
+restart
+run
+# Compile of stack_tb.vhd was successful with warnings.
+# Compile of stack.vhd was successful.
+# Compile of alu.vhd was successful.
+# Compile of decoder.vhd was successful.
+# Compile of pc.vhd was successful.
+# Compile of processor.vhd was successful.
+# Compile of processor_core.vhd was successful.
+# Compile of program_rom.vhd was successful.
+# Compile of processor_tb.vhd was successful.
+# Compile of stack_tb.vhd was successful with warnings.
+# 9 compiles, 0 failed with no errors.
+restart
+# Loading work.stack_tb(behavioral)
+# Loading work.stack(behavioral)
+run
+# GetModuleFileName: The specified module could not be found.
+# 
+# 
+# Compile of stack.vhd was successful.
+# Compile of alu.vhd was successful.
+# Compile of decoder.vhd was successful.
+# Compile of pc.vhd was successful.
+# Compile of processor.vhd was successful.
+# Compile of processor_core.vhd was successful.
+# Compile of program_rom.vhd was successful.
+# Compile of processor_tb.vhd was successful.
+# Compile of stack_tb.vhd was successful with warnings.
+# 9 compiles, 0 failed with no errors.
+restart
+# Loading work.stack_tb(behavioral)
+# Loading work.stack(behavioral)
+run
+# GetModuleFileName: The specified module could not be found.
+# 
+# 
+# ** Fatal: (vsim-3734) Index value -1 is out of range 0 to 255.
+#    Time: 190 ns  Iteration: 1  Process: /stack_tb/dut/line__26 File: C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/stack.vhd
+# Fatal error in Architecture Behavioral at C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/stack.vhd line 26
+# 
+# HDL call sequence:
+# Stopped at C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/stack.vhd 26 Architecture Behavioral
+# 
+# Compile of stack.vhd was successful.
+# Compile of alu.vhd was successful.
+# Compile of decoder.vhd was successful.
+# Compile of pc.vhd was successful.
+# Compile of processor.vhd was successful.
+# Compile of processor_core.vhd was successful.
+# Compile of program_rom.vhd was successful.
+# Compile of processor_tb.vhd was successful.
+# Compile of stack_tb.vhd was successful with warnings.
+# 9 compiles, 0 failed with no errors.
+restart
+# Loading work.stack_tb(behavioral)
+# Loading work.stack(behavioral)
+run
+# GetModuleFileName: The specified module could not be found.
+# 
+# 
+# ** Fatal: (vsim-3734) Index value -1 is out of range 0 to 255.
+#    Time: 190 ns  Iteration: 1  Process: /stack_tb/dut/line__26 File: C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/stack.vhd
+# Fatal error in Architecture Behavioral at C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/stack.vhd line 26
+# 
+# HDL call sequence:
+# Stopped at C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/stack.vhd 26 Architecture Behavioral
+# 
+# Compile of stack.vhd was successful.
+# Compile of alu.vhd was successful.
+# Compile of decoder.vhd was successful.
+# Compile of pc.vhd was successful.
+# Compile of processor.vhd was successful.
+# Compile of processor_core.vhd was successful.
+# Compile of program_rom.vhd was successful.
+# Compile of processor_tb.vhd was successful.
+# Compile of stack_tb.vhd was successful with warnings.
+# 9 compiles, 0 failed with no errors.
+restart
+# Loading work.stack_tb(behavioral)
+# Loading work.stack(behavioral)
+run
+# GetModuleFileName: The specified module could not be found.
+# 
+# 
+# ** Fatal: (vsim-3734) Index value -1 is out of range 0 to 255.
+#    Time: 190 ns  Iteration: 1  Process: /stack_tb/dut/line__26 File: C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/stack.vhd
+# Fatal error in Architecture Behavioral at C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/stack.vhd line 26
+# 
+# HDL call sequence:
+# Stopped at C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/stack.vhd 26 Architecture Behavioral
+# 
+# Compile of stack.vhd was successful.
+# Compile of alu.vhd was successful.
+# Compile of decoder.vhd was successful.
+# Compile of pc.vhd was successful.
+# Compile of processor.vhd was successful.
+# Compile of processor_core.vhd was successful.
+# Compile of program_rom.vhd was successful.
+# Compile of processor_tb.vhd was successful.
+# Compile of stack_tb.vhd was successful with warnings.
+# 9 compiles, 0 failed with no errors.
+restart
+# Loading work.stack_tb(behavioral)
+# Loading work.stack(behavioral)
+run
+# GetModuleFileName: The specified module could not be found.
+# 
+# 
+# Compile of stack.vhd was successful.
+# Compile of alu.vhd was successful.
+# Compile of decoder.vhd was successful.
+# Compile of pc.vhd was successful.
+# Compile of processor.vhd was successful.
+# Compile of processor_core.vhd was successful.
+# Compile of program_rom.vhd was successful.
+# Compile of processor_tb.vhd was successful.
+# Compile of stack_tb.vhd was successful with warnings.
+# 9 compiles, 0 failed with no errors.
+restart
+# Loading work.stack_tb(behavioral)
+# Loading work.stack(behavioral)
+run
+# GetModuleFileName: The specified module could not be found.
+# 
+# 
+# End time: 21:40:34 on Jun 20,2024, Elapsed time: 0:06:34
+# Errors: 6, Warnings: 0

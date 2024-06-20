@@ -21,6 +21,8 @@ begin
     if rising_edge(CLK) then
         PUSH <= '0';
         POP <= '0';
+        EN_ALU <= '0';
+        DATA_OUT <= (others => '0');
         case INSTRUCTION(1 downto 0) is
             when "00" =>
                 --NOP
@@ -33,11 +35,11 @@ begin
                 POP <= '1';
             when "11" =>
                 --ALU
-
+                EN_ALU <= '1';
             when others =>
                 --INVALID
         end case;
     end if;
 end process;
 
-end Behavioral;
+end architecture;

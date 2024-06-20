@@ -5,12 +5,12 @@ use IEEE.NUMERIC_STD.ALL;
 entity pc is
   Port (
     CLK: in STD_LOGIC;
-    P_COUNTER: out STD_LOGIC_VECTOR(7 downto 0)
+    P_COUNTER: out STD_LOGIC_VECTOR(7 downto 0) := (others => '0')
   );
 end pc;
 
 architecture Behavioral of pc is
-	signal internal_counter : integer range 0 to P_COUNTER'high := 0;
+	signal internal_counter : integer range 0 to 255 := 0;
 begin
 
 process(CLK)
@@ -21,4 +21,4 @@ begin
 	end if;
 end process;
 
-end Behavioral;
+end architecture;

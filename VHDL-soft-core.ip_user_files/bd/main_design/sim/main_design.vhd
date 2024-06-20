@@ -2,7 +2,7 @@
 --Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------
 --Tool Version: Vivado v.2024.1 (win64) Build 5076996 Wed May 22 18:37:14 MDT 2024
---Date        : Sun Jun  9 19:32:10 2024
+--Date        : Tue Jun 18 17:54:21 2024
 --Host        : DESKTOP-5JRNHLO running 64-bit major release  (build 9200)
 --Command     : generate_target main_design.bd
 --Design      : main_design
@@ -30,18 +30,6 @@ entity main_design is
 end main_design;
 
 architecture STRUCTURE of main_design is
-  component main_design_main_0_0 is
-  port (
-    CLK_IN_12MHz : in STD_LOGIC;
-    LED1 : out STD_LOGIC;
-    LED2 : out STD_LOGIC;
-    BTN1 : in STD_LOGIC;
-    BTN2 : in STD_LOGIC;
-    RGB_R : out STD_LOGIC;
-    RGB_G : out STD_LOGIC;
-    RGB_B : out STD_LOGIC
-  );
-  end component main_design_main_0_0;
   component main_design_program_rom_impl_0_0 is
   port (
     CLK : in STD_LOGIC;
@@ -81,42 +69,37 @@ architecture STRUCTURE of main_design is
     TOP_DATA : out STD_LOGIC_VECTOR ( 7 downto 0 );
     NEXT_DATA : out STD_LOGIC_VECTOR ( 7 downto 0 );
     PUSH : in STD_LOGIC;
-    POP : in STD_LOGIC
+    POP : in STD_LOGIC;
+    WRITE_TOP : in STD_LOGIC
   );
   end component main_design_stack_ram_imp_1_0;
-  signal BTN1_0_1 : STD_LOGIC;
-  signal BTN2_0_1 : STD_LOGIC;
+  component main_design_stack_data_bus_0_0 is
+  port (
+    DATA_1 : in STD_LOGIC_VECTOR ( 7 downto 0 );
+    DATA_2 : in STD_LOGIC_VECTOR ( 7 downto 0 );
+    DATA_OUT : out STD_LOGIC_VECTOR ( 7 downto 0 )
+  );
+  end component main_design_stack_data_bus_0_0;
   signal CLK_IN_12MHz_1 : STD_LOGIC;
+  signal alu_0_RESULT : STD_LOGIC_VECTOR ( 7 downto 0 );
   signal decoder_0_DATA_OUT : STD_LOGIC_VECTOR ( 7 downto 0 );
   signal decoder_0_EN_ALU : STD_LOGIC;
   signal decoder_0_POP : STD_LOGIC;
   signal decoder_0_PUSH : STD_LOGIC;
-  signal main_0_LED1 : STD_LOGIC;
-  signal main_0_LED2 : STD_LOGIC;
-  signal main_0_RGB_B : STD_LOGIC;
-  signal main_0_RGB_G : STD_LOGIC;
-  signal main_0_RGB_R : STD_LOGIC;
   signal pc_0_P_COUNTER : STD_LOGIC_VECTOR ( 7 downto 0 );
   signal program_rom_impl_0_DATA : STD_LOGIC_VECTOR ( 7 downto 0 );
+  signal stack_data_bus_0_DATA_OUT : STD_LOGIC_VECTOR ( 7 downto 0 );
   signal stack_ram_imp_1_NEXT_DATA : STD_LOGIC_VECTOR ( 7 downto 0 );
   signal stack_ram_imp_1_TOP_DATA : STD_LOGIC_VECTOR ( 7 downto 0 );
-  signal NLW_alu_0_RESULT_UNCONNECTED : STD_LOGIC_VECTOR ( 7 downto 0 );
 begin
-  BTN1_0_1 <= BTN1;
-  BTN2_0_1 <= BTN2;
   CLK_IN_12MHz_1 <= CLK_IN_12MHz;
-  LED1 <= main_0_LED1;
-  LED2 <= main_0_LED2;
-  RGB_B <= main_0_RGB_B;
-  RGB_G <= main_0_RGB_G;
-  RGB_R <= main_0_RGB_R;
 alu_0: component main_design_alu_0_0
      port map (
       CLK => CLK_IN_12MHz_1,
       EN => decoder_0_EN_ALU,
       OP_A(7 downto 0) => stack_ram_imp_1_TOP_DATA(7 downto 0),
       OP_B(7 downto 0) => stack_ram_imp_1_NEXT_DATA(7 downto 0),
-      RESULT(7 downto 0) => NLW_alu_0_RESULT_UNCONNECTED(7 downto 0)
+      RESULT(7 downto 0) => alu_0_RESULT(7 downto 0)
     );
 decoder_0: component main_design_decoder_0_0
      port map (
@@ -126,17 +109,6 @@ decoder_0: component main_design_decoder_0_0
       INSTRUCTION(7 downto 0) => program_rom_impl_0_DATA(7 downto 0),
       POP => decoder_0_POP,
       PUSH => decoder_0_PUSH
-    );
-main_0: component main_design_main_0_0
-     port map (
-      BTN1 => BTN1_0_1,
-      BTN2 => BTN2_0_1,
-      CLK_IN_12MHz => CLK_IN_12MHz_1,
-      LED1 => main_0_LED1,
-      LED2 => main_0_LED2,
-      RGB_B => main_0_RGB_B,
-      RGB_G => main_0_RGB_G,
-      RGB_R => main_0_RGB_R
     );
 pc_0: component main_design_pc_0_0
      port map (
@@ -149,13 +121,20 @@ program_rom_impl_0: component main_design_program_rom_impl_0_0
       CLK => CLK_IN_12MHz_1,
       DATA(7 downto 0) => program_rom_impl_0_DATA(7 downto 0)
     );
+stack_data_bus_0: component main_design_stack_data_bus_0_0
+     port map (
+      DATA_1(7 downto 0) => alu_0_RESULT(7 downto 0),
+      DATA_2(7 downto 0) => decoder_0_DATA_OUT(7 downto 0),
+      DATA_OUT(7 downto 0) => stack_data_bus_0_DATA_OUT(7 downto 0)
+    );
 stack_ram_imp_1: component main_design_stack_ram_imp_1_0
      port map (
       CLK => CLK_IN_12MHz_1,
-      DATA_IN(7 downto 0) => decoder_0_DATA_OUT(7 downto 0),
+      DATA_IN(7 downto 0) => stack_data_bus_0_DATA_OUT(7 downto 0),
       NEXT_DATA(7 downto 0) => stack_ram_imp_1_NEXT_DATA(7 downto 0),
       POP => decoder_0_POP,
       PUSH => decoder_0_PUSH,
-      TOP_DATA(7 downto 0) => stack_ram_imp_1_TOP_DATA(7 downto 0)
+      TOP_DATA(7 downto 0) => stack_ram_imp_1_TOP_DATA(7 downto 0),
+      WRITE_TOP => decoder_0_EN_ALU
     );
 end STRUCTURE;

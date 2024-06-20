@@ -60,7 +60,8 @@ ENTITY main_design_stack_ram_imp_1_0 IS
     TOP_DATA : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
     NEXT_DATA : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
     PUSH : IN STD_LOGIC;
-    POP : IN STD_LOGIC
+    POP : IN STD_LOGIC;
+    WRITE_TOP : IN STD_LOGIC
   );
 END main_design_stack_ram_imp_1_0;
 
@@ -74,7 +75,8 @@ ARCHITECTURE main_design_stack_ram_imp_1_0_arch OF main_design_stack_ram_imp_1_0
       TOP_DATA : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
       NEXT_DATA : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
       PUSH : IN STD_LOGIC;
-      POP : IN STD_LOGIC
+      POP : IN STD_LOGIC;
+      WRITE_TOP : IN STD_LOGIC
     );
   END COMPONENT stack_ram_imp;
   ATTRIBUTE X_INTERFACE_INFO : STRING;
@@ -89,6 +91,7 @@ BEGIN
       TOP_DATA => TOP_DATA,
       NEXT_DATA => NEXT_DATA,
       PUSH => PUSH,
-      POP => POP
+      POP => POP,
+      WRITE_TOP => WRITE_TOP
     );
 END main_design_stack_ram_imp_1_0_arch;
