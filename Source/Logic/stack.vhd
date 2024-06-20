@@ -2,10 +2,7 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 
---LIBRARY blk_mem_gen_v8_4_8;
---USE blk_mem_gen_v8_4_8.blk_mem_gen_v8_4_8;
-
-entity stack_ram_imp is
+entity stack is
     Port (
         CLK : in STD_LOGIC;
         DATA_IN : in STD_LOGIC_VECTOR (7 downto 0);
@@ -14,32 +11,11 @@ entity stack_ram_imp is
         PUSH : in STD_LOGIC;
         POP : in STD_LOGIC
     );
-end stack_ram_imp;
+end stack;
 
-architecture Behavioral of stack_ram_imp is
-    --component stack_ram IS
-    --    PORT (
-    --        clka : IN STD_LOGIC;
-    --        wea : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
-    --        addra : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
-    --        dina : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
-    --        clkb : IN STD_LOGIC;
-    --        addrb : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
-    --        doutb : OUT STD_LOGIC_VECTOR(7 DOWNTO 0)
-    --    );
-    --END component;
-    --TODO: figure out whats wrong with the Xilinx RAM
+architecture Behavioral of stack is
     type stack_array_type is array (0 to 255) of std_logic_vector(7 downto 0);
     signal stack_array : stack_array_type := (others => (others => '0'));
-
-    --signal ram_wr : STD_LOGIC_VECTOR(0 DOWNTO 0) := "0";
-    --signal ram_addr_write : integer := 0;
-    --signal ram_addr_read : integer := 0;
-    --signal ram_wr_data : STD_LOGIC_VECTOR(7 downto 0) := (others => '0');
-    --signal ram_next_data : STD_LOGIC_VECTOR(7 downto 0) := (others => '0');
-
-    --signal top_internal : STD_LOGIC_VECTOR(7 downto 0) := (others => '0');
-    --signal next_internal : STD_LOGIC_VECTOR(7 downto 0) := (others => '0');
 
     signal stack_top_address : integer := 0;
     signal stack_next_address : integer := 0;
@@ -53,7 +29,10 @@ NEXT_DATA <= stack_array(stack_next_address);
 process(CLK)
 begin
     if rising_edge(CLK) then
-        if PUSH = '1' then
+        --TODO:make into vector and make into decoder with when statements
+        if PUSH = '1' and POP = '1' then
+            stack_array(stack_top_address) <= DATA_IN;
+        elsif PUSH = '1' then
             stack_array(stack_top_address + 1) <= DATA_IN;
             stack_top_address <= stack_top_address + 1;
             if stack_top_address /= 0 then
