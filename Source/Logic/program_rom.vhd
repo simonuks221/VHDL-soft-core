@@ -13,7 +13,7 @@ end program_rom;
 architecture Behavioral of program_rom is
 	constant max_program_count : integer := 6;
 	type program_array_type is array (0 to max_program_count) of std_logic_vector(7 downto 0);
-	signal program_array : program_array_type := (x"01", x"11", x"21", x"02", x"03", x"03", x"03");
+	signal program_array : program_array_type := (x"11", x"21", x"05", x"00", x"00", x"00", x"00");
 begin
 
 process(CLK)

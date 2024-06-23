@@ -2,11 +2,11 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 
-entity processor_core_tb is
+entity processor_tb is
 
-end processor_core_tb;
+end processor_tb;
 
-architecture Behavioral of processor_core_tb is
+architecture Behavioral of processor_tb is
 
 	component processor is
 		Port (
