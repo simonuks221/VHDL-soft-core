@@ -70,3 +70,6 @@ VHDL-soft-core.ip_user_files/sim_scripts/
 VHDL-soft-core.ip_user_files/bd/
 
 ## Modelsim
+*.qtl
+*.qdb
+*.qpg
