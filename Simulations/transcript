@@ -414,3 +414,141 @@ run
 # 
 # 
 run
+restart
+run
+# GetModuleFileName: The specified module could not be found.
+# 
+# 
+run
+run
+# Compile of stack.vhd was successful.
+# Compile of alu.vhd was successful.
+# Compile of decoder.vhd was successful.
+# Compile of pc.vhd was successful.
+# Compile of processor.vhd was successful.
+# Compile of processor_core.vhd was successful.
+# Compile of program_rom.vhd was successful.
+# Compile of processor_tb.vhd was successful.
+# Compile of stack_tb.vhd was successful with warnings.
+# 9 compiles, 0 failed with no errors.
+restart
+# Loading work.processor_tb(behavioral)
+# Loading work.processor(behavioral)
+# Loading work.processor_core(behavioral)
+# Loading work.pc(behavioral)
+# Loading work.stack(behavioral)
+# Loading work.decoder(behavioral)
+# Loading work.alu(behavioral)
+# Loading work.program_rom(behavioral)
+run
+# GetModuleFileName: The specified module could not be found.
+# 
+# 
+run
+add wave -position end  sim:/processor_tb/dut/core_1/stack_1/stack_array
+add wave -position end  sim:/processor_tb/dut/core_1/stack_1/stack_top_address
+add wave -position end  sim:/processor_tb/dut/core_1/stack_1/stack_next_address
+restart
+run
+# GetModuleFileName: The specified module could not be found.
+# 
+# 
+# Compile of program_rom.vhd was successful.
+restart
+# Loading work.program_rom(behavioral)
+run
+# GetModuleFileName: The specified module could not be found.
+# 
+# 
+run
+# Compile of program_rom.vhd failed with 14 errors.
+# Compile of program_rom.vhd failed with 8 errors.
+# Compile of program_rom.vhd was successful.
+# Compile of program_rom.vhd failed with 3 errors.
+# Compile of program_rom.vhd failed with 3 errors.
+# Compile of program_rom.vhd failed with 3 errors.
+# Compile of program_rom.vhd failed with 3 errors.
+# Compile of program_rom.vhd failed with 2 errors.
+# Compile of program_rom.vhd failed with 2 errors.
+# Compile of program_rom.vhd was successful.
+restart
+# Loading ieee.std_logic_textio(body)
+# Loading work.program_rom(behavioral)
+# ** Warning: (vsim-7) Failed to open VHDL file "rom_preload.txt" in rb mode.
+# No such file or directory. (errno = ENOENT)
+#    Time: 0 ps  Iteration: 0  Instance: /processor_tb/dut/program_rom_1 File: C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/program_rom.vhd
+# ** Fatal: (vsim-7) Failed to open VHDL file "rom_preload.txt" in rb mode.
+# No such file or directory. (errno = ENOENT)
+#    Time: 0 ps  Iteration: 0  Instance: /processor_tb/dut/program_rom_1 File: C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/program_rom.vhd Line: 27
+# FATAL ERROR while loading design
+vsim -gui work.processor_tb
+# vsim -gui work.processor_tb 
+# Start time: 17:40:02 on Jun 23,2024
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.numeric_std(body)
+# Loading work.processor_tb(behavioral)
+# Loading work.processor(behavioral)
+# Loading work.processor_core(behavioral)
+# Loading work.pc(behavioral)
+# Loading work.stack(behavioral)
+# Loading work.decoder(behavioral)
+# Loading work.alu(behavioral)
+# Loading ieee.std_logic_textio(body)
+# Loading work.program_rom(behavioral)
+# ** Error: (vsim-3953) STD_LOGIC_1164.READ(STD_ULOGIC_VECTOR) End of string encountered
+#    Time: 0 ps  Iteration: 0  Instance: /processor_tb/dut/program_rom_1 File: C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/program_rom.vhd
+# ** Error: (vsim-3560) STD_LOGIC_1164.READ(STD_ULOGIC_VECTOR) Error: Character '2' read, expected STD_ULOGIC literal.
+#    Time: 0 ps  Iteration: 0  Instance: /processor_tb/dut/program_rom_1 File: C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/program_rom.vhd
+# ** Error: (vsim-3560) STD_LOGIC_1164.READ(STD_ULOGIC_VECTOR) Error: Character '7' read, expected STD_ULOGIC literal.
+#    Time: 0 ps  Iteration: 0  Instance: /processor_tb/dut/program_rom_1 File: C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/program_rom.vhd
+# ** Error: (vsim-3953) STD_LOGIC_1164.READ(STD_ULOGIC_VECTOR) End of string encountered
+#    Time: 0 ps  Iteration: 0  Instance: /processor_tb/dut/program_rom_1 File: C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/program_rom.vhd
+# ** Error: (vsim-3953) STD_LOGIC_1164.READ(STD_ULOGIC_VECTOR) End of string encountered
+#    Time: 0 ps  Iteration: 0  Instance: /processor_tb/dut/program_rom_1 File: C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/program_rom.vhd
+# ** Error: (vsim-3953) STD_LOGIC_1164.READ(STD_ULOGIC_VECTOR) End of string encountered
+#    Time: 0 ps  Iteration: 0  Instance: /processor_tb/dut/program_rom_1 File: C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/program_rom.vhd
+# ** Warning: (vsim-WLF-5000) WLF file currently in use: vsim.wlf
+#           File in use by: simon  Hostname: DESKTOP-5JRNHLO  ProcessID: 5360
+#           Attempting to use alternate WLF file "./wlft1q91k7".
+# ** Warning: (vsim-WLF-5001) Could not open WLF file: vsim.wlf
+#           Using alternate file: ./wlft1q91k7
+restart
+# ** Error: (vsim-3953) STD_LOGIC_1164.READ(STD_ULOGIC_VECTOR) End of string encountered
+#    Time: 0 ps  Iteration: 0  Instance: /processor_tb/dut/program_rom_1 File: C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/program_rom.vhd
+# ** Error: (vsim-3560) STD_LOGIC_1164.READ(STD_ULOGIC_VECTOR) Error: Character '2' read, expected STD_ULOGIC literal.
+#    Time: 0 ps  Iteration: 0  Instance: /processor_tb/dut/program_rom_1 File: C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/program_rom.vhd
+# ** Error: (vsim-3560) STD_LOGIC_1164.READ(STD_ULOGIC_VECTOR) Error: Character '7' read, expected STD_ULOGIC literal.
+#    Time: 0 ps  Iteration: 0  Instance: /processor_tb/dut/program_rom_1 File: C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/program_rom.vhd
+# ** Error: (vsim-3953) STD_LOGIC_1164.READ(STD_ULOGIC_VECTOR) End of string encountered
+#    Time: 0 ps  Iteration: 0  Instance: /processor_tb/dut/program_rom_1 File: C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/program_rom.vhd
+# ** Error: (vsim-3953) STD_LOGIC_1164.READ(STD_ULOGIC_VECTOR) End of string encountered
+#    Time: 0 ps  Iteration: 0  Instance: /processor_tb/dut/program_rom_1 File: C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/program_rom.vhd
+# ** Error: (vsim-3953) STD_LOGIC_1164.READ(STD_ULOGIC_VECTOR) End of string encountered
+#    Time: 0 ps  Iteration: 0  Instance: /processor_tb/dut/program_rom_1 File: C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/program_rom.vhd
+run
+# GetModuleFileName: The specified module could not be found.
+# 
+# 
+# Compile of program_rom.vhd failed with 3 errors.
+# Compile of program_rom.vhd was successful.
+restart
+# Loading work.program_rom(behavioral)
+run
+# GetModuleFileName: The specified module could not be found.
+# 
+# 
+restart
+run
+# GetModuleFileName: The specified module could not be found.
+# 
+# 
+# Compile of program_rom.vhd was successful.
+restart
+# Loading work.program_rom(behavioral)
+run
+# GetModuleFileName: The specified module could not be found.
+# 
+# 
+run

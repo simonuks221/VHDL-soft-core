@@ -33,14 +33,21 @@ begin
         else
             --TODO: make into vector and make into decoder with when statements, maybe will speed up
             if PUSH = '1' and POP = '1' then
-                stack_array(stack_top_address) <= DATA_IN;
+                --Replaces top 2 values, decrements address by one
+                stack_array(stack_next_address) <= DATA_IN;
+                stack_top_address <= stack_top_address - 1;
+                if stack_top_address /= 1 then
+                    stack_next_address <= stack_next_address - 1;
+                end if;
             elsif PUSH = '1' then
+                --Pushes into stack
                 stack_array(stack_top_address + 1) <= DATA_IN;
                 stack_top_address <= stack_top_address + 1;
                 if stack_top_address /= 0 then
                     stack_next_address <= stack_next_address + 1;
                 end if;
             elsif POP = '1' then
+                --Pops from stack
                 stack_top_address <= stack_top_address - 1;
                 if stack_top_address /= 1 then
                     stack_next_address <= stack_next_address - 1;
