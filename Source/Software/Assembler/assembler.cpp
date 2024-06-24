@@ -1,7 +1,8 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include "command_parser.hpp"
+#include "commands/command_parser.hpp"
+#include "commands/commands.hpp"
 
 int main(int argc, char* argv[]) {
     /* Open file specified from input arguments */
@@ -20,15 +21,12 @@ int main(int argc, char* argv[]) {
         return 1;
     }
     /* Parse file line by line */
-    CommandParserSingleton command_parser;
-    //command_parser.do_stuff();
-    //CommandParser &command_parser = CommandParserSingleton::get_instance();
-    CommandParser parser;
+    CommandLoad();
 
+    CommandParser &command_parser = CommandParserSingleton::get_instance();
     std::string line;
     while (std::getline(inputFile, line)) {
-        std::cout << line << std::endl;
-        parser.parse_line(line);
+        command_parser.parse_line(line);
     }
 
     inputFile.close();
