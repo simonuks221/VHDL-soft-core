@@ -73,3 +73,7 @@ VHDL-soft-core.ip_user_files/bd/
 *.qtl
 *.qdb
 *.qpg
+
+#Cmake
+build/
+Source/Software/Assembler/build/
