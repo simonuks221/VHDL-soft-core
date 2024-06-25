@@ -30,6 +30,37 @@
                 "panel": "new"
             },
             "problemMatcher": []
+        },
+        {
+            "label": "Run compiler",
+            "type": "shell",
+            "command": "./Source/Software/compile.bat",
+            "windows": {
+                "command": ".\\Source\\Software\\compile.bat"
+            },
+            "args": [
+                ""
+            ],
+            "group": "none",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Build compiler",
+            "type": "shell",
+            "command": ".Source/Software/Compiler/build/build.bat",
+            "windows": {
+                "command": ".\\Source\\Software\\Compiler\\build\\build.bat"
+            },
+            "group": "none",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            },
+            "problemMatcher": []
         }
     ],
     "version": "2.0.0"

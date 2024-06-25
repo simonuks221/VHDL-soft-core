@@ -1,4 +1,5 @@
 LOAD 1
 LOAD 2
 LOAD 3
+POP
 ADD
