@@ -5,12 +5,11 @@ class CommandBase;
 
 class CommandParser {
     private:
-        std::vector<CommandBase*> commands;
+        static std::vector<CommandBase*> commands;
     public:
         CommandParser() = default;
         ~CommandParser() = default;
         bool parse_line(std::string_view line);
-        bool add_command(CommandBase* instance);
 };
 
 class CommandParserSingleton {

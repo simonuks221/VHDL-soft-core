@@ -1,11 +1,16 @@
 #include "command_base.hpp"
 #include "command_parser.hpp"
 
-CommandBase::CommandBase(std::string _codeword) : codeword(_codeword) {
-  CommandParser &command_parser = CommandParserSingleton::get_instance();
-  command_parser.add_command(this);
+CommandParsingResult CommandBase::is_valid(std::string_view input_word) {
+    if(input_word.compare(codeword) == 0) {
+        if(word_amount == 1) {
+            return CommandParsingResult::End;
+        }
+        return CommandParsingResult::Ok;
+    }
+    return CommandParsingResult::Invalid;
 }
 
-bool CommandBase::is_valid(std::string_view input) {
-    return true;
+CommandParsingResult CommandBase::continue_parse(std::string_view input_word) {
+    return CommandParsingResult::Invalid;
 }
