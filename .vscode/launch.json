@@ -7,9 +7,9 @@
       "request": "launch",
       "args": [],
       "stopAtEntry": false,
-      "externalConsole": true,
-      "cwd": "c:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Software/Assembler",
-      "program": "c:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Software/Assembler/build/Debug/outDebug",
+      "externalConsole": false,
+      "cwd": "c:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Software/Compiler",
+      "program": "c:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Software/Compiler/build/compiler.exe",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [

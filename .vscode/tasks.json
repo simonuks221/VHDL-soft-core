@@ -13,7 +13,8 @@
             "group": "none",
             "presentation": {
                 "reveal": "always",
-                "panel": "new"
+                "panel": "shared",
+                "clear": false
             },
             "problemMatcher": []
         },
@@ -27,7 +28,8 @@
             "group": "none",
             "presentation": {
                 "reveal": "always",
-                "panel": "new"
+                "panel": "shared",
+                "clear": false
             },
             "problemMatcher": []
         },
@@ -44,7 +46,8 @@
             "group": "none",
             "presentation": {
                 "reveal": "always",
-                "panel": "new"
+                "panel": "shared",
+                "clear": false
             },
             "problemMatcher": []
         },
@@ -58,7 +61,8 @@
             "group": "none",
             "presentation": {
                 "reveal": "always",
-                "panel": "new"
+                "panel": "shared",
+                "clear": false
             },
             "problemMatcher": []
         }
