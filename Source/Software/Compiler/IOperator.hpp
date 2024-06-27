@@ -1,16 +1,20 @@
 #include <string_view>
 #include <string>
-class IOperator {
+#include <stack>
+#include <vector>
+#include "token.hpp"
+
+class IOperator : public Token {
     private:
-        std::string str;
         unsigned int presedence;
         bool left_associative;
     public:
-        IOperator(std::string _str, unsigned int _presedence, bool _left) :
-                str(_str), presedence(_presedence), left_associative(_left) {};
-        ~IOperator() = default;
+        IOperator(std::string _str, unsigned int _presedence, bool _left) : Token(_str),
+                presedence(_presedence), left_associative(_left) {};
+        virtual ~IOperator() = default;
 
-        std::string_view get_str(void) const;
         unsigned int get_presedence(void) const;
         bool get_left_associative(void) const;
+        //TODO: make static
+        virtual void shunting_yard_action(std::stack<IOperator*> &operator_stack, std::vector<Token*> &output) const = 0;
 };
