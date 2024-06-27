@@ -9,11 +9,11 @@
 #include <stack>
 #include <span>
 #include "token.hpp"
-#include "operator.hpp"
+#include "operators.hpp"
 
-static const std::unordered_map<std::string, Operator> operators = {{"+", Operator("+", 2, true)}, {"-", Operator("-", 2, true)},
-        {"*", Operator("*", 3, true)}, {"/", Operator("/", 3, true)}, {"^", Operator("^", 4, false)}, {"(", Operator("(", 0, true)},
-        {")", Operator("(", 0, true)}, {"sin", Operator("sin", 0, true)}, {"max", Operator("max", 0, true)}, {",", Operator(",", 0, true)}};
+static const std::unordered_map<std::string, IOperator> operators = {{"+", BaseOperator("+", 2, true)}, {"-", BaseOperator("-", 2, true)},
+        {"*", BaseOperator("*", 3, true)}, {"/", BaseOperator("/", 3, true)}, {"^", BaseOperator("^", 4, false)}, {"(", BaseOperator("(", 0, true)},
+        {")", BaseOperator("(", 0, true)}, {"sin", FunctionOperator("sin")}, {"max", FunctionOperator("max")}, {",", IgnoreOperator(",")}};
 
 
 bool tokenize(std::string_view input, std::vector<std::string> &token_list) {
