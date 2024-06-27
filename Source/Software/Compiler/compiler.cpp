@@ -11,7 +11,9 @@
 #include "token.hpp"
 #include "operator.hpp"
 
-static const std::unordered_map<char, Operator> operators = {{'+', Operator('+', 2, true)}, {'-', Operator('-', 2, true)}, {'*', Operator('*', 3, true)}, {'/', Operator('/', 3, true)}, {'^', Operator('^', 4, false)}, {'(', Operator('(', 0, true)}, {')', Operator('(', 0, true)}};
+static const std::unordered_map<std::string, Operator> operators = {{"+", Operator("+", 2, true)}, {"-", Operator("-", 2, true)},
+        {"*", Operator("*", 3, true)}, {"/", Operator("/", 3, true)}, {"^", Operator("^", 4, false)}, {"(", Operator("(", 0, true)},
+        {")", Operator("(", 0, true)}, {"sin", Operator("sin", 0, true)}, {"max", Operator("max", 0, true)}, {",", Operator(",", 0, true)}};
 
 
 bool tokenize(std::string_view input, std::vector<std::string> &token_list) {
@@ -21,13 +23,14 @@ bool tokenize(std::string_view input, std::vector<std::string> &token_list) {
             temp_token += ch;
             continue;
         }
+        std::string ch_str(1, ch);
         if(!temp_token.empty()) {
             token_list.push_back(temp_token);
             temp_token.clear();
         }
-        if(operators.find(ch) != operators.end()) {
+        if(operators.find(ch_str) != operators.end()) {
             /* found operator */
-            token_list.push_back(std::string{ch});
+            token_list.push_back(ch_str);
             temp_token.clear();
         }
     }
@@ -37,56 +40,60 @@ bool tokenize(std::string_view input, std::vector<std::string> &token_list) {
     return true;
 }
 
+
+
 bool convert_to_stack_ops(std::span<std::string> tokens, std::vector<std::string> &output) {
     /* Shunting yard algorithm to convert tokens to stack operations */
     std::stack<std::string> operator_stack;
     for (std::string token : tokens) {
-        if(token.length() == 1) {
-            /* Found possible operator */
-            if(operators.find(token[0]) != operators.end()) {
-                /* Found operator */ //TODO: make into class
-                char current_operator = token[0];
-
-                if(current_operator == ')') {
-                    /* Special case for ')' pop everyhting from stack */
-                    while(!operator_stack.empty()) {
-                        if(operator_stack.top()[0] == '(') {
-                            operator_stack.pop();
-                            break;
-                        }
-                        output.push_back(operator_stack.top());
-                        operator_stack.pop();
-                    }
-                    continue;
-                } else if(current_operator == '(') {
-                    /* Special case for '(' push to stack */
-                    operator_stack.push(token);
-                    continue;
-                } else {
-                    /* Regular operator found */
-                    int current_token_precedence = operators.at(current_operator).presedence;
-                    while(!operator_stack.empty()) {
-                        char top_op = operator_stack.top()[0];
-                        if((top_op == ')') || (top_op == '(')) {
-                            break;
-                        }
-                        int top_token_precedence = operators.at(top_op).presedence; //TODO: error handling
-                        if((top_token_precedence >= current_token_precedence) && (operators.at(current_operator).left_associative)) {
-                            output.push_back(operator_stack.top());
-                            operator_stack.pop();
-                        } else {
-                            break;
-                        }
-                    }
-                    /* Always push current token to top of operator stack */
-                    operator_stack.push(token);
+        if(operators.find(token) == operators.end()) {
+            /* Not an operator */
+            output.push_back(token);
+            continue;
+        }
+        /* Found operator */ //TODO: make into class
+        if(token == ",") {
+            /* Do nothing */
+        } else if((token == "sin") || (token == "max")) {
+            operator_stack.push(token);
+        } else if(token == ")") {
+            /* Special case for ')' pop everyhting from stack */
+            while(!operator_stack.empty()) {
+                if(operator_stack.top() == "(") {
+                    operator_stack.pop();
+                    break;
+                }
+                output.push_back(operator_stack.top());
+                operator_stack.pop();
+            }
+            if((operator_stack.top() == "sin") || (operator_stack.top() == "max")) {
+                output.push_back(operator_stack.top());
+                operator_stack.pop();
                 continue;
+            }
+        } else if(token == "(") {
+            /* Special case for '(' push to stack */
+            operator_stack.push(token);
+            continue;
+        } else {
+            /* Regular operator found */
+            int current_token_precedence = operators.at(token).get_presedence();
+            while(!operator_stack.empty()) {
+                std::string top_op = operator_stack.top();
+                if((top_op == ")") || (top_op == "(")) {
+                    break;
+                }
+                int top_token_precedence = operators.at(top_op).get_presedence(); //TODO: error handling
+                if((top_token_precedence >= current_token_precedence) && (operators.at(token).get_left_associative())) {
+                    output.push_back(top_op);
+                    operator_stack.pop();
+                } else {
+                    break;
                 }
             }
-            /* Not an operator, fallthrough */
+            /* Always push current token to top of operator stack */
+            operator_stack.push(token);
         }
-        /* Not an operator */ //TODO: issues with multi char operators
-        output.push_back(token);
     }
     /* Add all operators that are left from stack */
     while(!operator_stack.empty()) {
@@ -98,7 +105,7 @@ bool convert_to_stack_ops(std::span<std::string> tokens, std::vector<std::string
 }
 
 int main(int argc, char* argv[]) {
-    std::string input = "3 + 4 * 2 / ( 1 - 5 ) ^ 2 ^ 3";
+    std::string input = "sin(max(2,3)/3*5)";
     std::cout << "Starting" <<std::endl;
     std::vector<std::string> token_list;
     tokenize(input, token_list);
