@@ -39,9 +39,12 @@ void BinaryTree::printout_all() {
     }
     /* Printout from tree */
     for(std::vector<TreeNode *> this_depth_nodes : tree_nodes_2d) {
-        unsigned int this_row_spacing = max_width * 10 / this_depth_nodes.size();
+        unsigned int this_row_spacing = max_width * 10 / (this_depth_nodes.size()+1);
         for(TreeNode * this_node : this_depth_nodes) {
             std::string spacing(this_row_spacing, ' ');
+            if(this_node == nullptr) {
+                continue;
+            }
             std::cout << spacing << this_node->token->get_str() << " ";
         }
         std::cout << std::endl;
@@ -49,13 +52,15 @@ void BinaryTree::printout_all() {
 }
 
 void BinaryTree::printout_from_node(TreeNode* node, int depth, std::vector<std::vector<TreeNode *>> &tree_nodes_2d) {
-    if (node == nullptr) return;
     /* Add another entry if new depth reached */
     if(depth >= tree_nodes_2d.size()) {
         tree_nodes_2d.push_back(std::vector<TreeNode *>());
     }
     /* Add node to 2d tree */
     tree_nodes_2d.at(depth).push_back(node);
+    if (node == nullptr) {
+        return;
+    }
     //std::cout << node->token->get_str() << std::endl;
     printout_from_node(node->left, depth + 1, tree_nodes_2d);
     printout_from_node(node->right, depth + 1, tree_nodes_2d);
