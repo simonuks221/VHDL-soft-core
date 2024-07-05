@@ -2,6 +2,8 @@
 #include <string_view>
 #include <iostream>
 
+#pragma once
+
 class Token {
     private:
         std::string str;

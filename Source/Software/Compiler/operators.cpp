@@ -25,7 +25,13 @@ void ParentehsiesOperator::shunting_yard_action(std::stack<IOperator*> &operator
             output.push_back(operator_stack.top());
             operator_stack.pop();
         }
-        if((operator_stack.top()->get_str() == "sin") || (operator_stack.top()->get_str() == "max")) { //TODO: change to dynamic cast if (Derived1* d1 = dynamic_cast<Derived1*>(basePtr)) {
+
+        FunctionOperator *function_op = nullptr;
+        if(!operator_stack.empty()) {
+            function_op = dynamic_cast<FunctionOperator*>(operator_stack.top());
+        }
+
+        if(function_op != nullptr) {
             output.push_back(operator_stack.top());
             operator_stack.pop();
         }

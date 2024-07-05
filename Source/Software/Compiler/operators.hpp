@@ -2,6 +2,8 @@
 #include <string_view>
 #include <string>
 
+#pragma once
+
 class BaseOperator : public IOperator {
     public:
         BaseOperator(std::string _str, unsigned int _presedence, bool _left) : IOperator(_str, _presedence, _left) {};
