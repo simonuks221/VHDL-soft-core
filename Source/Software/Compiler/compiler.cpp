@@ -9,6 +9,7 @@
 #include <stack>
 #include <span>
 #include "operators.hpp"
+#include "binary_tree.hpp"
 
 static const std::unordered_map<std::string, IOperator*> operators = {{"+", new BaseOperator("+", 2, true)}, {"-", new BaseOperator("-", 2, true)},
         {"*", new BaseOperator("*", 3, true)}, {"/", new BaseOperator("/", 3, true)}, {"^", new BaseOperator("^", 4, false)}, {"(", new ParentehsiesOperator("(")},
@@ -23,21 +24,22 @@ bool tokenize(std::string_view input, std::vector<Token*> &token_list) {
             continue;
         }
         std::string ch_str(1, ch);
-        if(operators.find(temp_token) != operators.end()) {
-            /* Operator in temp_token */
-            IOperator *new_token = operators.at(temp_token);
-            token_list.push_back(new_token);
-            temp_token.clear();
-        } else {
-            /* No operator in temp_token*/
-            Token *new_token = new Token(temp_token);
-            token_list.push_back(new_token);
-            temp_token.clear();
+        if(!temp_token.empty()) {
+            if(operators.find(temp_token) != operators.end()) {
+                /* Operator in temp_token */
+                IOperator *new_token = operators.at(temp_token);
+                token_list.push_back(new_token);
+                temp_token.clear();
+            } else {
+                /* No operator in temp_token*/
+                Token *new_token = new Token(temp_token);
+                token_list.push_back(new_token);
+                temp_token.clear();
+            }
         }
         if(operators.find(ch_str) != operators.end()) {
             /* found operator */
             IOperator *new_token = operators.at(ch_str);
-            //Token *new_token = new Token(ch_str);//TODO: this pushes only tokens :(
             token_list.push_back(new_token);
             temp_token.clear();
         }
@@ -59,11 +61,8 @@ bool convert_to_stack_ops(std::span<Token*> tokens, std::vector<Token*> &output)
             output.push_back(token);
             continue;
         }
+        /* Found operator */
         op->shunting_yard_action(operator_stack, output);
-        // /* Found operator */
-        // BaseOperator *base = operators.at(token->get_str());
-        // FunctionOperator *func = dynamic_cast<FunctionOperator *>(base);
-        // //operators.at(token->get_str())->shunting_yard_action(token, operator_stack, output);
     }
     /* Add all operators that are left from stack */
     while(!operator_stack.empty()) {
@@ -74,19 +73,24 @@ bool convert_to_stack_ops(std::span<Token*> tokens, std::vector<Token*> &output)
 }
 
 int main(int argc, char* argv[]) {
-    std::string input = "sin(max(2,3)/3*5)";
+    std::string input = "(3+4)*5";
     std::cout << "Starting" <<std::endl;
     std::vector<Token*> token_list;
     tokenize(input, token_list);
     std::cout << "Got tokens:" <<std::endl;
     for(Token *token : token_list) {
-        std::cout << token->get_str() << std::endl;
+        std::cout << token->get_str() << " ";
     }
+    std::cout << std::endl;
     std::vector<Token*> stack_token_list;
     convert_to_stack_ops(token_list, stack_token_list);
     std::cout << "Got stack ops:" <<std::endl;
     for(Token *token : stack_token_list) {
-        std::cout << token->get_str() << std::endl;
+        std::cout << token->get_str() << " ";
     }
+    std::cout << std::endl;
+    std::cout << "Got binary tree:" << std::endl;
+    BinaryTree binary_tree = BinaryTree(stack_token_list);
+    binary_tree.printout_all();
     return 0;
 }

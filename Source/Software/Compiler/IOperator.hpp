@@ -4,6 +4,8 @@
 #include <vector>
 #include "token.hpp"
 
+#pragma once
+
 class IOperator : public Token {
     private:
         unsigned int presedence;
