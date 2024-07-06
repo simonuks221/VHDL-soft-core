@@ -6,6 +6,7 @@
 #include <cctype>
 #include <unordered_set>
 #include <unordered_map>
+#include <algorithm>
 #include <stack>
 #include <span>
 #include "binary_tree/operators.hpp"
@@ -42,26 +43,50 @@ bool tokenize(std::string_view input, std::vector<Token*> &token_list) {
         if(!temp_token.empty()) {
             if(operators.find(temp_token) != operators.end()) {
                 /* Operator in temp_token */
-                IOperator *new_token = operators.at(temp_token);
+                Token *new_token = operators.at(temp_token)->clone();
                 token_list.push_back(new_token);
                 temp_token.clear();
             } else {
-                /* No operator in temp_token*/
-                Token *new_token = new Token(temp_token);
+                /* No operator in temp_token */
+                Token *new_token = nullptr;
+                bool is_all_num = std::all_of(temp_token.begin(), temp_token.end(), ::isdigit);
+                if(is_all_num) {
+                    /* All numbers - constant */
+                    new_token = new Constant(temp_token);
+                } else {
+                    /* Variable */
+                    new_token = new Variable(temp_token);
+                }
                 token_list.push_back(new_token);
                 temp_token.clear();
             }
         }
         if(operators.find(ch_str) != operators.end()) {
             /* found operator */
-            IOperator *new_token = operators.at(ch_str);
+            Token *new_token = operators.at(ch_str)->clone();
             token_list.push_back(new_token);
             temp_token.clear();
         }
     }
     if(!temp_token.empty()) {
-        Token *new_token = new Token(temp_token);
-        token_list.push_back(new_token);
+        //TODO: duplicated code
+        if(operators.find(temp_token) != operators.end()) {
+            /* Operator in temp_token */
+            Token *new_token = operators.at(temp_token)->clone();
+            token_list.push_back(new_token);
+        } else {
+            /* No operator in temp_token*/
+            Token *new_token = nullptr;
+            bool is_all_num = std::all_of(temp_token.begin(), temp_token.end(), ::isdigit);
+            if(is_all_num) {
+                /* All numbers - constant */
+                new_token = new Constant(temp_token);
+            } else {
+                /* Variable */
+                new_token = new Variable(temp_token);
+            }
+            token_list.push_back(new_token);
+        }
     }
     return true;
 }
@@ -88,7 +113,7 @@ bool convert_to_stack_ops(std::span<Token*> tokens, std::vector<Token*> &output)
 }
 
 int main(int argc, char* argv[]) {
-    std::string input = "(3+4+y)*5+y";
+    std::string input = "(3+4+3)*5+tadas+1";
     std::cout << "Starting" <<std::endl;
     std::vector<Token*> token_list;
     tokenize(input, token_list);
