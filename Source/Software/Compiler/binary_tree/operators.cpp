@@ -5,9 +5,17 @@ void IgnoreOperator::shunting_yard_action(std::stack<IOperator*> &operator_stack
     /* Do nothing */
 }
 
+Token *IgnoreOperator::clone(void) {
+    return new IgnoreOperator(*this);
+}
+
 void FunctionOperator::shunting_yard_action(std::stack<IOperator*> &operator_stack, std::vector<Token*> &output) const {
     FunctionOperator * this_token = const_cast<FunctionOperator *>(this);
     operator_stack.push(this_token);
+}
+
+Token *FunctionOperator::clone(void) {
+    return new FunctionOperator(*this);
 }
 
 void ParentehsiesOperator::shunting_yard_action(std::stack<IOperator*> &operator_stack, std::vector<Token*> &output) const {
@@ -38,6 +46,10 @@ void ParentehsiesOperator::shunting_yard_action(std::stack<IOperator*> &operator
     }
 }
 
+Token *ParentehsiesOperator::clone(void) {
+    return new ParentehsiesOperator(*this);
+}
+
 void BaseOperator::shunting_yard_action(std::stack<IOperator*> &operator_stack, std::vector<Token*> &output) const {
     BaseOperator * this_token = const_cast<BaseOperator *>(this);
     /* Regular operator found */
@@ -57,4 +69,8 @@ void BaseOperator::shunting_yard_action(std::stack<IOperator*> &operator_stack, 
     }
     /* Always push current token to top of operator stack */
     operator_stack.push(this_token);
+}
+
+Token *BaseOperator::clone(void) {
+    return new BaseOperator(*this);
 }

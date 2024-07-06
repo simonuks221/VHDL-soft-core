@@ -15,6 +15,8 @@ class IOperator : public Token {
                 presedence(_presedence), left_associative(_left) {};
         virtual ~IOperator() = default;
 
+        Token *clone() override;
+
         unsigned int get_presedence(void) const;
         bool get_left_associative(void) const;
         //TODO: make static
