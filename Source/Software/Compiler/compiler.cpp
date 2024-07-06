@@ -8,8 +8,23 @@
 #include <unordered_map>
 #include <stack>
 #include <span>
-#include "operators.hpp"
-#include "binary_tree.hpp"
+#include "binary_tree/operators.hpp"
+#include "binary_tree/binary_tree.hpp"
+#include "optimisation/constant_folding.hpp"
+
+/*
+Possible optimisations:
+1. Constant folding (http://www2.imm.dtu.dk/courses/02198/slides/exprfold/foldexpr.pdf)
+2. Algebric identities
+3. Common Subexpression Elimination
+4. Operator Strength Reduction
+5. Inlining
+6. Dead Code Elimination
+7. Simplifying Conditional Expressions
+8. Reassociation
+9. Distribution and Factoring
+10. Constant Propagation
+*/
 
 static const std::unordered_map<std::string, IOperator*> operators = {{"+", new BaseOperator("+", 2, true)}, {"-", new BaseOperator("-", 2, true)},
         {"*", new BaseOperator("*", 3, true)}, {"/", new BaseOperator("/", 3, true)}, {"^", new BaseOperator("^", 4, false)}, {"(", new ParentehsiesOperator("(")},
@@ -73,7 +88,7 @@ bool convert_to_stack_ops(std::span<Token*> tokens, std::vector<Token*> &output)
 }
 
 int main(int argc, char* argv[]) {
-    std::string input = "(3+4)*5";
+    std::string input = "(3+4+y)*5+y";
     std::cout << "Starting" <<std::endl;
     std::vector<Token*> token_list;
     tokenize(input, token_list);
@@ -91,6 +106,9 @@ int main(int argc, char* argv[]) {
     std::cout << std::endl;
     std::cout << "Got binary tree:" << std::endl;
     BinaryTree binary_tree = BinaryTree(stack_token_list);
+    binary_tree.printout_all();
+    ConstantFolding constant_folding = ConstantFolding();
+    constant_folding.calculate(binary_tree.get_root());
     binary_tree.printout_all();
     return 0;
 }

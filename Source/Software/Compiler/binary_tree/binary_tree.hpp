@@ -14,11 +14,12 @@ class TreeNode {
 
 class BinaryTree {
     private:
-        std::stack<TreeNode*> nodes;
-
+        static constexpr unsigned int representation_spacing = 10;
+        TreeNode* root;
         TreeNode* construct_tree_from_rpn(std::span<Token*> rpn);
         void printout_from_node(TreeNode* node, int depth, std::vector<std::vector<TreeNode *>> &tree_nodes_2d);
     public:
         BinaryTree(std::span<Token*> tokens);
+        TreeNode* get_root(void);
         void printout_all(void);
 };
