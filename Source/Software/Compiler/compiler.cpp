@@ -33,7 +33,7 @@ static const std::unordered_map<std::string, IOperator*> operators = {{"+", new 
         {")", new ParentehsiesOperator(")")}, {"sin", new FunctionOperator("sin")}, {"max", new FunctionOperator("max")}, {",", new IgnoreOperator(",")}};
 
 
-bool tokenize(std::string_view input, std::vector<Token*> &token_list) {
+bool tokenize(std::string_view input, std::vector<IToken*> &token_list) {
     std::string temp_token = "";
     for (char ch : input) {
         if(isdigit(ch) || isalnum(ch)) {
@@ -44,12 +44,12 @@ bool tokenize(std::string_view input, std::vector<Token*> &token_list) {
         if(!temp_token.empty()) {
             if(operators.find(temp_token) != operators.end()) {
                 /* Operator in temp_token */
-                Token *new_token = operators.at(temp_token)->clone();
+                IToken *new_token = operators.at(temp_token)->clone();
                 token_list.push_back(new_token);
                 temp_token.clear();
             } else {
                 /* No operator in temp_token */
-                Token *new_token = nullptr;
+                IToken *new_token = nullptr;
                 bool is_all_num = std::all_of(temp_token.begin(), temp_token.end(), ::isdigit);
                 if(is_all_num) {
                     /* All numbers - constant */
@@ -64,7 +64,7 @@ bool tokenize(std::string_view input, std::vector<Token*> &token_list) {
         }
         if(operators.find(ch_str) != operators.end()) {
             /* found operator */
-            Token *new_token = operators.at(ch_str)->clone();
+            IToken *new_token = operators.at(ch_str)->clone();
             token_list.push_back(new_token);
             temp_token.clear();
         }
@@ -73,11 +73,11 @@ bool tokenize(std::string_view input, std::vector<Token*> &token_list) {
         //TODO: duplicated code
         if(operators.find(temp_token) != operators.end()) {
             /* Operator in temp_token */
-            Token *new_token = operators.at(temp_token)->clone();
+            IToken *new_token = operators.at(temp_token)->clone();
             token_list.push_back(new_token);
         } else {
             /* No operator in temp_token*/
-            Token *new_token = nullptr;
+            IToken *new_token = nullptr;
             bool is_all_num = std::all_of(temp_token.begin(), temp_token.end(), ::isdigit);
             if(is_all_num) {
                 /* All numbers - constant */
@@ -92,10 +92,10 @@ bool tokenize(std::string_view input, std::vector<Token*> &token_list) {
     return true;
 }
 
-bool convert_to_stack_ops(std::span<Token*> tokens, std::vector<Token*> &output) {
+bool convert_to_stack_ops(std::span<IToken*> tokens, std::vector<IToken*> &output) {
     /* Shunting yard algorithm to convert tokens to stack operations */
     std::stack<IOperator *> operator_stack;
-    for (Token *token : tokens) {
+    for (IToken *token : tokens) {
         if(token->get_type() != eToken::Operator) {
             /* Not an operator */
             output.push_back(token);
@@ -117,17 +117,17 @@ bool convert_to_stack_ops(std::span<Token*> tokens, std::vector<Token*> &output)
 int main(int argc, char* argv[]) {
     std::string input = "(3+2+x+3)*5";
     std::cout << "Starting" <<std::endl;
-    std::vector<Token*> token_list;
+    std::vector<IToken*> token_list;
     tokenize(input, token_list);
     std::cout << "Got tokens:" <<std::endl;
-    for(Token *token : token_list) {
+    for(IToken *token : token_list) {
         std::cout << token->get_str() << " ";
     }
     std::cout << std::endl;
-    std::vector<Token*> stack_token_list;
+    std::vector<IToken*> stack_token_list;
     convert_to_stack_ops(token_list, stack_token_list);
     std::cout << "Got stack ops:" <<std::endl;
-    for(Token *token : stack_token_list) {
+    for(IToken *token : stack_token_list) {
         std::cout << token->get_str() << " ";
     }
     std::cout << std::endl;

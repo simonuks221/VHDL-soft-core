@@ -6,20 +6,20 @@
 
 class TreeNode {
     public:
-        Token *token;
+        IToken *token;
         TreeNode *left;
         TreeNode *right;
-        TreeNode(Token *_token) : token(_token), left(nullptr), right(nullptr) {}
+        TreeNode(IToken *_token) : token(_token), left(nullptr), right(nullptr) {}
 };
 
 class BinaryTree {
     private:
         static constexpr unsigned int representation_spacing = 10;
         TreeNode* root;
-        TreeNode* construct_tree_from_rpn(std::span<Token*> rpn);
+        TreeNode* construct_tree_from_rpn(std::span<IToken*> rpn);
         void printout_from_node(TreeNode* node, int depth, std::vector<std::vector<TreeNode *>> &tree_nodes_2d);
     public:
-        BinaryTree(std::span<Token*> tokens);
+        BinaryTree(std::span<IToken*> tokens);
         TreeNode* get_root(void);
         void printout_all(void);
 };

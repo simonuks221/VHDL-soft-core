@@ -11,17 +11,28 @@ enum class eToken {
     Operator
 };
 
-class Token {
+class IToken {
+    public:
+        IToken() {};
+        virtual ~IToken() = default;
+
+        virtual IToken *clone(void) = 0 ; //TODO: make into virtual class
+        virtual eToken get_type(void) = 0;
+
+        virtual std::string_view get_str(void) const = 0;
+};
+
+class Token : public IToken{
     private:
         std::string str;
     public:
         Token(std::string _str) : str(_str) {};
-        virtual ~Token() = default;
+        ~Token() override = default;
 
-        virtual Token *clone(void) { return nullptr;} ; //TODO: make into virtual class
-        virtual eToken get_type(void) {return eToken::Invalid;};
+        IToken *clone(void) override;
+        eToken get_type(void) override;
 
-        std::string_view get_str(void) const;
+        std::string_view get_str(void) const override;
 };
 
 class Variable : public Token {
@@ -29,7 +40,7 @@ class Variable : public Token {
         Variable(std::string _str) : Token(_str) {};
         virtual ~Variable() = default;
 
-        Token *clone() override;
+        IToken *clone() override;
         eToken get_type(void) override;
 };
 
@@ -38,7 +49,7 @@ class Constant : public Token {
         Constant(std::string _str) : Token(_str) {}; //TODO: token to int
         virtual ~Constant() = default;
 
-        Token *clone() override;
+        IToken *clone() override;
         eToken get_type(void) override;
 };
 
