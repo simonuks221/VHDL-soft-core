@@ -2,13 +2,13 @@
 #include <vector>
 #include <cassert>
 
-BinaryTree::BinaryTree(std::span<Token*> tokens) {
+BinaryTree::BinaryTree(std::span<IToken*> tokens) {
     root = construct_tree_from_rpn(tokens);
 }
 
-TreeNode* BinaryTree::construct_tree_from_rpn(std::span<Token*> rpn) {
+TreeNode* BinaryTree::construct_tree_from_rpn(std::span<IToken*> rpn) {
     std::stack<TreeNode*> nodes;
-    for(Token *token : rpn) {
+    for(IToken *token : rpn) {
         if(token->get_type() == eToken::Operator) {
             IOperator *op = dynamic_cast<IOperator*>(token);
             assert(op != nullptr);

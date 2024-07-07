@@ -1,6 +1,6 @@
 #include "IOperator.hpp"
 
-Token *IOperator::clone() {
+IToken *IOperator::clone() {
     return nullptr; //TODO: fix
 }
 

@@ -1,24 +1,24 @@
 #include "operators.hpp"
 #include <unordered_map>
 
-void IgnoreOperator::shunting_yard_action(std::stack<IOperator*> &operator_stack, std::vector<Token*> &output) const {
+void IgnoreOperator::shunting_yard_action(std::stack<IOperator*> &operator_stack, std::vector<IToken*> &output) const {
     /* Do nothing */
 }
 
-Token *IgnoreOperator::clone(void) {
+IToken *IgnoreOperator::clone(void) {
     return new IgnoreOperator(*this);
 }
 
-void FunctionOperator::shunting_yard_action(std::stack<IOperator*> &operator_stack, std::vector<Token*> &output) const {
+void FunctionOperator::shunting_yard_action(std::stack<IOperator*> &operator_stack, std::vector<IToken*> &output) const {
     FunctionOperator * this_token = const_cast<FunctionOperator *>(this);
     operator_stack.push(this_token);
 }
 
-Token *FunctionOperator::clone(void) {
+IToken *FunctionOperator::clone(void) {
     return new FunctionOperator(*this);
 }
 
-void ParentehsiesOperator::shunting_yard_action(std::stack<IOperator*> &operator_stack, std::vector<Token*> &output) const {
+void ParentehsiesOperator::shunting_yard_action(std::stack<IOperator*> &operator_stack, std::vector<IToken*> &output) const {
     ParentehsiesOperator * this_token = const_cast<ParentehsiesOperator *>(this);
     if(get_str() == "(") {
         /* Special case for '(' push to stack */
@@ -45,11 +45,11 @@ void ParentehsiesOperator::shunting_yard_action(std::stack<IOperator*> &operator
     }
 }
 
-Token *ParentehsiesOperator::clone(void) {
+IToken *ParentehsiesOperator::clone(void) {
     return new ParentehsiesOperator(*this);
 }
 
-void BaseOperator::shunting_yard_action(std::stack<IOperator*> &operator_stack, std::vector<Token*> &output) const {
+void BaseOperator::shunting_yard_action(std::stack<IOperator*> &operator_stack, std::vector<IToken*> &output) const {
     BaseOperator * this_token = const_cast<BaseOperator *>(this);
     /* Regular operator found */
     while(!operator_stack.empty()) {
@@ -70,6 +70,6 @@ void BaseOperator::shunting_yard_action(std::stack<IOperator*> &operator_stack, 
     operator_stack.push(this_token);
 }
 
-Token *BaseOperator::clone(void) {
+IToken *BaseOperator::clone(void) {
     return new BaseOperator(*this);
 }
