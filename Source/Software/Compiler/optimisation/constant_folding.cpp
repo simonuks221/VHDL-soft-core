@@ -49,6 +49,10 @@ static int calculate_node(TreeNode* node) { //TODO: namespace
                 node->right = nullptr;
                 return 1;
             }
+            /* Try push all constants to left */
+            if((node->right->token->get_type() == eToken::Constant) && (node->left->token->get_type() != eToken::Constant)) {
+                std::swap(node->right, node->left);
+            }
             /* Try fold if two moves are commutative and associative */
             // IOperator *op_left = dynamic_cast<IOperator*>(node->left->token);
             // if((op_left != nullptr) && (op_left->get_str() == op->get_str())) {
