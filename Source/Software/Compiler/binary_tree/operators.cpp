@@ -38,7 +38,6 @@ void ParentehsiesOperator::shunting_yard_action(std::stack<IOperator*> &operator
         if(!operator_stack.empty()) {
             function_op = dynamic_cast<FunctionOperator*>(operator_stack.top());
         }
-
         if(function_op != nullptr) {
             output.push_back(operator_stack.top());
             operator_stack.pop();

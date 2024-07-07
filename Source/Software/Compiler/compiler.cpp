@@ -8,6 +8,7 @@
 #include <unordered_map>
 #include <algorithm>
 #include <stack>
+#include <cassert>
 #include <span>
 #include "binary_tree/operators.hpp"
 #include "binary_tree/binary_tree.hpp"
@@ -95,12 +96,13 @@ bool convert_to_stack_ops(std::span<Token*> tokens, std::vector<Token*> &output)
     /* Shunting yard algorithm to convert tokens to stack operations */
     std::stack<IOperator *> operator_stack;
     for (Token *token : tokens) {
-        IOperator *op = dynamic_cast<IOperator*>(token);
-        if(op == nullptr) {
+        if(token->get_type() != eToken::Operator) {
             /* Not an operator */
             output.push_back(token);
             continue;
         }
+        IOperator *op = dynamic_cast<IOperator*>(token);
+        assert(op != nullptr);
         /* Found operator */
         op->shunting_yard_action(operator_stack, output);
     }
@@ -113,7 +115,7 @@ bool convert_to_stack_ops(std::span<Token*> tokens, std::vector<Token*> &output)
 }
 
 int main(int argc, char* argv[]) {
-    std::string input = "(3+4+3)*5+tadas+1";
+    std::string input = "(3+2+x+3)*5";
     std::cout << "Starting" <<std::endl;
     std::vector<Token*> token_list;
     tokenize(input, token_list);

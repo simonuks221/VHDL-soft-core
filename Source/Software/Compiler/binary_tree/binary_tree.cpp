@@ -1,5 +1,6 @@
 #include "binary_tree.hpp"
 #include <vector>
+#include <cassert>
 
 BinaryTree::BinaryTree(std::span<Token*> tokens) {
     root = construct_tree_from_rpn(tokens);
@@ -8,8 +9,9 @@ BinaryTree::BinaryTree(std::span<Token*> tokens) {
 TreeNode* BinaryTree::construct_tree_from_rpn(std::span<Token*> rpn) {
     std::stack<TreeNode*> nodes;
     for(Token *token : rpn) {
-        IOperator *op = dynamic_cast<IOperator*>(token);
-        if(op != nullptr) {
+        if(token->get_type() == eToken::Operator) {
+            IOperator *op = dynamic_cast<IOperator*>(token);
+            assert(op != nullptr);
             /* Is an operator */
             TreeNode* node = new TreeNode(token);
             node->right = nodes.top();

@@ -16,6 +16,7 @@ class IOperator : public Token {
         virtual ~IOperator() = default;
 
         Token *clone() override;
+        eToken get_type(void) override;
 
         unsigned int get_presedence(void) const;
         bool get_left_associative(void) const;
