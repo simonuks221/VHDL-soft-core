@@ -17,7 +17,7 @@ class BinaryTree {
         static constexpr unsigned int representation_spacing = 10;
         TreeNode* root;
         TreeNode* construct_tree_from_rpn(std::span<IToken*> rpn);
-        void printout_from_node(TreeNode* node, int depth, std::vector<std::vector<TreeNode *>> &tree_nodes_2d);
+        void printout_from_node(TreeNode* node, unsigned int rows, unsigned int collumns, unsigned int row, unsigned int collumn, TreeNode** tree_nodes_2d);
     public:
         BinaryTree(std::span<IToken*> tokens);
         TreeNode* get_root(void);
