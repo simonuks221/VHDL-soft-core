@@ -3,6 +3,28 @@
 #include <cassert>
 #include <cmath>
 
+IToken * TreeNode::get_token(void) {
+    return token;
+}
+TreeNode *TreeNode::get_left(void) {
+    return left;
+}
+TreeNode *TreeNode::get_right(void) {
+    return right;
+}
+
+void TreeNode::set_left(TreeNode *_left) {
+    left = _left;
+}
+
+void TreeNode::set_right(TreeNode *_right) {
+    right = _right;
+}
+
+void TreeNode::set_token(IToken *_token) {
+    token = _token;
+}
+
 BinaryTree::BinaryTree(std::span<IToken*> tokens) {
     root = construct_tree_from_rpn(tokens);
 }
@@ -15,9 +37,9 @@ TreeNode* BinaryTree::construct_tree_from_rpn(std::span<IToken*> rpn) {
             IOperator *op = dynamic_cast<IOperator*>(token);
             assert(op != nullptr);
             TreeNode* node = new TreeNode(token);
-            node->right = nodes.top();
+            node->set_right(nodes.top());
             nodes.pop();
-            node->left = nodes.top();
+            node->set_left(nodes.top());
             nodes.pop();
             nodes.push(node);
         } else {
@@ -30,10 +52,10 @@ TreeNode* BinaryTree::construct_tree_from_rpn(std::span<IToken*> rpn) {
 
 /* Returns count of rows (heigth of tree), does not count from 0 */
 static unsigned int get_max_heigth(TreeNode * root) {
-    if((root->left == nullptr) || (root->right == nullptr)) {
+    if((root->get_left() == nullptr) || (root->get_right() == nullptr)) {
         return 1;
     }
-    return std::max(get_max_heigth(root->left), get_max_heigth(root->right))+1;
+    return std::max(get_max_heigth(root->get_left()), get_max_heigth(root->get_right()))+1;
 }
 
 /* Gets max width of the tree */ //TODO: now returns theoretical max width, not actual as some branches could be empty
@@ -66,7 +88,7 @@ void BinaryTree::printout_all() {
                 std::cout << std::string(token_space, ' ');
                 continue;
             }
-            std::cout << node->token->get_str() << std::string(token_space - node->token->get_str().size(), ' ');
+            std::cout << node->get_token()->get_str() << std::string(token_space - node->get_token()->get_str().size(), ' ');
         }
         std::cout << std::endl;
     }
@@ -77,8 +99,8 @@ void BinaryTree::printout_from_node(TreeNode* node, unsigned int rows, unsigned 
         return;
     }
     *(tree_nodes_2d + rows * collumn + row) = node;
-    printout_from_node(node->left, rows, collumns, row + 1, collumn, tree_nodes_2d);
-    printout_from_node(node->right, rows, collumns, row + 1, collumn + 1, tree_nodes_2d);
+    printout_from_node(node->get_left(), rows, collumns, row + 1, collumn, tree_nodes_2d);
+    printout_from_node(node->get_right(), rows, collumns, row + 1, collumn + 1, tree_nodes_2d);
 }
 
 TreeNode* BinaryTree::get_root(void) {
