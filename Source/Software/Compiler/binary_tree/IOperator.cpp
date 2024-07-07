@@ -11,3 +11,7 @@ unsigned int IOperator::get_presedence() const {
 bool IOperator::get_left_associative() const {
     return left_associative;
 }
+
+eToken IOperator::get_type(void) {
+    return eToken::Operator;
+}

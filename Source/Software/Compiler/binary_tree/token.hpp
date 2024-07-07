@@ -4,6 +4,13 @@
 
 #pragma once
 
+enum class eToken {
+    Invalid,
+    Constant,
+    Variable,
+    Operator
+};
+
 class Token {
     private:
         std::string str;
@@ -12,6 +19,7 @@ class Token {
         virtual ~Token() = default;
 
         virtual Token *clone(void) { return nullptr;} ; //TODO: make into virtual class
+        virtual eToken get_type(void) {return eToken::Invalid;};
 
         std::string_view get_str(void) const;
 };
@@ -22,6 +30,7 @@ class Variable : public Token {
         virtual ~Variable() = default;
 
         Token *clone() override;
+        eToken get_type(void) override;
 };
 
 class Constant : public Token {
@@ -30,5 +39,6 @@ class Constant : public Token {
         virtual ~Constant() = default;
 
         Token *clone() override;
+        eToken get_type(void) override;
 };
 

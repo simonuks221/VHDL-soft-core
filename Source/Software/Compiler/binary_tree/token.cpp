@@ -14,6 +14,14 @@ Token *Variable::clone()  {
     return new Variable(*this);
 }
 
+eToken Variable::get_type(void) {
+    return eToken::Variable;
+}
+
 Token *Constant::clone()  {
     return new Constant(*this);
+}
+
+eToken Constant::get_type(void) {
+    return eToken::Constant;
 }
