@@ -31,12 +31,11 @@ static bool fold_constants(TreeNode* node1, TreeNode* node2, TreeNode* replace_n
     return true;
 }
 
-static int calculate_node(TreeNode* node) { //TODO: namespace
+static int calculate_node(TreeNode* node) { //TODO: namespace, //TODO: do several operations at once
     if ((node == nullptr) || (node->left == nullptr) || (node->right == nullptr)) {
         return 0;
     }
     /* Check if operator */
-
     if(node->token->get_type() == eToken::Operator) {
         IOperator *op = dynamic_cast<IOperator*>(node->token);
         assert(op != nullptr);
@@ -52,21 +51,46 @@ static int calculate_node(TreeNode* node) { //TODO: namespace
             /* Try push all constants to left */
             if((node->right->token->get_type() == eToken::Constant) && (node->left->token->get_type() != eToken::Constant)) {
                 std::swap(node->right, node->left);
+                return 1;
             }
-            /* Try fold if two moves are commutative and associative */
-            // IOperator *op_left = dynamic_cast<IOperator*>(node->left->token);
-            // if((op_left != nullptr) && (op_left->get_str() == op->get_str())) {
-            //     /* Left operator same as this operator, try fold left children */
-            //     TreeNode *left_nonconstant = node->left->right;
-            //     if(fold_constants(node->left->left, node->right, node->left)) {
-            //         free(node->left->left);
-            //         free(node->right);
-            //         node->left->left = nullptr;
-            //         node->left->right = nullptr;
-            //         node->right = left_nonconstant;
-            //         return 1;
-            //     }
-            // }
+            /* Try fold if bottom left is same operator with constant in its left
+             * only applicable if moves are commutative and associative */
+            if(node->right->token->get_type() == eToken::Operator) {
+                IOperator *op_left = dynamic_cast<IOperator*>(node->right->token);
+                assert(op_left != nullptr);
+                if(op_left->get_str() == op->get_str()) {
+                    /* Left operator same as this operator, try fold its left children */
+                    TreeNode *left_nonconstant = node->right->right;
+                    if(fold_constants(node->right->left, node->left, node->right)) {
+                        free(node->right->left);
+                        node->right->left = nullptr;
+                        node->right->right = nullptr;
+                        free(node->left);
+                        node->left = left_nonconstant;
+                        return 1;
+                    }
+                }
+            }
+            /* Move constants up if moves are commutative and associative */
+            if(node->left->token->get_type() == eToken::Operator) {
+                IOperator *op_left = dynamic_cast<IOperator*>(node->left->token);
+                assert(op_left != nullptr);
+                if(op_left->get_str() == op->get_str()) {
+                    if(node->right->token->get_type() != eToken::Constant) {
+                        /* Could change into constant node->right */
+                        if(node->left->left->token->get_type() == eToken::Constant) {
+                            /* Swap node->left->left with node->right */
+                            std::swap(node->left->left->token, node->right->token);
+                            return 1;
+                        }
+                        if(node->left->right->token->get_type() == eToken::Constant) {
+                            /* Swap node->left->right with node->right */
+                            std::swap(node->left->right->token, node->right->token);
+                            return 1;
+                        }
+                    }
+                }
+            }
         }
     }
     /* Not an operator */

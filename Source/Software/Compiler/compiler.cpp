@@ -115,7 +115,7 @@ bool convert_to_stack_ops(std::span<IToken*> tokens, std::vector<IToken*> &outpu
 }
 
 int main(int argc, char* argv[]) {
-    std::string input = "(3+2+x+3)*5";
+    std::string input = "(3+2+x+y+3)+5";
     std::cout << "Starting" <<std::endl;
     std::vector<IToken*> token_list;
     tokenize(input, token_list);
