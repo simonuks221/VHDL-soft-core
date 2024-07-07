@@ -20,6 +20,11 @@ class IToken {
         virtual eToken get_type(void) = 0;
 
         virtual std::string_view get_str(void) const = 0;
+
+        friend std::ostream& operator<<(std::ostream& os, const IToken& IToken) {
+            os << IToken.get_str();
+            return os;
+        }
 };
 
 class Token : public IToken{

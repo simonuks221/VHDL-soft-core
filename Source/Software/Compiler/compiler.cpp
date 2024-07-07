@@ -121,14 +121,14 @@ int main(int argc, char* argv[]) {
     tokenize(input, token_list);
     std::cout << "Got tokens:" <<std::endl;
     for(IToken *token : token_list) {
-        std::cout << token->get_str() << " ";
+        std::cout << *token << " ";
     }
     std::cout << std::endl;
     std::vector<IToken*> stack_token_list;
     convert_to_stack_ops(token_list, stack_token_list);
     std::cout << "Got stack ops:" <<std::endl;
     for(IToken *token : stack_token_list) {
-        std::cout << token->get_str() << " ";
+        std::cout << *token << " ";
     }
     std::cout << std::endl;
     std::cout << "Got binary tree:" << std::endl;
