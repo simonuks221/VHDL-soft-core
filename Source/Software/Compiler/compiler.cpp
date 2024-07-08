@@ -10,7 +10,7 @@
 #include <stack>
 #include <cassert>
 #include <span>
-#include "binary_tree/operators.hpp"
+#include "token/operators.hpp"
 #include "binary_tree/binary_tree.hpp"
 #include "optimisation/constant_folding.hpp"
 
@@ -28,9 +28,12 @@ Possible optimisations:
 10. Constant Propagation
 */
 
-static const std::unordered_map<std::string, IOperator*> operators = {{"+", new BaseOperator("+", 2, true)}, {"-", new BaseOperator("-", 2, true)},
-        {"*", new BaseOperator("*", 3, true)}, {"/", new BaseOperator("/", 3, true)}, {"^", new BaseOperator("^", 4, false)}, {"(", new ParentehsiesOperator("(")},
-        {")", new ParentehsiesOperator(")")}, {"sin", new FunctionOperator("sin")}, {"max", new FunctionOperator("max")}, {",", new IgnoreOperator(",")}};
+static const std::unordered_map<std::string, IOperator*> operators = {
+    {"+", new BaseOperator("+", 2, true)}, {"-", new BaseOperator("-", 2, true)},
+    {"*", new BaseOperator("*", 3, true)}, {"/", new BaseOperator("/", 3, true)},
+    {"^", new BaseOperator("^", 4, false)}, {"(", new ParentehsiesOperator("(")},
+    {")", new ParentehsiesOperator(")")}, {"sin", new FunctionOperator("sin")},
+    {"max", new FunctionOperator("max")}, {",", new IgnoreOperator(",")}};
 
 
 bool tokenize(std::string_view input, std::vector<IToken*> &token_list) {
