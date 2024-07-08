@@ -22,12 +22,12 @@ static bool fold_constants(TreeNode* node1, TreeNode* node2, TreeNode* replace_n
     assert(const2 != nullptr);
     int new_constant = 0;
     if(replace_node->get_token()->get_str() == "+") {
-        new_constant = std::stoi(const1->get_str().data()) + std::stoi(const2->get_str().data()); //TODO: need method in token to get value
+        new_constant = std::stoi(const1->get_str().data()) + std::stoi(const2->get_str().data());
     } else if(replace_node->get_token()->get_str() == "*") {
         new_constant = std::stoi(const1->get_str().data()) * std::stoi(const2->get_str().data());
     }
     free(replace_node->get_token());
-    replace_node->set_token(new Constant(std::to_string(new_constant))); //TODO: make constant token
+    replace_node->set_token(new Constant(std::to_string(new_constant)));
     return true;
 }
 
@@ -39,10 +39,11 @@ static int calculate_node(TreeNode* node) { //TODO: namespace, //TODO: do severa
     if(node->get_token()->get_type() == eToken::Operator) {
         IOperator *op = dynamic_cast<IOperator*>(node->get_token());
         assert(op != nullptr);
-        if((op->get_str() == "+") || (op->get_str() == "*")) { //TODO: remove hardcode
+        if(op->has_property(eOperatorProperty::Associative)  && op->has_property(eOperatorProperty::Commutative)) {
+        //if((op->get_str() == "+") || (op->get_str() == "*")) { //TODO: remove hardcode
             /* Try fold two children */
             if(fold_constants(node->get_left(), node->get_right(), node)) {
-                free(node->get_left()); //TODO: on node destroy free its token else MEMORY LEAK
+                free(node->get_left());
                 free(node->get_right());
                 node->set_left(nullptr);
                 node->set_right(nullptr);
