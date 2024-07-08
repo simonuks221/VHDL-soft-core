@@ -1,6 +1,30 @@
 #include "operators.hpp"
 #include <unordered_map>
 
+unsigned int BaseOperator::get_presedence() const {
+    return presedence;
+}
+
+bool BaseOperator::get_left_associative() const {
+    return left_associative;
+}
+
+eToken BaseOperator::get_type(void) {
+    return eToken::Operator;
+}
+
+IToken *BaseOperator::clone(void) {
+    return new BaseOperator(*this);
+}
+
+uint8_t BaseOperator::get_properties(void) const {
+    return properties;
+}
+
+bool BaseOperator::has_property(eOperatorProperty property) const {
+    return (properties & static_cast<uint8_t>(property)) != 0;
+}
+
 void IgnoreOperator::shunting_yard_action(std::stack<IOperator*> &operator_stack, std::vector<IToken*> &output) const {
     /* Do nothing */
 }
@@ -68,8 +92,4 @@ void BaseOperator::shunting_yard_action(std::stack<IOperator*> &operator_stack, 
     }
     /* Always push current token to top of operator stack */
     operator_stack.push(this_token);
-}
-
-IToken *BaseOperator::clone(void) {
-    return new BaseOperator(*this);
 }
