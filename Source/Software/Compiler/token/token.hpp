@@ -16,7 +16,7 @@ class IToken {
         IToken() {};
         virtual ~IToken() = default;
 
-        virtual IToken *clone(void) = 0 ; //TODO: make into virtual class
+        virtual IToken *clone(void) = 0;
         virtual eToken get_type(void) = 0;
 
         virtual std::string_view get_str(void) const = 0;
