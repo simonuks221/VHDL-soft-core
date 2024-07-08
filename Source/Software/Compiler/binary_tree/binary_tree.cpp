@@ -25,6 +25,10 @@ void TreeNode::set_token(IToken *_token) {
     token = _token;
 }
 
+TreeNode::~TreeNode() {
+    free(token);
+}
+
 BinaryTree::BinaryTree(std::span<IToken*> tokens) {
     root = construct_tree_from_rpn(tokens);
 }
