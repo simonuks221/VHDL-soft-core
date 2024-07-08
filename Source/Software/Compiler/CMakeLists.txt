@@ -6,4 +6,10 @@ project(compiler)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-add_executable(compiler compiler.cpp token.cpp IOperator.cpp operators.cpp)
+add_executable(compiler compiler.cpp)
+
+add_subdirectory(optimisation)
+add_subdirectory(binary_tree)
+add_subdirectory(token)
+
+target_link_libraries(compiler PRIVATE optimisation binary_tree token)

@@ -1,16 +1,24 @@
 #include "operators.hpp"
 #include <unordered_map>
 
-void IgnoreOperator::shunting_yard_action(std::stack<IOperator*> &operator_stack, std::vector<Token*> &output) const {
+void IgnoreOperator::shunting_yard_action(std::stack<IOperator*> &operator_stack, std::vector<IToken*> &output) const {
     /* Do nothing */
 }
 
-void FunctionOperator::shunting_yard_action(std::stack<IOperator*> &operator_stack, std::vector<Token*> &output) const {
+IToken *IgnoreOperator::clone(void) {
+    return new IgnoreOperator(*this);
+}
+
+void FunctionOperator::shunting_yard_action(std::stack<IOperator*> &operator_stack, std::vector<IToken*> &output) const {
     FunctionOperator * this_token = const_cast<FunctionOperator *>(this);
     operator_stack.push(this_token);
 }
 
-void ParentehsiesOperator::shunting_yard_action(std::stack<IOperator*> &operator_stack, std::vector<Token*> &output) const {
+IToken *FunctionOperator::clone(void) {
+    return new FunctionOperator(*this);
+}
+
+void ParentehsiesOperator::shunting_yard_action(std::stack<IOperator*> &operator_stack, std::vector<IToken*> &output) const {
     ParentehsiesOperator * this_token = const_cast<ParentehsiesOperator *>(this);
     if(get_str() == "(") {
         /* Special case for '(' push to stack */
@@ -25,14 +33,23 @@ void ParentehsiesOperator::shunting_yard_action(std::stack<IOperator*> &operator
             output.push_back(operator_stack.top());
             operator_stack.pop();
         }
-        if((operator_stack.top()->get_str() == "sin") || (operator_stack.top()->get_str() == "max")) { //TODO: change to dynamic cast if (Derived1* d1 = dynamic_cast<Derived1*>(basePtr)) {
+
+        FunctionOperator *function_op = nullptr;
+        if(!operator_stack.empty()) {
+            function_op = dynamic_cast<FunctionOperator*>(operator_stack.top());
+        }
+        if(function_op != nullptr) {
             output.push_back(operator_stack.top());
             operator_stack.pop();
         }
     }
 }
 
-void BaseOperator::shunting_yard_action(std::stack<IOperator*> &operator_stack, std::vector<Token*> &output) const {
+IToken *ParentehsiesOperator::clone(void) {
+    return new ParentehsiesOperator(*this);
+}
+
+void BaseOperator::shunting_yard_action(std::stack<IOperator*> &operator_stack, std::vector<IToken*> &output) const {
     BaseOperator * this_token = const_cast<BaseOperator *>(this);
     /* Regular operator found */
     while(!operator_stack.empty()) {
@@ -51,4 +68,8 @@ void BaseOperator::shunting_yard_action(std::stack<IOperator*> &operator_stack, 
     }
     /* Always push current token to top of operator stack */
     operator_stack.push(this_token);
+}
+
+IToken *BaseOperator::clone(void) {
+    return new BaseOperator(*this);
 }
