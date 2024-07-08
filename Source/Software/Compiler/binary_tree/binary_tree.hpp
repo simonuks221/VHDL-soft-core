@@ -10,13 +10,14 @@ class TreeNode {
         TreeNode *left;
         TreeNode *right;
     public:
-        IToken * get_token(void);
+        IToken *get_token(void);
         TreeNode *get_left(void);
         TreeNode *get_right(void);
         void set_left(TreeNode *_left);
         void set_right(TreeNode *_right);
         void set_token(IToken *_token);
         TreeNode(IToken *_token) : token(_token), left(nullptr), right(nullptr) {}
+        ~TreeNode();
 };
 
 class BinaryTree {
