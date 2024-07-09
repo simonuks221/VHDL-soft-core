@@ -14,9 +14,10 @@ static const std::unordered_map<std::string, IOperator*> operators = { //TODO: m
     {"max", new FunctionOperator("max")}, {",", new IgnoreOperator(",")}};
 
 
-bool Tokenizer::tokenize(std::string_view input, std::vector<IToken*> &token_list) {
+bool Tokenizer::tokenize(std::ifstream &input_stream) {
     std::string temp_token = "";
-    for (char ch : input) {
+    char ch;
+    while(input_stream.get(ch)) {
         if(isdigit(ch) || isalnum(ch)) {
             temp_token += ch;
             continue;
@@ -71,4 +72,8 @@ bool Tokenizer::tokenize(std::string_view input, std::vector<IToken*> &token_lis
         }
     }
     return true;
+}
+
+std::vector<IToken*>& Tokenizer::get_token_list(void) {
+    return token_list;
 }

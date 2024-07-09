@@ -1,5 +1,1 @@
-LOAD 1
-LOAD 2
-LOAD 3
-POP
-ADD
+(a+2)*5+2+(a+2)*3
