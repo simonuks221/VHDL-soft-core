@@ -22,12 +22,18 @@ class TreeNode {
 
 class BinaryTree {
     private:
-        static constexpr unsigned int representation_spacing = 10;
+        static constexpr unsigned int token_spacing = 8;
         TreeNode* root;
         TreeNode* construct_tree_from_rpn(std::span<IToken*> rpn);
-        void printout_from_node(TreeNode* node, unsigned int rows, unsigned int collumns, unsigned int row, unsigned int collumn, TreeNode** tree_nodes_2d);
+        void printout_from_node(TreeNode* node, unsigned int rows, unsigned int collumns, unsigned int row, unsigned int collumn, TreeNode** tree_nodes_2d) const;
     public:
         BinaryTree(std::span<IToken*> tokens);
         TreeNode* get_root(void);
-        void printout_all(void);
+        void printout_all(void) const;
+
+        //TODO: should return to os instead of this, also make outside class
+        friend std::ostream& operator<<(std::ostream& os, const BinaryTree& binary_tree) {
+            binary_tree.printout_all();
+            return os;
+        }
 };

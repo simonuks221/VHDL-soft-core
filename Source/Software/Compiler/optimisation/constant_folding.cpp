@@ -40,7 +40,6 @@ static int calculate_node(TreeNode* node) { //TODO: namespace, //TODO: do severa
         IOperator *op = dynamic_cast<IOperator*>(node->get_token());
         assert(op != nullptr);
         if(op->has_property(eOperatorProperty::Associative)  && op->has_property(eOperatorProperty::Commutative)) {
-        //if((op->get_str() == "+") || (op->get_str() == "*")) { //TODO: remove hardcode
             /* Try fold two children */
             if(fold_constants(node->get_left(), node->get_right(), node)) {
                 free(node->get_left());

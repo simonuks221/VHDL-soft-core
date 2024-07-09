@@ -1,1 +1,1 @@
-add_library(token token.cpp operators.cpp)
+add_library(token token.cpp operators.cpp tokenizer.cpp)
