@@ -67,7 +67,7 @@ static unsigned int get_max_width(unsigned int heigth) {
     return std::pow(2, (heigth-1));
 }
 
-void BinaryTree::printout_all() {
+void BinaryTree::printout_all()  const {
     if(root == nullptr) {
         return;
     }
@@ -82,23 +82,22 @@ void BinaryTree::printout_all() {
     }
     printout_from_node(root, max_heigth, max_width, 0, 0, tree_nodes_2d[0]);
     /* Printout from tree */
-    unsigned int token_space = 5;
     for(unsigned int y = 0; y < max_heigth; y++) {
-        std::string row_spacing((max_heigth - y)*token_space/2, ' ');
+        std::string row_spacing((max_heigth - y)*token_spacing/2, ' ');
         std::cout << row_spacing;
         for(unsigned int x = 0; x < max_width; x++) {
             TreeNode * node = tree_nodes_2d[x][y];
             if(node == nullptr) {
-                std::cout << std::string(token_space, ' ');
+                std::cout << std::string(token_spacing, ' ');
                 continue;
             }
-            std::cout << node->get_token()->get_str() << std::string(token_space - node->get_token()->get_str().size(), ' ');
+            std::cout << node->get_token()->get_str() << std::string(token_spacing - node->get_token()->get_str().size(), ' ');
         }
         std::cout << std::endl;
     }
 }
 
-void BinaryTree::printout_from_node(TreeNode* node, unsigned int rows, unsigned int collumns, unsigned int row, unsigned int collumn, TreeNode** tree_nodes_2d) {
+void BinaryTree::printout_from_node(TreeNode* node, unsigned int rows, unsigned int collumns, unsigned int row, unsigned int collumn, TreeNode** tree_nodes_2d) const {
     if(node == nullptr) {
         return;
     }

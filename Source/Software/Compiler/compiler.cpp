@@ -4,13 +4,11 @@
 #include <string_view>
 #include <vector>
 #include <cctype>
-#include <unordered_set>
-#include <unordered_map>
-#include <algorithm>
 #include <stack>
 #include <cassert>
 #include <span>
 #include "token/operators.hpp"
+#include "token/tokenizer.hpp"
 #include "binary_tree/binary_tree.hpp"
 #include "optimisation/constant_folding.hpp"
 
@@ -27,75 +25,6 @@ Possible optimisations:
 9. Distribution and Factoring
 10. Constant Propagation
 */
-
-static const std::unordered_map<std::string, IOperator*> operators = { //TODO: make property assignment nicer
-    {"+", new BaseOperator("+", 2, true, static_cast<uint8_t>(static_cast<uint8_t>(eOperatorProperty::Associative) | static_cast<uint8_t>(eOperatorProperty::Commutative)))},
-    {"-", new BaseOperator("-", 2, true)},
-    {"*", new BaseOperator("*", 3, true, static_cast<uint8_t>(static_cast<uint8_t>(eOperatorProperty::Associative) | static_cast<uint8_t>(eOperatorProperty::Commutative)))},
-    {"/", new BaseOperator("/", 3, true)},
-    {"^", new BaseOperator("^", 4, false)}, {"(", new ParentehsiesOperator("(")},
-    {")", new ParentehsiesOperator(")")}, {"sin", new FunctionOperator("sin")},
-    {"max", new FunctionOperator("max")}, {",", new IgnoreOperator(",")}};
-
-
-bool tokenize(std::string_view input, std::vector<IToken*> &token_list) {
-    std::string temp_token = "";
-    for (char ch : input) {
-        if(isdigit(ch) || isalnum(ch)) {
-            temp_token += ch;
-            continue;
-        }
-        std::string ch_str(1, ch);
-        if(!temp_token.empty()) {
-            if(operators.find(temp_token) != operators.end()) {
-                /* Operator in temp_token */
-                IToken *new_token = operators.at(temp_token)->clone();
-                token_list.push_back(new_token);
-                temp_token.clear();
-            } else {
-                /* No operator in temp_token */
-                IToken *new_token = nullptr;
-                bool is_all_num = std::all_of(temp_token.begin(), temp_token.end(), ::isdigit);
-                if(is_all_num) {
-                    /* All numbers - constant */
-                    new_token = new Constant(temp_token);
-                } else {
-                    /* Variable */
-                    new_token = new Variable(temp_token);
-                }
-                token_list.push_back(new_token);
-                temp_token.clear();
-            }
-        }
-        if(operators.find(ch_str) != operators.end()) {
-            /* found operator */
-            IToken *new_token = operators.at(ch_str)->clone();
-            token_list.push_back(new_token);
-            temp_token.clear();
-        }
-    }
-    if(!temp_token.empty()) {
-        //TODO: duplicated code
-        if(operators.find(temp_token) != operators.end()) {
-            /* Operator in temp_token */
-            IToken *new_token = operators.at(temp_token)->clone();
-            token_list.push_back(new_token);
-        } else {
-            /* No operator in temp_token*/
-            IToken *new_token = nullptr;
-            bool is_all_num = std::all_of(temp_token.begin(), temp_token.end(), ::isdigit);
-            if(is_all_num) {
-                /* All numbers - constant */
-                new_token = new Constant(temp_token);
-            } else {
-                /* Variable */
-                new_token = new Variable(temp_token);
-            }
-            token_list.push_back(new_token);
-        }
-    }
-    return true;
-}
 
 bool convert_to_stack_ops(std::span<IToken*> tokens, std::vector<IToken*> &output) {
     /* Shunting yard algorithm to convert tokens to stack operations */
@@ -120,10 +49,11 @@ bool convert_to_stack_ops(std::span<IToken*> tokens, std::vector<IToken*> &outpu
 }
 
 int main(int argc, char* argv[]) {
-    std::string input = "(3+2+x+y+3)+5";
+    std::string input = "(a+2)*5+2+(a+2)*3";
     std::cout << "Starting" <<std::endl;
     std::vector<IToken*> token_list;
-    tokenize(input, token_list);
+    Tokenizer tokenizer = Tokenizer();
+    tokenizer.tokenize(input, token_list);
     std::cout << "Got tokens:" <<std::endl;
     for(IToken *token : token_list) {
         std::cout << *token << " ";
@@ -138,6 +68,7 @@ int main(int argc, char* argv[]) {
     std::cout << std::endl;
     std::cout << "Got binary tree:" << std::endl;
     BinaryTree binary_tree = BinaryTree(stack_token_list);
+    std::cout << binary_tree << std::endl;
     binary_tree.printout_all();
     ConstantFolding constant_folding = ConstantFolding();
     constant_folding.calculate(binary_tree.get_root());
