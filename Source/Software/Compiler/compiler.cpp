@@ -49,18 +49,34 @@ bool convert_to_stack_ops(std::span<IToken*> tokens, std::vector<IToken*> &outpu
 }
 
 int main(int argc, char* argv[]) {
-    std::string input = "(a+2)*5+2+(a+2)*3";
-    std::cout << "Starting" <<std::endl;
-    std::vector<IToken*> token_list;
+    /* Open file specified from input arguments */
+    std::string file_path;
+    if(argc != 2) {
+        std::cerr << "Invalid amount of arguments" << std::endl;
+        /* Use deafult path */
+        file_path = "../code.txt";
+    } else {
+        file_path = argv[1];
+    }
+    /* Check if file correctly opened */
+    std::ifstream inputFile(file_path);
+    if (!inputFile.is_open()) {
+        std::cerr << "Failed to open the file: " << file_path << std::endl;
+        return 1;
+    }
+
+    // std::string input = "(a+2)*5+2+(a+2)*3";
+    // std::cout << "Starting" <<std::endl;
     Tokenizer tokenizer = Tokenizer();
-    tokenizer.tokenize(input, token_list);
+    tokenizer.tokenize(inputFile);
+    inputFile.close();
     std::cout << "Got tokens:" <<std::endl;
-    for(IToken *token : token_list) {
+    for(IToken *token : tokenizer.get_token_list()) {
         std::cout << *token << " ";
     }
     std::cout << std::endl;
     std::vector<IToken*> stack_token_list;
-    convert_to_stack_ops(token_list, stack_token_list);
+    convert_to_stack_ops(tokenizer.get_token_list(), stack_token_list);
     std::cout << "Got stack ops:" <<std::endl;
     for(IToken *token : stack_token_list) {
         std::cout << *token << " ";
@@ -69,9 +85,8 @@ int main(int argc, char* argv[]) {
     std::cout << "Got binary tree:" << std::endl;
     BinaryTree binary_tree = BinaryTree(stack_token_list);
     std::cout << binary_tree << std::endl;
-    binary_tree.printout_all();
     ConstantFolding constant_folding = ConstantFolding();
     constant_folding.calculate(binary_tree.get_root());
-    binary_tree.printout_all();
+    std::cout << binary_tree << std::endl;
     return 0;
 }

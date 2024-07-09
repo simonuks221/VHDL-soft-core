@@ -1,12 +1,14 @@
 #include "token.hpp"
 #include <vector>
+#include <fstream>
 
 class Tokenizer {
     private:
-
+        std::vector<IToken*> token_list;
     public:
         Tokenizer() {};
         ~Tokenizer() = default;
 
-        bool tokenize(std::string_view input, std::vector<IToken*> &token_list);
+        std::vector<IToken*> & get_token_list(void);
+        bool tokenize(std::ifstream &input_stream);
 };
