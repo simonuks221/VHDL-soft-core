@@ -69,22 +69,44 @@ int main(int argc, char* argv[]) {
     tokenizer.tokenize(inputFile);
     inputFile.close();
     std::cout << "Got tokens:" <<std::endl;
-    for(IToken *token : tokenizer.get_token_list()) {
-        std::cout << *token << " ";
+    for(std::vector<IToken*> token_line : tokenizer.get_token_list()) {
+        for(IToken *token : token_line) {
+            std::cout << *token << " ";
+        }
+        std::cout << std::endl;
     }
-    std::cout << std::endl;
-    std::vector<IToken*> stack_token_list;
-    convert_to_stack_ops(tokenizer.get_token_list(), stack_token_list);
+
+    /* Do shunting yard to convert sequentially */
+    std::vector<std::vector<IToken*>> stack_token_list;
+    for(std::vector<IToken*> token_line : tokenizer.get_token_list()) {
+        std::vector<IToken*> temp_stack_token_list;
+        convert_to_stack_ops(token_line, temp_stack_token_list);
+        stack_token_list.push_back(temp_stack_token_list);
+    }
+
     std::cout << "Got stack ops:" <<std::endl;
-    for(IToken *token : stack_token_list) {
-        std::cout << *token << " ";
+    for(std::vector<IToken*> token_line : stack_token_list) {
+        for(IToken *token : token_line) {
+            std::cout << *token << " ";
+        }
+        std::cout << std::endl;
     }
-    std::cout << std::endl;
+
+    /* Convert to binary trees */
+    std::vector<BinaryTree> binary_trees;
     std::cout << "Got binary tree:" << std::endl;
-    BinaryTree binary_tree = BinaryTree(stack_token_list);
-    std::cout << binary_tree << std::endl;
+    for(std::vector<IToken*> token_line : stack_token_list) {
+        BinaryTree temp_binary_tree = BinaryTree(token_line);
+        binary_trees.push_back(temp_binary_tree);
+        std::cout << temp_binary_tree << std::endl;
+    }
+    /* Do constant folding */
+    std::cout << "Constant folding: " << std::endl;
     ConstantFolding constant_folding = ConstantFolding();
-    constant_folding.calculate(binary_tree.get_root());
-    std::cout << binary_tree << std::endl;
+    for(BinaryTree binary_tree : binary_trees) {
+        constant_folding.calculate(binary_tree.get_root());
+        std::cout << binary_tree << std::endl;
+    }
+
     return 0;
 }
