@@ -39,6 +39,7 @@ bool Tokenizer::tokenize(std::ifstream &input_stream) {
     std::string line;
     while (std::getline(input_stream, line)) {
         temp_token.clear();
+        std::vector<IToken*> temp_tokens;
         for (char ch : line) {
             if((ch == '#') || (ch == ';')) { //TODO: will skip everything in a line after ;
                 /* Found start of comment */
@@ -53,7 +54,7 @@ bool Tokenizer::tokenize(std::ifstream &input_stream) {
                 if(operators.find(temp_token) != operators.end()) {
                     /* Operator in temp_token */
                     IToken *new_token = operators.at(temp_token)->clone();
-                    token_list.push_back(new_token);
+                    temp_tokens.push_back(new_token);
                     temp_token.clear();
                 } else {
                     /* No operator in temp_token */
@@ -66,14 +67,14 @@ bool Tokenizer::tokenize(std::ifstream &input_stream) {
                         /* Variable */
                         new_token = new Variable(temp_token);
                     }
-                    token_list.push_back(new_token);
+                    temp_tokens.push_back(new_token);
                     temp_token.clear();
                 }
             }
             if(operators.find(ch_str) != operators.end()) {
                 /* found operator */
                 IToken *new_token = operators.at(ch_str)->clone();
-                token_list.push_back(new_token);
+                temp_tokens.push_back(new_token);
                 temp_token.clear();
             }
         }
@@ -82,7 +83,7 @@ bool Tokenizer::tokenize(std::ifstream &input_stream) {
             if(operators.find(temp_token) != operators.end()) {
                 /* Operator in temp_token */
                 IToken *new_token = operators.at(temp_token)->clone();
-                token_list.push_back(new_token);
+                temp_tokens.push_back(new_token);
             } else {
                 /* No operator in temp_token*/
                 IToken *new_token = nullptr;
@@ -94,13 +95,14 @@ bool Tokenizer::tokenize(std::ifstream &input_stream) {
                     /* Variable */
                     new_token = new Variable(temp_token);
                 }
-                token_list.push_back(new_token);
+                temp_tokens.push_back(new_token);
             }
         }
+        token_list.push_back(temp_tokens);
     }
     return true;
 }
 
-std::vector<IToken*>& Tokenizer::get_token_list(void) {
+std::vector<std::vector<IToken*>>& Tokenizer::get_token_list(void) {
     return token_list;
 }
