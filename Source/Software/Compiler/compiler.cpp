@@ -11,6 +11,7 @@
 #include "token/tokenizer_singleton.hpp"
 #include "binary_tree/binary_tree.hpp"
 #include "optimisation/constant_folding.hpp"
+#include "optimisation/data_flow_analysis.hpp"
 
 /*
 Possible optimisations:
@@ -107,6 +108,8 @@ int main(int argc, char* argv[]) {
         constant_folding.calculate(binary_tree.get_root());
         std::cout << binary_tree << std::endl;
     }
-
+    /* Do data flow analysis */
+    DataFlowAnalysis data_flow_analysis;
+    data_flow_analysis.analyze(stack_token_list);
     return 0;
 }
