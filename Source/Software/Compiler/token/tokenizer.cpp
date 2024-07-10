@@ -4,17 +4,7 @@
 #include <algorithm>
 #include <cassert>
 
-
-//     {"-", new BaseOperator("-", 2, true)},
-//     {"*", new BaseOperator("*", 3, true, static_cast<uint8_t>(static_cast<uint8_t>(eOperatorProperty::Associative) | static_cast<uint8_t>(eOperatorProperty::Commutative)))},
-//     {"/", new BaseOperator("/", 3, true)},
-//     {"^", new BaseOperator("^", 4, false)},
-//     {"(", new ParentehsiesOperator("(")},
-//     {")", new ParentehsiesOperator(")")},
-//     {"sin", new FunctionOperator("sin")},
-//     {"max", new FunctionOperator("max")},
-//     {",", new IgnoreOperator(",")},
-
+//TODO: nicer associative setting
 BaseOperator addition("+", 2, true, static_cast<uint8_t>(static_cast<uint8_t>(eOperatorProperty::Associative) | static_cast<uint8_t>(eOperatorProperty::Commutative)));
 BaseOperator subtraction("-", 2, true);
 BaseOperator multiplication("*", 3, true, static_cast<uint8_t>(static_cast<uint8_t>(eOperatorProperty::Associative) | static_cast<uint8_t>(eOperatorProperty::Commutative)));
@@ -98,7 +88,9 @@ bool Tokenizer::tokenize(std::ifstream &input_stream) {
                 temp_tokens.push_back(new_token);
             }
         }
-        token_list.push_back(temp_tokens);
+        if(!temp_token.empty()) {
+            token_list.push_back(temp_tokens);
+        }
     }
     return true;
 }
