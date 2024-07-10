@@ -1,5 +1,9 @@
 #include "token.hpp"
 
+Token::Token(std::string _str) : str(_str) {
+
+};
+
 IToken *Token::clone(void) {
     return new Token(*this);
 }

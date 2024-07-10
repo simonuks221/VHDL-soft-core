@@ -31,7 +31,7 @@ class Token : public IToken{
     private:
         std::string str;
     public:
-        Token(std::string _str) : str(_str) {};
+        Token(std::string _str);
         ~Token() override = default;
 
         IToken *clone(void) override;

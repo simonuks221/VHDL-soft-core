@@ -1,5 +1,14 @@
+#include "tokenizer_singleton.hpp"
 #include "operators.hpp"
 #include <unordered_map>
+
+BaseOperator::BaseOperator(std::string _str, unsigned int _presedence, bool _left, uint8_t _properties) : IOperator(_str), presedence(_presedence), left_associative(_left), properties(_properties) {
+    TokenizerSingleton::get_instance().add_operator(clone());
+};
+
+BaseOperator::BaseOperator(std::string _str, unsigned int _presedence, bool _left) : IOperator(_str), presedence(_presedence), left_associative(_left), properties(0) {
+    TokenizerSingleton::get_instance().add_operator(clone());
+};
 
 unsigned int BaseOperator::get_presedence() const {
     return presedence;

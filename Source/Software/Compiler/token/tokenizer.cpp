@@ -1,18 +1,38 @@
 #include "tokenizer.hpp"
-#include "operators.hpp"
+
 #include <unordered_set>
-#include <unordered_map>
 #include <algorithm>
+#include <cassert>
 
-static const std::unordered_map<std::string, IOperator*> operators = { //TODO: make property assignment nicer
-    {"+", new BaseOperator("+", 2, true, static_cast<uint8_t>(static_cast<uint8_t>(eOperatorProperty::Associative) | static_cast<uint8_t>(eOperatorProperty::Commutative)))},
-    {"-", new BaseOperator("-", 2, true)},
-    {"*", new BaseOperator("*", 3, true, static_cast<uint8_t>(static_cast<uint8_t>(eOperatorProperty::Associative) | static_cast<uint8_t>(eOperatorProperty::Commutative)))},
-    {"/", new BaseOperator("/", 3, true)},
-    {"^", new BaseOperator("^", 4, false)}, {"(", new ParentehsiesOperator("(")},
-    {")", new ParentehsiesOperator(")")}, {"sin", new FunctionOperator("sin")},
-    {"max", new FunctionOperator("max")}, {",", new IgnoreOperator(",")}};
 
+//     {"-", new BaseOperator("-", 2, true)},
+//     {"*", new BaseOperator("*", 3, true, static_cast<uint8_t>(static_cast<uint8_t>(eOperatorProperty::Associative) | static_cast<uint8_t>(eOperatorProperty::Commutative)))},
+//     {"/", new BaseOperator("/", 3, true)},
+//     {"^", new BaseOperator("^", 4, false)},
+//     {"(", new ParentehsiesOperator("(")},
+//     {")", new ParentehsiesOperator(")")},
+//     {"sin", new FunctionOperator("sin")},
+//     {"max", new FunctionOperator("max")},
+//     {",", new IgnoreOperator(",")},
+
+BaseOperator addition("+", 2, true, static_cast<uint8_t>(static_cast<uint8_t>(eOperatorProperty::Associative) | static_cast<uint8_t>(eOperatorProperty::Commutative)));
+BaseOperator subtraction("-", 2, true);
+BaseOperator multiplication("*", 3, true, static_cast<uint8_t>(static_cast<uint8_t>(eOperatorProperty::Associative) | static_cast<uint8_t>(eOperatorProperty::Commutative)));
+BaseOperator division("/", 3, true);
+BaseOperator power("^", 4, false);
+ParentehsiesOperator closing_parentheses(")");
+ParentehsiesOperator opening_parentheses("(");
+FunctionOperator sin_func("sin");
+FunctionOperator max_func("max");
+IgnoreOperator comma(",");
+BaseOperator assign("=", 0, true);
+
+
+void Tokenizer::add_operator(IToken* token) {
+    IOperator *op = static_cast<IOperator *>(token);
+    assert(op != nullptr);
+    operators.insert_or_assign(op->get_str().data(), op); //TODO: map with string_views?
+}
 
 bool Tokenizer::tokenize(std::ifstream &input_stream) {
     std::string temp_token = "";
@@ -20,7 +40,7 @@ bool Tokenizer::tokenize(std::ifstream &input_stream) {
     while (std::getline(input_stream, line)) {
         temp_token.clear();
         for (char ch : line) {
-            if(ch == '#') {
+            if((ch == '#') || (ch == ';')) { //TODO: will skip everything in a line after ;
                 /* Found start of comment */
                 break;
             }

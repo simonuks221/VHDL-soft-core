@@ -8,7 +8,7 @@
 #include <cassert>
 #include <span>
 #include "token/operators.hpp"
-#include "token/tokenizer.hpp"
+#include "token/tokenizer_singleton.hpp"
 #include "binary_tree/binary_tree.hpp"
 #include "optimisation/constant_folding.hpp"
 
@@ -64,10 +64,8 @@ int main(int argc, char* argv[]) {
         std::cerr << "Failed to open the file: " << file_path << std::endl;
         return 1;
     }
-
-    // std::string input = "(a+2)*5+2+(a+2)*3";
-    // std::cout << "Starting" <<std::endl;
-    Tokenizer tokenizer = Tokenizer();
+    /* Tokenize */
+    Tokenizer &tokenizer = TokenizerSingleton::get_instance();
     tokenizer.tokenize(inputFile);
     inputFile.close();
     std::cout << "Got tokens:" <<std::endl;

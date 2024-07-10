@@ -10,8 +10,8 @@ class BaseOperator : public IOperator {
         bool left_associative;
         const uint8_t properties;
     public:
-        BaseOperator(std::string _str, unsigned int _presedence, bool _left, uint8_t _properties) : IOperator(_str), presedence(_presedence), left_associative(_left), properties(_properties) {};
-        BaseOperator(std::string _str, unsigned int _presedence, bool _left) : IOperator(_str), presedence(_presedence), left_associative(_left), properties(0) {};
+        BaseOperator(std::string _str, unsigned int _presedence, bool _left, uint8_t _properties);
+        BaseOperator(std::string _str, unsigned int _presedence, bool _left);
         virtual ~BaseOperator() = default;
 
         IToken *clone(void) override;
