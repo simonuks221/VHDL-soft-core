@@ -60,7 +60,7 @@ void BaseOperator::shunting_yard_action(std::stack<IOperator*> &operator_stack, 
     operator_stack.push(this_token);
 }
 
-std::string_view BaseOperator::assemble_instruction(void) const {
+std::string_view BaseOperator::assemble_instruction(void) {
     if(asm_instruction == "") {
         /* Should not be sinthesisable */
         std::cerr << "Invalid assemble instruction token: " << get_str() << std::endl;
@@ -78,12 +78,6 @@ IToken *IgnoreOperator::clone(void) {
     return new IgnoreOperator(*this);
 }
 
-std::string_view IgnoreOperator::assemble_instruction(void) const {
-    /* Isn't assemblable */
-    assert(false);
-    return "";
-}
-
 void FunctionOperator::shunting_yard_action(std::stack<IOperator*> &operator_stack, std::vector<IToken*> &output) const {
     FunctionOperator * this_token = const_cast<FunctionOperator *>(this);
     operator_stack.push(this_token);
@@ -93,7 +87,7 @@ IToken *FunctionOperator::clone(void) {
     return new FunctionOperator(*this);
 }
 
-std::string_view FunctionOperator::assemble_instruction(void) const {
+std::string_view FunctionOperator::assemble_instruction(void) {
     //TODO
     return "";
 }
@@ -127,10 +121,4 @@ void ParentehsiesOperator::shunting_yard_action(std::stack<IOperator*> &operator
 
 IToken *ParentehsiesOperator::clone(void) {
     return new ParentehsiesOperator(*this);
-}
-
-std::string_view ParentehsiesOperator::assemble_instruction(void) const {
-    /* Isn't assemblable */
-    assert(false);
-    return "";
 }

@@ -1,16 +1,18 @@
-a
+LOAD a
 PUSH 2
 PUSH 2
 ADD
+PUSH 3
+ADD
 ASSGN
 
-b
-PUSH 2
+LOAD b
+PUSH 3
 ASSGN
 
-c
-a
-b
+LOAD c
+LOAD a
+LOAD b
 ADD
 ASSGN
 

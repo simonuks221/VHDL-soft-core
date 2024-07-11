@@ -23,7 +23,7 @@ class BaseOperator : public IOperator {
         uint8_t get_properties(void) const override;
         bool has_property(eOperatorProperty) const override;
         void shunting_yard_action(std::stack<IOperator*> &operator_stack, std::vector<IToken*> &output) const override;
-        std::string_view assemble_instruction(void) const override;
+        std::string_view assemble_instruction(void) override;
 };
 
 class IgnoreOperator : public BaseOperator {
@@ -33,7 +33,6 @@ class IgnoreOperator : public BaseOperator {
         IToken *clone(void) override;
 
         void shunting_yard_action(std::stack<IOperator*> &operator_stack, std::vector<IToken*> &output) const override;
-        std::string_view assemble_instruction(void) const override;
 };
 
 class FunctionOperator : public BaseOperator {
@@ -43,7 +42,7 @@ class FunctionOperator : public BaseOperator {
         IToken *clone(void) override;
 
         void shunting_yard_action(std::stack<IOperator*> &operator_stack, std::vector<IToken*> &output) const override;
-        std::string_view assemble_instruction(void) const override;
+        std::string_view assemble_instruction(void) override;
 };
 
 class ParentehsiesOperator : public BaseOperator {
@@ -53,5 +52,4 @@ class ParentehsiesOperator : public BaseOperator {
         IToken *clone(void) override;
 
         void shunting_yard_action(std::stack<IOperator*> &operator_stack, std::vector<IToken*> &output) const override;
-        std::string_view assemble_instruction(void) const override;
 };
