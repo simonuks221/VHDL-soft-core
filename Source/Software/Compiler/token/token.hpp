@@ -20,7 +20,7 @@ class IToken {
         virtual eToken get_type(void) = 0;
 
         virtual std::string_view get_str(void) const = 0;
-        virtual std::string_view assemble_instruction(void) const = 0;
+        virtual std::string_view assemble_instruction(void) = 0;
 
         friend std::ostream& operator<<(std::ostream& os, const IToken& IToken) {
             os << IToken.get_str();
@@ -39,25 +39,30 @@ class Token : public IToken{
         eToken get_type(void) override;
 
         std::string_view get_str(void) const override;
-        std::string_view assemble_instruction(void) const override;
+        std::string_view assemble_instruction(void) override;
 };
 
 class Variable : public Token {
+    private:
+        std::string instruction;
     public:
         Variable(std::string _str) : Token(_str) {};
         virtual ~Variable() = default;
 
         IToken *clone() override;
         eToken get_type(void) override;
+        std::string_view assemble_instruction(void) override;
 };
 
 class Constant : public Token {
+    private:
+        std::string instruction;
     public:
         Constant(std::string _str) : Token(_str) {}; //TODO: token to int
         virtual ~Constant() = default;
 
         IToken *clone() override;
         eToken get_type(void) override;
-        std::string_view assemble_instruction(void) const override;
+        std::string_view assemble_instruction(void) override;
 };
 

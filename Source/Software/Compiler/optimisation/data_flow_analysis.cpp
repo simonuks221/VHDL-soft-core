@@ -13,7 +13,7 @@ void DataFlowAnalysis::analyze(std::span<std::vector<IToken*>> all_tokens) {
         if(std::find_if(token_line.begin(), token_line.end(), find_operator_equals) != token_line.end()) {
             /* Is an assignment line */
             new_block.out.insert(token_line[0]); /* Assigned variable will always be first in line */
-            for(auto  it = std::next(token_line.begin()); it != token_line.end(); ++it) {
+            for(auto it = std::next(token_line.begin()); it != token_line.end(); ++it) {
                 IToken* token = *it;
                 if(token->get_type() == eToken::Variable) {
                     new_block.in.insert(token);
