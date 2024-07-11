@@ -1,5 +1,7 @@
 #include "IOptimisation.hpp"
 
+#pragma once
+
 class ConstantFolding : IOptimisation {
     public:
         ConstantFolding();

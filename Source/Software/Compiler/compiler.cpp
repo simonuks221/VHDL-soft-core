@@ -8,10 +8,12 @@
 #include <cassert>
 #include <span>
 #include "token/operators.hpp"
+#include "token/assembly.hpp"
 #include "token/tokenizer_singleton.hpp"
 #include "binary_tree/binary_tree.hpp"
 #include "optimisation/constant_folding.hpp"
 #include "optimisation/data_flow_analysis.hpp"
+
 
 /*
 Possible optimisations:
@@ -111,5 +113,8 @@ int main(int argc, char* argv[]) {
     /* Do data flow analysis */
     DataFlowAnalysis data_flow_analysis;
     data_flow_analysis.analyze(stack_token_list);
+    /* Assemble, convert into instructions */
+    Assembly assembly;
+    assembly.assemble(stack_token_list);
     return 0;
 }

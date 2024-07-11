@@ -2,6 +2,8 @@
 #include <vector>
 #include <fstream>
 
+#pragma once
+
 class TokenizerSingleton : Tokenizer {
     protected:
         TokenizerSingleton() {};
