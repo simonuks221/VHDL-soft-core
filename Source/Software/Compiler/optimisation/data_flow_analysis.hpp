@@ -1,8 +1,9 @@
 #include "binary_tree.hpp"
 #include <set>
 
-/* Confrol Flow Graph */
+#pragma once
 
+/* Confrol Flow Graph */
 class CFGBlock {
     private:
 

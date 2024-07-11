@@ -5,17 +5,17 @@
 #include <cassert>
 
 //TODO: nicer associative setting
-BaseOperator addition("+", 2, true, static_cast<uint8_t>(static_cast<uint8_t>(eOperatorProperty::Associative) | static_cast<uint8_t>(eOperatorProperty::Commutative)));
-BaseOperator subtraction("-", 2, true);
-BaseOperator multiplication("*", 3, true, static_cast<uint8_t>(static_cast<uint8_t>(eOperatorProperty::Associative) | static_cast<uint8_t>(eOperatorProperty::Commutative)));
-BaseOperator division("/", 3, true);
-BaseOperator power("^", 4, false);
+BaseOperator addition("+", 2, true, "ADD", static_cast<uint8_t>(static_cast<uint8_t>(eOperatorProperty::Associative) | static_cast<uint8_t>(eOperatorProperty::Commutative)));
+BaseOperator subtraction("-", 2, true, "SUB");
+BaseOperator multiplication("*", 3, true, "MULT", static_cast<uint8_t>(static_cast<uint8_t>(eOperatorProperty::Associative) | static_cast<uint8_t>(eOperatorProperty::Commutative)));
+BaseOperator division("/", 3, true, "DIV");
+BaseOperator power("^", 4, false, "PWR");
 ParentehsiesOperator closing_parentheses(")");
 ParentehsiesOperator opening_parentheses("(");
-FunctionOperator sin_func("sin");
-FunctionOperator max_func("max");
+FunctionOperator sin_func("sin", "SINE"); //TODO: wont have these sinthesisable
+FunctionOperator max_func("max", "MAX");
 IgnoreOperator comma(",");
-BaseOperator assign("=", 0, true);
+BaseOperator assign("=", 0, true, "ASSGN"); //TODO: should not synthesize
 
 
 void Tokenizer::add_operator(IToken* token) {

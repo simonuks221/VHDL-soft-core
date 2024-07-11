@@ -16,6 +16,10 @@ std::string_view Token::get_str() const {
     return str;
 }
 
+std::string_view Token::assemble_instruction(void) const {
+    return str;
+}
+
 IToken *Variable::clone()  {
     return new Variable(*this);
 }
@@ -30,4 +34,9 @@ IToken *Constant::clone()  {
 
 eToken Constant::get_type(void) {
     return eToken::Constant;
+}
+
+std::string_view Constant::assemble_instruction(void) const {
+    static std::string instruction = "PUSH " + std::string(get_str());
+    return instruction;
 }

@@ -1,0 +1,16 @@
+a
+PUSH 2
+PUSH 2
+ADD
+ASSGN
+
+b
+PUSH 2
+ASSGN
+
+c
+a
+b
+ADD
+ASSGN
+

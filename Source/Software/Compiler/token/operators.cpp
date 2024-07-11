@@ -1,12 +1,17 @@
 #include "tokenizer_singleton.hpp"
 #include "operators.hpp"
 #include <unordered_map>
+#include <cassert>
 
-BaseOperator::BaseOperator(std::string _str, unsigned int _presedence, bool _left, uint8_t _properties) : IOperator(_str), presedence(_presedence), left_associative(_left), properties(_properties) {
+BaseOperator::BaseOperator(std::string _str, unsigned int _presedence, bool _left, std::string _asm_instruction, uint8_t _properties) : IOperator(_str), presedence(_presedence), left_associative(_left), asm_instruction(_asm_instruction), properties(_properties) {
     TokenizerSingleton::get_instance().add_operator(clone());
 };
 
-BaseOperator::BaseOperator(std::string _str, unsigned int _presedence, bool _left) : IOperator(_str), presedence(_presedence), left_associative(_left), properties(0) {
+BaseOperator::BaseOperator(std::string _str, unsigned int _presedence, bool _left, std::string _asm_instruction) : IOperator(_str), presedence(_presedence), left_associative(_left), asm_instruction(_asm_instruction), properties(0) {
+    TokenizerSingleton::get_instance().add_operator(clone());
+};
+
+BaseOperator::BaseOperator(std::string _str, unsigned int _presedence, bool _left) : IOperator(_str), presedence(_presedence), left_associative(_left), asm_instruction(""), properties(0) {
     TokenizerSingleton::get_instance().add_operator(clone());
 };
 
@@ -34,12 +39,49 @@ bool BaseOperator::has_property(eOperatorProperty property) const {
     return (properties & static_cast<uint8_t>(property)) != 0;
 }
 
+void BaseOperator::shunting_yard_action(std::stack<IOperator*> &operator_stack, std::vector<IToken*> &output) const {
+    BaseOperator * this_token = const_cast<BaseOperator *>(this);
+    /* Regular operator found */
+    while(!operator_stack.empty()) {
+        IOperator* top_op = operator_stack.top();
+        if((top_op->get_str() == ")") || (top_op->get_str() == "(")) {
+            break;
+        }
+
+        int top_token_precedence = top_op->get_presedence(); //TODO: error handling
+        if((top_token_precedence >= get_presedence()) && get_left_associative()) {
+            output.push_back(top_op);
+            operator_stack.pop();
+        } else {
+            break;
+        }
+    }
+    /* Always push current token to top of operator stack */
+    operator_stack.push(this_token);
+}
+
+std::string_view BaseOperator::assemble_instruction(void) const {
+    if(asm_instruction == "") {
+        /* Should not be sinthesisable */
+        std::cerr << "Invalid assemble instruction token: " << get_str() << std::endl;
+        assert(false);
+        return "";
+    }
+    return asm_instruction;
+}
+
 void IgnoreOperator::shunting_yard_action(std::stack<IOperator*> &operator_stack, std::vector<IToken*> &output) const {
     /* Do nothing */
 }
 
 IToken *IgnoreOperator::clone(void) {
     return new IgnoreOperator(*this);
+}
+
+std::string_view IgnoreOperator::assemble_instruction(void) const {
+    /* Isn't assemblable */
+    assert(false);
+    return "";
 }
 
 void FunctionOperator::shunting_yard_action(std::stack<IOperator*> &operator_stack, std::vector<IToken*> &output) const {
@@ -49,6 +91,11 @@ void FunctionOperator::shunting_yard_action(std::stack<IOperator*> &operator_sta
 
 IToken *FunctionOperator::clone(void) {
     return new FunctionOperator(*this);
+}
+
+std::string_view FunctionOperator::assemble_instruction(void) const {
+    //TODO
+    return "";
 }
 
 void ParentehsiesOperator::shunting_yard_action(std::stack<IOperator*> &operator_stack, std::vector<IToken*> &output) const {
@@ -82,23 +129,8 @@ IToken *ParentehsiesOperator::clone(void) {
     return new ParentehsiesOperator(*this);
 }
 
-void BaseOperator::shunting_yard_action(std::stack<IOperator*> &operator_stack, std::vector<IToken*> &output) const {
-    BaseOperator * this_token = const_cast<BaseOperator *>(this);
-    /* Regular operator found */
-    while(!operator_stack.empty()) {
-        IOperator* top_op = operator_stack.top();
-        if((top_op->get_str() == ")") || (top_op->get_str() == "(")) {
-            break;
-        }
-
-        int top_token_precedence = top_op->get_presedence(); //TODO: error handling
-        if((top_token_precedence >= get_presedence()) && get_left_associative()) {
-            output.push_back(top_op);
-            operator_stack.pop();
-        } else {
-            break;
-        }
-    }
-    /* Always push current token to top of operator stack */
-    operator_stack.push(this_token);
+std::string_view ParentehsiesOperator::assemble_instruction(void) const {
+    /* Isn't assemblable */
+    assert(false);
+    return "";
 }
