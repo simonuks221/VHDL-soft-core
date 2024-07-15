@@ -1,4 +1,4 @@
-#include "binary_tree.hpp"
+#include "line.hpp"
 #include <set>
 
 #pragma once
@@ -23,5 +23,5 @@ class DataFlowAnalysis {
     public:
         DataFlowAnalysis() {};
         ~DataFlowAnalysis() = default;
-        void analyze(std::span<std::vector<IToken*>> all_tokens);
+        void analyze(std::vector<ILine *> &all_lines);
 };

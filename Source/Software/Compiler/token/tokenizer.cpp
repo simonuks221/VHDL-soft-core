@@ -17,7 +17,6 @@ FunctionOperator max_func("max", "MAX");
 IgnoreOperator comma(",");
 BaseOperator assign("=", 0, true, "ASSGN"); //TODO: should not synthesize
 
-
 void Tokenizer::add_operator(IToken* token) {
     IOperator *op = static_cast<IOperator *>(token);
     assert(op != nullptr);
@@ -29,8 +28,7 @@ bool Tokenizer::tokenize(std::ifstream &input_stream, std::vector<ILine *> &line
     std::string file_line;
     while (std::getline(input_stream, file_line)) {
         temp_token.clear();
-        lines.push_back(new Line());
-        std::vector<IToken*> &temp_tokens = lines.back()->get_tokens();
+        std::vector<IToken*> temp_tokens;
         for (char ch : file_line) {
             if((ch == '#') || (ch == ';')) { //TODO: will skip everything in a line after ;
                 /* Found start of comment */
@@ -89,6 +87,35 @@ bool Tokenizer::tokenize(std::ifstream &input_stream, std::vector<ILine *> &line
                 temp_tokens.push_back(new_token);
             }
         }
+        /* End of line, add to lines container */
+        if(temp_tokens.empty()) {
+            continue;
+        }
+        //TODO: make line factory
+        ILine *new_line = nullptr;
+        /* First classify what line got */
+        switch(classify(temp_tokens)) {
+            case eLine::Default : {
+                new_line = new Line(temp_tokens);
+            } break;
+            case eLine::Assignation : {
+                new_line = new LineAssignation(temp_tokens);
+            }break;
+        }
+
+        lines.push_back(new_line);
     }
     return true;
+}
+
+static auto find_line_equals = [](IToken* token) {
+    return token->get_str() == "=";
+};
+
+eLine Tokenizer::classify(std::vector<IToken *> &tokens) {
+    if(std::find_if(tokens.begin(), tokens.end(), find_line_equals) != tokens.end()) {
+        /* Is an assignment line */
+        return eLine::Assignation;
+    }
+    return eLine::Default;
 }

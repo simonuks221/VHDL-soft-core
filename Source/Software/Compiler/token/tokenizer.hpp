@@ -8,6 +8,8 @@
 class Tokenizer {
     private:
         std::unordered_map<std::string, IOperator*> operators;
+
+        eLine classify(std::vector<IToken *> &tokens);
     public:
         Tokenizer() {};
         ~Tokenizer() = default;
