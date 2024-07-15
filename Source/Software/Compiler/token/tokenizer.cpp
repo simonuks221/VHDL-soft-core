@@ -24,13 +24,14 @@ void Tokenizer::add_operator(IToken* token) {
     operators.insert_or_assign(op->get_str().data(), op); //TODO: map with string_views?
 }
 
-bool Tokenizer::tokenize(std::ifstream &input_stream) {
+bool Tokenizer::tokenize(std::ifstream &input_stream, std::vector<ILine *> &lines) {
     std::string temp_token = "";
-    std::string line;
-    while (std::getline(input_stream, line)) {
+    std::string file_line;
+    while (std::getline(input_stream, file_line)) {
         temp_token.clear();
-        std::vector<IToken*> temp_tokens;
-        for (char ch : line) {
+        lines.push_back(new Line());
+        std::vector<IToken*> &temp_tokens = lines.back()->get_tokens();
+        for (char ch : file_line) {
             if((ch == '#') || (ch == ';')) { //TODO: will skip everything in a line after ;
                 /* Found start of comment */
                 break;
@@ -88,13 +89,6 @@ bool Tokenizer::tokenize(std::ifstream &input_stream) {
                 temp_tokens.push_back(new_token);
             }
         }
-        if(!temp_token.empty()) {
-            token_list.push_back(temp_tokens);
-        }
     }
     return true;
-}
-
-std::vector<std::vector<IToken*>>& Tokenizer::get_token_list(void) {
-    return token_list;
 }
