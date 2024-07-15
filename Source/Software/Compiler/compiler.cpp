@@ -111,10 +111,10 @@ int main(int argc, char* argv[]) {
     //     std::cout << binary_tree << std::endl;
     // }
     /* Do data flow analysis */
-    // DataFlowAnalysis data_flow_analysis;
-    // data_flow_analysis.analyze(stack_token_list);
-    // /* Assemble, convert into instructions */
+    DataFlowAnalysis data_flow_analysis; //TODO: singleton
+    data_flow_analysis.analyze(lines);
+    /* Assemble, convert into instructions */
     // Assembly assembly;
-    // assembly.assemble(stack_token_list);
+    // assembly.assemble(lines);
     return 0;
 }

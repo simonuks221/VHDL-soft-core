@@ -1,25 +1,47 @@
 #include "data_flow_analysis.hpp"
+#include <cassert>
 #include <algorithm>
-#include <iterator>
 
-auto find_operator_equals = [](IToken* token) {
-    return (token->get_type() == eToken::Operator) && (token->get_str() == "=");
-};
+bool find_if_defined(IToken *token, ILine *token_line, std::vector<ILine *> &all_lines) {
+    for(ILine * line : all_lines) {
+        if(line == token_line) {
+            /* Reached token line, end */
+            return false;
+        }
 
-void DataFlowAnalysis::analyze(std::span<std::vector<IToken*>> all_tokens) {
-    for(std::span<IToken*> token_line : all_tokens) {
-        CFGBlock new_block;
-        //TODO: a better way to do this
-        if(std::find_if(token_line.begin(), token_line.end(), find_operator_equals) != token_line.end()) {
-            /* Is an assignment line */
-            new_block.out.insert(token_line[0]); /* Assigned variable will always be first in line */
-            for(auto it = std::next(token_line.begin()); it != token_line.end(); ++it) {
-                IToken* token = *it;
-                if(token->get_type() == eToken::Variable) {
-                    new_block.in.insert(token);
-                }
+        auto it = std::find_if(line->get_variables_out().begin(), line->get_variables_out().end(), [token](IToken* it_token) {
+            if(it_token->get_type() != token->get_type()) {
+                return false;
+            }
+            return it_token->get_str() == token->get_str();
+        });
+
+        if(it != line->get_variables_out().end()) {
+            /* Found defined variable */
+            return true;
+        }
+    }
+    return false;
+}
+
+void DataFlowAnalysis::analyze(std::vector<ILine *> &all_lines) {
+    for(ILine * line : all_lines) {
+        /* Find if all in variables were defined previously */
+        for(IToken * token : line->get_variables_in()) {
+            if(!find_if_defined(token, line, all_lines)) {
+                std::cerr << "Can't find definition for variable: " << token->get_str() << std::endl;
+                assert(false);
             }
         }
-        blocks.push_back(new_block);
+        //CFGBlock new_block;
+        switch(line->get_type()) {
+            case eLine::Default: {
+
+            } break;
+            case eLine::Assignation: {
+
+            } break;
+        }
+        //blocks.push_back(new_block);
     }
 }
