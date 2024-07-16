@@ -14,7 +14,7 @@ class CFGBlock {
 
         std::vector<CFGBlock *> next;
         std::vector<CFGBlock *> previous;
-        ILine * line = nullptr; //TODO: make several lines
+        std::vector<ILine *> lines;
 };
 
 /* Data flow analysis */
