@@ -28,7 +28,7 @@ class BaseOperator : public IOperator {
 
 class IgnoreOperator : public BaseOperator {
     public:
-        IgnoreOperator(std::string _str) : BaseOperator(_str, 0, true) {};
+        IgnoreOperator(std::string _str) : BaseOperator(_str, 0, true) { };
         virtual ~IgnoreOperator() = default;
         IToken *clone(void) override;
 

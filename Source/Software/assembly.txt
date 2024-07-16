@@ -16,3 +16,7 @@ LOAD b
 ADD
 ASSGN
 
+LOAD a
+LOAD b
+
+
