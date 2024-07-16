@@ -7,16 +7,18 @@ IToken *find_if_defined(IToken *variable, CFGBlock *start_block) {
     if((variable == nullptr) || (start_block == nullptr)) {
         return nullptr;
     }
-    /* Check if start block contains the variable in question */
-    auto it = std::find_if(start_block->line->get_variables_out().begin(), start_block->line->get_variables_out().end(), [variable](IToken* it_token) {
-        if(it_token->get_type() != variable->get_type()) {
-            return false;
+    for(ILine *line : start_block->lines) {
+        /* Check if start block contains the variable in question */
+        auto it = std::find_if(line->get_variables_out().begin(), line->get_variables_out().end(), [variable](IToken* it_token) {
+            if(it_token->get_type() != variable->get_type()) {
+                return false;
+            }
+            return it_token->get_str() == variable->get_str();
+        });
+        if(it != line->get_variables_out().end()) {
+            /* Found defined variable */
+            return static_cast<IToken *>(*it);
         }
-        return it_token->get_str() == variable->get_str();
-    });
-    if(it != start_block->line->get_variables_out().end()) {
-        /* Found defined variable */
-        return static_cast<IToken *>(*it);
     }
     /* Variable not found in start block */
     for(CFGBlock *previous : start_block->previous) {
@@ -36,7 +38,7 @@ void DataFlowAnalysis::analyze(std::vector<ILine *> &all_lines) {
     for(ILine * line : all_lines) {
         /* Construct control flow graph blocks into linked node map */
         CFGBlock *new_block = new CFGBlock();
-        new_block->line = line;
+        new_block->lines.push_back(line);
         if(root == nullptr) {
             /* First block */
             root = new_block;
