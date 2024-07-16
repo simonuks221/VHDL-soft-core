@@ -29,9 +29,10 @@ Possible optimisations:
 10. Constant Propagation
 */
 
-bool convert_to_stack_ops(std::span<IToken*> tokens, std::vector<IToken*> &output) {
+bool convert_to_stack_ops(std::vector<IToken *> &tokens) {
     /* Shunting yard algorithm to convert tokens to stack operations */
     std::stack<IOperator *> operator_stack;
+    std::vector<IToken *> output;
     for (IToken *token : tokens) {
         if(token->get_type() != eToken::Operator) {
             /* Not an operator */
@@ -48,6 +49,7 @@ bool convert_to_stack_ops(std::span<IToken*> tokens, std::vector<IToken*> &outpu
         output.push_back(operator_stack.top());
         operator_stack.pop();
     }
+    tokens = output;
     return true;
 }
 
@@ -72,20 +74,12 @@ int main(int argc, char* argv[]) {
     TokenizerSingleton::get_instance().tokenize(inputFile, lines);
     inputFile.close();
     std::cout << "Got tokens:" <<std::endl;
-    for(ILine * line : lines) {
+    for(ILine *line : lines) {
         for(IToken *token : line->get_tokens()) {
             std::cout << *token << " ";
         }
         std::cout << std::endl;
     }
-
-    // /* Do shunting yard to convert sequentially */
-    // std::vector<std::vector<IToken*>> stack_token_list;
-    // for(std::vector<IToken*> token_line : tokenizer.get_token_list()) {
-    //     std::vector<IToken*> temp_stack_token_list;
-    //     convert_to_stack_ops(token_line, temp_stack_token_list);
-    //     stack_token_list.push_back(temp_stack_token_list);
-    // }
 
     // std::cout << "Got stack ops:" <<std::endl;
     // for(std::vector<IToken*> token_line : stack_token_list) {
@@ -113,8 +107,17 @@ int main(int argc, char* argv[]) {
     /* Do data flow analysis */
     DataFlowAnalysis data_flow_analysis; //TODO: singleton
     data_flow_analysis.analyze(lines);
+    /* Do shunting yard to convert sequentially */
+    std::cout << "Stack operations: " << std::endl;
+    for(ILine *line : lines) {
+        convert_to_stack_ops(line->get_tokens());
+        for(IToken *token : line->get_tokens()) {
+            std::cout << *token << " ";
+        }
+        std::cout << std::endl;
+    }
     /* Assemble, convert into instructions */
-    // Assembly assembly;
-    // assembly.assemble(lines);
+    Assembly assembly;
+    assembly.assemble(lines);
     return 0;
 }

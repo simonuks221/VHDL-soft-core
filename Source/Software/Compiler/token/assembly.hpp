@@ -1,4 +1,4 @@
-#include "token.hpp"
+#include "line.hpp"
 #include <span>
 #include <vector>
 
@@ -9,5 +9,5 @@ class Assembly {
     public:
         Assembly() {};
         ~Assembly() = default;
-        void assemble(std::span<std::vector<IToken*>> all_tokens);
+        void assemble(std::span<ILine *> all_lines);
 };
