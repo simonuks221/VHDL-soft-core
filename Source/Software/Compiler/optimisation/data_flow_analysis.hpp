@@ -1,5 +1,6 @@
 #include "line.hpp"
 #include <set>
+#include <vector>
 
 #pragma once
 
@@ -11,15 +12,15 @@ class CFGBlock {
         CFGBlock() {};
         ~CFGBlock() = default;
 
-        std::set <IToken *> in;
-        std::set <IToken *> out;
-        //TODO: getters
+        std::vector<CFGBlock *> next;
+        std::vector<CFGBlock *> previous;
+        ILine * line = nullptr; //TODO: make several lines
 };
 
 /* Data flow analysis */
 class DataFlowAnalysis {
     private:
-        std::vector<CFGBlock> blocks;
+        CFGBlock *root = nullptr;
     public:
         DataFlowAnalysis() {};
         ~DataFlowAnalysis() = default;
