@@ -17,13 +17,13 @@ class BaseOperator : public IOperator {
         virtual ~BaseOperator() = default;
 
         IToken *clone(void) override;
-        eToken get_type(void) override;
+        eToken get_type(void) const override;
         unsigned int get_presedence(void) const override;
         bool get_left_associative(void) const override;
         uint8_t get_properties(void) const override;
         bool has_property(eOperatorProperty) const override;
         void shunting_yard_action(std::stack<IOperator*> &operator_stack, std::vector<IToken*> &output) const override;
-        std::string_view assemble_instruction(void) override;
+        std::string_view assemble_instruction(void) const override;
 };
 
 class IgnoreOperator : public BaseOperator {
@@ -42,7 +42,7 @@ class FunctionOperator : public BaseOperator {
         IToken *clone(void) override;
 
         void shunting_yard_action(std::stack<IOperator*> &operator_stack, std::vector<IToken*> &output) const override;
-        std::string_view assemble_instruction(void) override;
+        std::string_view assemble_instruction(void) const override;
 };
 
 class ParentehsiesOperator : public BaseOperator {

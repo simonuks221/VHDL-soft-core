@@ -2,12 +2,36 @@
 #include <cassert>
 #include <algorithm>
 
+const std::vector<CFGBlock *> CFGBlock::get_next(void) const {
+    return next;
+}
+
+const std::vector<CFGBlock *> CFGBlock::get_prev(void) const {
+    return previous;
+}
+
+const std::vector<ILine *> CFGBlock::get_lines(void) const {
+    return lines;
+}
+
+void CFGBlock::add_line(ILine *new_line) {
+    lines.push_back(new_line);
+}
+
+void CFGBlock::add_next(CFGBlock *new_next) {
+    next.push_back(new_next);
+}
+
+void CFGBlock::add_prev(CFGBlock *new_prev) {
+    previous.push_back(new_prev);
+}
+
 /* Traverses node map backwards to find if token was defined */
-IToken *find_if_defined(IToken *variable, CFGBlock *start_block) {
+IToken *DataFlowAnalysis::find_if_defined(const IToken *variable, const CFGBlock *start_block) const {
     if((variable == nullptr) || (start_block == nullptr)) {
         return nullptr;
     }
-    for(ILine *line : start_block->lines) {
+    for(ILine *line : start_block->get_lines()) {
         /* Check if start block contains the variable in question */
         auto it = std::find_if(line->get_variables_out().begin(), line->get_variables_out().end(), [variable](IToken* it_token) {
             if(it_token->get_type() != variable->get_type()) {
@@ -21,7 +45,7 @@ IToken *find_if_defined(IToken *variable, CFGBlock *start_block) {
         }
     }
     /* Variable not found in start block */
-    for(CFGBlock *previous : start_block->previous) {
+    for(CFGBlock *previous : start_block->get_prev()) {
         IToken *ret = find_if_defined(variable, previous);
         if(ret != nullptr) {
             return ret;
@@ -38,15 +62,15 @@ void DataFlowAnalysis::analyze(std::vector<ILine *> &all_lines) {
     for(ILine * line : all_lines) {
         /* Construct control flow graph blocks into linked node map */
         CFGBlock *new_block = new CFGBlock();
-        new_block->lines.push_back(line);
+        new_block->add_line(line);
         if(root == nullptr) {
             /* First block */
             root = new_block;
             last_block = new_block;
             continue;
         }
-        last_block->next.push_back(new_block);
-        new_block->previous.push_back(last_block);
+        last_block->add_next(new_block);
+        new_block->add_prev(last_block);
         /* Find if all in variables were defined previously */
         for(IToken *token : line->get_variables_in()) {
             IToken *definition = find_if_defined(token, last_block);

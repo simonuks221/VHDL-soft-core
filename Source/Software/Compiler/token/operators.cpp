@@ -23,7 +23,7 @@ bool BaseOperator::get_left_associative() const {
     return left_associative;
 }
 
-eToken BaseOperator::get_type(void) {
+eToken BaseOperator::get_type(void) const {
     return eToken::Operator;
 }
 
@@ -60,7 +60,7 @@ void BaseOperator::shunting_yard_action(std::stack<IOperator*> &operator_stack, 
     operator_stack.push(this_token);
 }
 
-std::string_view BaseOperator::assemble_instruction(void) {
+std::string_view BaseOperator::assemble_instruction(void) const {
     if(asm_instruction == "") {
         /* Should not be sinthesisable */
         std::cerr << "Invalid assemble instruction token: " << get_str() << std::endl;
@@ -87,7 +87,7 @@ IToken *FunctionOperator::clone(void) {
     return new FunctionOperator(*this);
 }
 
-std::string_view FunctionOperator::assemble_instruction(void) {
+std::string_view FunctionOperator::assemble_instruction(void) const {
     //TODO
     return "";
 }
