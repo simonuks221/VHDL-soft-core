@@ -4,12 +4,15 @@
 #include <algorithm>
 #include <cassert>
 
+uint8_t operator|(eOperatorProperty a, eOperatorProperty b);
+
 std::unordered_map<std::string, IOperator*> Tokenizer::operators;
 
-//TODO: nicer associative setting
-BaseOperator addition("+", 2, true, "ADD", static_cast<uint8_t>(static_cast<uint8_t>(eOperatorProperty::Associative) | static_cast<uint8_t>(eOperatorProperty::Commutative)));
+static uint8_t associative_and_commutative = eOperatorProperty::Associative | eOperatorProperty::Commutative;
+
+BaseOperator addition("+", 2, true, "ADD", associative_and_commutative);
 BaseOperator subtraction("-", 2, true, "SUB");
-BaseOperator multiplication("*", 3, true, "MULT", static_cast<uint8_t>(static_cast<uint8_t>(eOperatorProperty::Associative) | static_cast<uint8_t>(eOperatorProperty::Commutative)));
+BaseOperator multiplication("*", 3, true, "MULT", associative_and_commutative);
 BaseOperator division("/", 3, true, "DIV");
 BaseOperator power("^", 4, false, "PWR");
 ParentehsiesOperator closing_parentheses(")");
@@ -122,4 +125,8 @@ eLine Tokenizer::classify(std::vector<IToken *> &tokens) {
         return eLine::Assignation;
     }
     return eLine::Default;
+}
+
+uint8_t operator|(eOperatorProperty a, eOperatorProperty b) {
+    return static_cast<uint8_t>(a) + static_cast<uint8_t>(b);
 }
