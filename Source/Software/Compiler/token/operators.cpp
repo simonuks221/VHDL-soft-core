@@ -1,18 +1,18 @@
-#include "tokenizer_singleton.hpp"
+#include "tokenizer.hpp"
 #include "operators.hpp"
 #include <unordered_map>
 #include <cassert>
 
 BaseOperator::BaseOperator(std::string _str, unsigned int _presedence, bool _left, std::string _asm_instruction, uint8_t _properties) : IOperator(_str), presedence(_presedence), left_associative(_left), asm_instruction(_asm_instruction), properties(_properties) {
-    TokenizerSingleton::get_instance().add_operator(clone());
+    Tokenizer::add_operator(this);
 };
 
 BaseOperator::BaseOperator(std::string _str, unsigned int _presedence, bool _left, std::string _asm_instruction) : IOperator(_str), presedence(_presedence), left_associative(_left), asm_instruction(_asm_instruction), properties(0) {
-    TokenizerSingleton::get_instance().add_operator(clone());
+    Tokenizer::add_operator(this);
 };
 
 BaseOperator::BaseOperator(std::string _str, unsigned int _presedence, bool _left) : IOperator(_str), presedence(_presedence), left_associative(_left), asm_instruction(""), properties(0) {
-    TokenizerSingleton::get_instance().add_operator(clone());
+    Tokenizer::add_operator(this);
 };
 
 unsigned int BaseOperator::get_presedence() const {
@@ -23,11 +23,11 @@ bool BaseOperator::get_left_associative() const {
     return left_associative;
 }
 
-eToken BaseOperator::get_type(void) {
+eToken BaseOperator::get_type(void) const {
     return eToken::Operator;
 }
 
-IToken *BaseOperator::clone(void) {
+IToken *BaseOperator::clone(void) const {
     return new BaseOperator(*this);
 }
 
@@ -60,7 +60,7 @@ void BaseOperator::shunting_yard_action(std::stack<IOperator*> &operator_stack, 
     operator_stack.push(this_token);
 }
 
-std::string_view BaseOperator::assemble_instruction(void) {
+std::string_view BaseOperator::assemble_instruction(void) const {
     if(asm_instruction == "") {
         /* Should not be sinthesisable */
         std::cerr << "Invalid assemble instruction token: " << get_str() << std::endl;
@@ -74,7 +74,7 @@ void IgnoreOperator::shunting_yard_action(std::stack<IOperator*> &operator_stack
     /* Do nothing */
 }
 
-IToken *IgnoreOperator::clone(void) {
+IToken *IgnoreOperator::clone(void) const {
     return new IgnoreOperator(*this);
 }
 
@@ -83,11 +83,11 @@ void FunctionOperator::shunting_yard_action(std::stack<IOperator*> &operator_sta
     operator_stack.push(this_token);
 }
 
-IToken *FunctionOperator::clone(void) {
+IToken *FunctionOperator::clone(void) const {
     return new FunctionOperator(*this);
 }
 
-std::string_view FunctionOperator::assemble_instruction(void) {
+std::string_view FunctionOperator::assemble_instruction(void) const {
     //TODO
     return "";
 }
@@ -119,6 +119,6 @@ void ParentehsiesOperator::shunting_yard_action(std::stack<IOperator*> &operator
     }
 }
 
-IToken *ParentehsiesOperator::clone(void) {
+IToken *ParentehsiesOperator::clone(void) const {
     return new ParentehsiesOperator(*this);
 }

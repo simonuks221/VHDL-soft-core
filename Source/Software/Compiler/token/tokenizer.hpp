@@ -1,18 +1,21 @@
 #include "token.hpp"
 #include "operators.hpp"
+#include "line.hpp"
 #include <vector>
 #include <fstream>
 #include <unordered_map>
 
+#pragma once
+
 class Tokenizer {
     private:
-        std::vector<std::vector<IToken*>> token_list;
-        std::unordered_map<std::string, IOperator*> operators;
-    public:
-        Tokenizer() {};
+        Tokenizer() = default;
         ~Tokenizer() = default;
 
-        std::vector<std::vector<IToken*>> &get_token_list(void);
-        bool tokenize(std::ifstream &input_stream);
-        void add_operator(IToken* token);
+        static std::unordered_map<std::string, IOperator*> operators;
+
+        static eLine classify(std::vector<IToken *> &tokens);
+    public:
+        static bool tokenize(std::ifstream &input_stream, std::vector<ILine *> &lines);
+        static void add_operator(IToken* token);
 };

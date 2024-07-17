@@ -16,11 +16,11 @@ class IToken {
         IToken() {};
         virtual ~IToken() = default;
 
-        virtual IToken *clone(void) = 0;
-        virtual eToken get_type(void) = 0;
+        virtual IToken *clone(void) const = 0;
+        virtual eToken get_type(void) const = 0;
 
         virtual std::string_view get_str(void) const = 0;
-        virtual std::string_view assemble_instruction(void) = 0;
+        virtual std::string_view assemble_instruction(void) const = 0;
 
         friend std::ostream& operator<<(std::ostream& os, const IToken& IToken) {
             os << IToken.get_str();
@@ -28,41 +28,41 @@ class IToken {
         }
 };
 
-class Token : public IToken{
+class Token : public IToken {
     private:
         std::string str;
     public:
         Token(std::string _str);
         ~Token() override = default;
 
-        IToken *clone(void) override;
-        eToken get_type(void) override;
+        IToken *clone(void) const override;
+        eToken get_type(void) const override;
 
         std::string_view get_str(void) const override;
-        std::string_view assemble_instruction(void) override;
+        std::string_view assemble_instruction(void) const override;
 };
 
 class Variable : public Token {
     private:
-        std::string instruction;
+        mutable std::string instruction;
     public:
         Variable(std::string _str) : Token(_str) {};
         virtual ~Variable() = default;
 
-        IToken *clone() override;
-        eToken get_type(void) override;
-        std::string_view assemble_instruction(void) override;
+        IToken *clone(void) const override;
+        eToken get_type(void) const override;
+        std::string_view assemble_instruction(void) const override;
 };
 
 class Constant : public Token {
     private:
-        std::string instruction;
+        mutable std::string instruction;
     public:
         Constant(std::string _str) : Token(_str) {}; //TODO: token to int
         virtual ~Constant() = default;
 
-        IToken *clone() override;
-        eToken get_type(void) override;
-        std::string_view assemble_instruction(void) override;
+        IToken *clone(void) const override;
+        eToken get_type(void) const override;
+        std::string_view assemble_instruction(void) const override;
 };
 

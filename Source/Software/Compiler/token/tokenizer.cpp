@@ -4,19 +4,23 @@
 #include <algorithm>
 #include <cassert>
 
-//TODO: nicer associative setting
-BaseOperator addition("+", 2, true, "ADD", static_cast<uint8_t>(static_cast<uint8_t>(eOperatorProperty::Associative) | static_cast<uint8_t>(eOperatorProperty::Commutative)));
+uint8_t operator|(eOperatorProperty a, eOperatorProperty b);
+
+std::unordered_map<std::string, IOperator*> Tokenizer::operators;
+
+static uint8_t associative_and_commutative = eOperatorProperty::Associative | eOperatorProperty::Commutative;
+
+BaseOperator addition("+", 2, true, "ADD", associative_and_commutative);
 BaseOperator subtraction("-", 2, true, "SUB");
-BaseOperator multiplication("*", 3, true, "MULT", static_cast<uint8_t>(static_cast<uint8_t>(eOperatorProperty::Associative) | static_cast<uint8_t>(eOperatorProperty::Commutative)));
+BaseOperator multiplication("*", 3, true, "MULT", associative_and_commutative);
 BaseOperator division("/", 3, true, "DIV");
 BaseOperator power("^", 4, false, "PWR");
 ParentehsiesOperator closing_parentheses(")");
 ParentehsiesOperator opening_parentheses("(");
-FunctionOperator sin_func("sin", "SINE"); //TODO: wont have these sinthesisable
+FunctionOperator sin_func("sin", "SINE"); //TODO: won't have these sinthesisable
 FunctionOperator max_func("max", "MAX");
 IgnoreOperator comma(",");
 BaseOperator assign("=", 0, true, "ASSGN"); //TODO: should not synthesize
-
 
 void Tokenizer::add_operator(IToken* token) {
     IOperator *op = static_cast<IOperator *>(token);
@@ -24,13 +28,13 @@ void Tokenizer::add_operator(IToken* token) {
     operators.insert_or_assign(op->get_str().data(), op); //TODO: map with string_views?
 }
 
-bool Tokenizer::tokenize(std::ifstream &input_stream) {
+bool Tokenizer::tokenize(std::ifstream &input_stream, std::vector<ILine *> &lines) {
     std::string temp_token = "";
-    std::string line;
-    while (std::getline(input_stream, line)) {
+    std::string file_line;
+    while (std::getline(input_stream, file_line)) {
         temp_token.clear();
         std::vector<IToken*> temp_tokens;
-        for (char ch : line) {
+        for (char ch : file_line) {
             if((ch == '#') || (ch == ';')) { //TODO: will skip everything in a line after ;
                 /* Found start of comment */
                 break;
@@ -63,6 +67,7 @@ bool Tokenizer::tokenize(std::ifstream &input_stream) {
             }
             if(operators.find(ch_str) != operators.end()) {
                 /* found operator */
+                IOperator *ttt = operators.at(ch_str);
                 IToken *new_token = operators.at(ch_str)->clone();
                 temp_tokens.push_back(new_token);
                 temp_token.clear();
@@ -72,6 +77,7 @@ bool Tokenizer::tokenize(std::ifstream &input_stream) {
             //TODO: duplicated code
             if(operators.find(temp_token) != operators.end()) {
                 /* Operator in temp_token */
+                IOperator *ttt = operators.at(temp_token);
                 IToken *new_token = operators.at(temp_token)->clone();
                 temp_tokens.push_back(new_token);
             } else {
@@ -88,13 +94,39 @@ bool Tokenizer::tokenize(std::ifstream &input_stream) {
                 temp_tokens.push_back(new_token);
             }
         }
-        if(!temp_token.empty()) {
-            token_list.push_back(temp_tokens);
+        /* End of line, add to lines container */
+        if(temp_tokens.empty()) {
+            continue;
         }
+        //TODO: make line factory
+        ILine *new_line = nullptr;
+        /* First classify what line got */
+        switch(classify(temp_tokens)) {
+            case eLine::Default : {
+                new_line = new Line(temp_tokens);
+            } break;
+            case eLine::Assignation : {
+                new_line = new LineAssignation(temp_tokens);
+            }break;
+        }
+
+        lines.push_back(new_line);
     }
     return true;
 }
 
-std::vector<std::vector<IToken*>>& Tokenizer::get_token_list(void) {
-    return token_list;
+static auto find_line_equals = [](IToken* token) {
+    return token->get_str() == "=";
+};
+
+eLine Tokenizer::classify(std::vector<IToken *> &tokens) {
+    if(std::find_if(tokens.begin(), tokens.end(), find_line_equals) != tokens.end()) {
+        /* Is an assignment line */
+        return eLine::Assignation;
+    }
+    return eLine::Default;
+}
+
+uint8_t operator|(eOperatorProperty a, eOperatorProperty b) {
+    return static_cast<uint8_t>(a) + static_cast<uint8_t>(b);
 }

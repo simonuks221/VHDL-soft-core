@@ -16,21 +16,21 @@ class BaseOperator : public IOperator {
         BaseOperator(std::string _str, unsigned int _presedence, bool _left);
         virtual ~BaseOperator() = default;
 
-        IToken *clone(void) override;
-        eToken get_type(void) override;
+        IToken *clone(void) const override;
+        eToken get_type(void) const override;
         unsigned int get_presedence(void) const override;
         bool get_left_associative(void) const override;
         uint8_t get_properties(void) const override;
         bool has_property(eOperatorProperty) const override;
         void shunting_yard_action(std::stack<IOperator*> &operator_stack, std::vector<IToken*> &output) const override;
-        std::string_view assemble_instruction(void) override;
+        std::string_view assemble_instruction(void) const override;
 };
 
 class IgnoreOperator : public BaseOperator {
     public:
-        IgnoreOperator(std::string _str) : BaseOperator(_str, 0, true) {};
+        IgnoreOperator(std::string _str) : BaseOperator(_str, 0, true) { };
         virtual ~IgnoreOperator() = default;
-        IToken *clone(void) override;
+        IToken *clone(void) const override;
 
         void shunting_yard_action(std::stack<IOperator*> &operator_stack, std::vector<IToken*> &output) const override;
 };
@@ -39,17 +39,17 @@ class FunctionOperator : public BaseOperator {
     public:
         FunctionOperator(std::string _str, std::string _asm) : BaseOperator(_str, 0, true, _asm) {};
         virtual ~FunctionOperator() = default;
-        IToken *clone(void) override;
+        IToken *clone(void) const override;
 
         void shunting_yard_action(std::stack<IOperator*> &operator_stack, std::vector<IToken*> &output) const override;
-        std::string_view assemble_instruction(void) override;
+        std::string_view assemble_instruction(void) const override;
 };
 
 class ParentehsiesOperator : public BaseOperator {
     public:
         ParentehsiesOperator(std::string _str) : BaseOperator(_str, 0, true) {};
         virtual ~ParentehsiesOperator() = default;
-        IToken *clone(void) override;
+        IToken *clone(void) const override;
 
         void shunting_yard_action(std::stack<IOperator*> &operator_stack, std::vector<IToken*> &output) const override;
 };

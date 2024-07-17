@@ -1,10 +1,10 @@
-#include "IOptimisation.hpp"
+// #include "IOptimisation.hpp"
 
-#pragma once
+// #pragma once
 
-class ConstantFolding : IOptimisation {
-    public:
-        ConstantFolding();
-        ~ConstantFolding() override = default;
-        void calculate(TreeNode *root) override;
-};
+// class ConstantFolding : IOptimisation {
+//     public:
+//         ConstantFolding();
+//         ~ConstantFolding() override = default;
+//         void calculate(std::vector<ILine *> &all_lines) override;
+// };
