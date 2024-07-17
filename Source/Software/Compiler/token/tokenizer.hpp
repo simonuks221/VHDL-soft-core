@@ -7,13 +7,13 @@
 
 class Tokenizer {
     private:
-        std::unordered_map<std::string, IOperator*> operators;
+        static std::unordered_map<std::string, IOperator*> operators;
 
-        eLine classify(std::vector<IToken *> &tokens);
+        static eLine classify(std::vector<IToken *> &tokens);
     public:
         Tokenizer() {};
         ~Tokenizer() = default;
 
-        bool tokenize(std::ifstream &input_stream, std::vector<ILine *> &lines);
-        void add_operator(IToken* token);
+        static bool tokenize(std::ifstream &input_stream, std::vector<ILine *> &lines);
+        static void add_operator(IToken* token);
 };
