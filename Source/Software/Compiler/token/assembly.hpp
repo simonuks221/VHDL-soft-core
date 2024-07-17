@@ -6,8 +6,8 @@
 
 class Assembly {
     private:
-    public:
-        Assembly() {};
+        Assembly() = default;
         ~Assembly() = default;
+    public:
         static void assemble(std::span<ILine *> all_lines);
 };
