@@ -4,6 +4,8 @@
 #include <algorithm>
 #include <cassert>
 
+std::unordered_map<std::string, IOperator*> Tokenizer::operators;
+
 //TODO: nicer associative setting
 BaseOperator addition("+", 2, true, "ADD", static_cast<uint8_t>(static_cast<uint8_t>(eOperatorProperty::Associative) | static_cast<uint8_t>(eOperatorProperty::Commutative)));
 BaseOperator subtraction("-", 2, true, "SUB");

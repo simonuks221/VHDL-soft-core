@@ -9,7 +9,7 @@
 #include <span>
 #include "token/operators.hpp"
 #include "token/assembly.hpp"
-#include "token/tokenizer_singleton.hpp"
+#include "token/tokenizer.hpp"
 #include "token/line.hpp"
 #include "binary_tree/binary_tree.hpp"
 #include "optimisation/constant_folding.hpp"
@@ -71,7 +71,7 @@ int main(int argc, char* argv[]) {
     }
     /* Tokenize */
     std::vector<ILine *> lines;
-    TokenizerSingleton::get_instance().tokenize(inputFile, lines);
+    Tokenizer::tokenize(inputFile, lines);
     inputFile.close();
     std::cout << "Got tokens:" <<std::endl;
     for(ILine *line : lines) {
