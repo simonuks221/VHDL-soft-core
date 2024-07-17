@@ -75,7 +75,7 @@ int main(int argc, char* argv[]) {
     inputFile.close();
     std::cout << "Got tokens:" <<std::endl;
     for(ILine *line : lines) {
-        for(IToken *token : line->get_tokens()) {
+        for(const IToken *token : line->get_tokens()) {
             std::cout << *token << " ";
         }
         std::cout << std::endl;
@@ -111,8 +111,12 @@ int main(int argc, char* argv[]) {
     std::cout << "Stack operations: " << std::endl;
     for(ILine *line : lines) {
         convert_to_stack_ops(line->get_tokens());
-        for(IToken *token : line->get_tokens()) {
+        for(const IToken *token : line->get_tokens()) {
             std::cout << *token << " ";
+        }
+        std::cout << std::endl;
+        for(const IToken *token : line->get_tokens()) {
+            std::cout << token << " ";
         }
         std::cout << std::endl;
     }

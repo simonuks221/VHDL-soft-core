@@ -8,7 +8,7 @@ void Assembly::assemble(std::span<ILine *> all_lines) {
         return;
     }
     for(ILine* line : all_lines) {
-        for(IToken * token : line->get_tokens()) {
+        for(const IToken * token : line->get_tokens()) {
             assembly_file << token->assemble_instruction() << std::endl;
         }
         assembly_file << std::endl;
