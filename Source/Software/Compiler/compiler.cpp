@@ -117,7 +117,6 @@ int main(int argc, char* argv[]) {
         std::cout << std::endl;
     }
     /* Assemble, convert into instructions */
-    Assembly assembly;
-    assembly.assemble(lines);
+    Assembly::assemble(lines);
     return 0;
 }

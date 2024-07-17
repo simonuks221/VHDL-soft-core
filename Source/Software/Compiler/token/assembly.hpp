@@ -9,5 +9,5 @@ class Assembly {
     public:
         Assembly() {};
         ~Assembly() = default;
-        void assemble(std::span<ILine *> all_lines);
+        static void assemble(std::span<ILine *> all_lines);
 };

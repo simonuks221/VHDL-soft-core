@@ -18,7 +18,7 @@ class ILine {
         virtual std::vector<IToken *> &get_tokens(void) = 0;
         virtual std::vector<IToken *> &get_variables_in(void) = 0;
         virtual std::vector<IToken *> &get_variables_out(void) = 0;
-        virtual eLine get_type(void) = 0;
+        virtual eLine get_type(void) const = 0;
 };
 
 class Line : public ILine {
@@ -33,7 +33,7 @@ class Line : public ILine {
         std::vector<IToken *> &get_tokens(void) override;
         std::vector<IToken *> &get_variables_in(void) override;
         std::vector<IToken *> &get_variables_out(void) override;
-        eLine get_type(void) override;
+        eLine get_type(void) const override;
 };
 
 class LineAssignation : public Line {
@@ -42,5 +42,5 @@ class LineAssignation : public Line {
     public:
         LineAssignation(std::vector<IToken *> &_tokens);
         ~LineAssignation() override = default;
-        eLine get_type(void) override;
+        eLine get_type(void) const override;
 };

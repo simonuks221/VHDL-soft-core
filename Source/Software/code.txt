@@ -2,7 +2,7 @@
 a=2+2+3;
 b = 3;
 c = a + b;
-d = e + 1;
+#d = e + 1;
 #labas
 #tadas
 max(a, b)
