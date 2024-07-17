@@ -79,6 +79,10 @@ void DataFlowAnalysis::analyze(std::vector<ILine *> &all_lines) {
                 std::cerr << "Can't find definition for variable: " << token->get_str() << std::endl;
                 assert(false);
             }
+            /* Defined, replace this token with definition one */
+            line->replace_token(token, definition);
+            //free(token);
+            //token =
         }
         last_block = new_block;
         // switch(line->get_type()) {

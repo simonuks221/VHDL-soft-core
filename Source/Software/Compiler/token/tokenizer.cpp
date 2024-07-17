@@ -17,7 +17,7 @@ BaseOperator division("/", 3, true, "DIV");
 BaseOperator power("^", 4, false, "PWR");
 ParentehsiesOperator closing_parentheses(")");
 ParentehsiesOperator opening_parentheses("(");
-FunctionOperator sin_func("sin", "SINE"); //TODO: wont have these sinthesisable
+FunctionOperator sin_func("sin", "SINE"); //TODO: won't have these sinthesisable
 FunctionOperator max_func("max", "MAX");
 IgnoreOperator comma(",");
 BaseOperator assign("=", 0, true, "ASSGN"); //TODO: should not synthesize
