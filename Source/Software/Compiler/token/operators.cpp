@@ -27,7 +27,7 @@ eToken BaseOperator::get_type(void) const {
     return eToken::Operator;
 }
 
-IToken *BaseOperator::clone(void) {
+IToken *BaseOperator::clone(void) const {
     return new BaseOperator(*this);
 }
 
@@ -74,7 +74,7 @@ void IgnoreOperator::shunting_yard_action(std::stack<IOperator*> &operator_stack
     /* Do nothing */
 }
 
-IToken *IgnoreOperator::clone(void) {
+IToken *IgnoreOperator::clone(void) const {
     return new IgnoreOperator(*this);
 }
 
@@ -83,7 +83,7 @@ void FunctionOperator::shunting_yard_action(std::stack<IOperator*> &operator_sta
     operator_stack.push(this_token);
 }
 
-IToken *FunctionOperator::clone(void) {
+IToken *FunctionOperator::clone(void) const {
     return new FunctionOperator(*this);
 }
 
@@ -119,6 +119,6 @@ void ParentehsiesOperator::shunting_yard_action(std::stack<IOperator*> &operator
     }
 }
 
-IToken *ParentehsiesOperator::clone(void) {
+IToken *ParentehsiesOperator::clone(void) const {
     return new ParentehsiesOperator(*this);
 }

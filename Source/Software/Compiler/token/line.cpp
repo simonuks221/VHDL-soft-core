@@ -12,7 +12,7 @@ std::vector<IToken *> &Line::get_variables_out(void) {
     return tokens_out;
 }
 
-eLine Line::get_type(void) {
+eLine Line::get_type(void) const {
     return eLine::Default;
 }
 
@@ -30,6 +30,6 @@ LineAssignation::LineAssignation(std::vector<IToken *> &_tokens) : Line(_tokens)
     }
 }
 
-eLine LineAssignation::get_type(void) {
+eLine LineAssignation::get_type(void) const {
     return eLine::Assignation;
 }

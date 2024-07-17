@@ -16,7 +16,7 @@ class IToken {
         IToken() {};
         virtual ~IToken() = default;
 
-        virtual IToken *clone(void) = 0;
+        virtual IToken *clone(void) const = 0;
         virtual eToken get_type(void) const = 0;
 
         virtual std::string_view get_str(void) const = 0;
@@ -28,14 +28,14 @@ class IToken {
         }
 };
 
-class Token : public IToken{
+class Token : public IToken {
     private:
         std::string str;
     public:
         Token(std::string _str);
         ~Token() override = default;
 
-        IToken *clone(void) override;
+        IToken *clone(void) const override;
         eToken get_type(void) const override;
 
         std::string_view get_str(void) const override;
@@ -49,7 +49,7 @@ class Variable : public Token {
         Variable(std::string _str) : Token(_str) {};
         virtual ~Variable() = default;
 
-        IToken *clone() override;
+        IToken *clone(void) const override;
         eToken get_type(void) const override;
         std::string_view assemble_instruction(void) const override;
 };
@@ -61,7 +61,7 @@ class Constant : public Token {
         Constant(std::string _str) : Token(_str) {}; //TODO: token to int
         virtual ~Constant() = default;
 
-        IToken *clone() override;
+        IToken *clone(void) const override;
         eToken get_type(void) const override;
         std::string_view assemble_instruction(void) const override;
 };

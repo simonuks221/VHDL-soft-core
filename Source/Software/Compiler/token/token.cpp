@@ -4,7 +4,7 @@ Token::Token(std::string _str) : str(_str) {
 
 };
 
-IToken *Token::clone(void) {
+IToken *Token::clone(void) const {
     return new Token(*this);
 }
 
@@ -20,7 +20,7 @@ std::string_view Token::assemble_instruction(void) const {
     return str;
 }
 
-IToken *Variable::clone()  {
+IToken *Variable::clone() const {
     return new Variable(*this);
 }
 
@@ -33,7 +33,7 @@ std::string_view Variable::assemble_instruction(void) const {
     return instruction;
 }
 
-IToken *Constant::clone()  {
+IToken *Constant::clone() const {
     return new Constant(*this);
 }
 
