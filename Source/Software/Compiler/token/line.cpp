@@ -1,4 +1,5 @@
 #include "line.hpp"
+#include <algorithm>
 
 Line::Line(std::vector<IToken *> &_tokens) : tokens(_tokens) {  //TODO: do not copy token vector
     update_tokens_in_out();
@@ -35,6 +36,18 @@ void Line::replace_token(IToken *old_token, IToken *new_token) {
             return;
         }
     }
+}
+
+void Line::delete_token(IToken *token) {
+    auto it = std::find(tokens.begin(), tokens.end(),
+                        token);
+    if(it == tokens.end()) {
+        /* No token found */
+        std::cerr << "No token found for deletion" << std::endl;
+        return;
+    }
+    tokens.erase(it);
+    free(token);
 }
 
 void Line::update_tokens_in_out(void) {
