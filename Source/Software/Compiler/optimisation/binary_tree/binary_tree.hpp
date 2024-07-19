@@ -1,5 +1,5 @@
 #include "IOperator.hpp"
-#include <span>
+#include "line.hpp"
 #include <stack>
 
 #pragma once
@@ -17,18 +17,18 @@ class TreeNode {
         void set_right(TreeNode *_right);
         void set_token(IToken *_token);
         TreeNode(IToken *_token) : token(_token), left(nullptr), right(nullptr) {}
-        ~TreeNode();
+        ~TreeNode() = default;
 };
 
 class BinaryTree {
     private:
         static constexpr unsigned int token_spacing = 8;
         TreeNode* root;
-        TreeNode* construct_tree_from_rpn(std::span<IToken*> rpn);
+        TreeNode* construct_tree_from_rpn(ILine *line);
         void printout_from_node(TreeNode* node, unsigned int rows, unsigned int collumns, unsigned int row, unsigned int collumn, TreeNode** tree_nodes_2d) const;
     public:
-        BinaryTree(std::span<IToken*> tokens);
-        TreeNode* get_root(void);
+        BinaryTree(ILine *line);
+        TreeNode* get_root(void) const;
         void printout_all(void) const;
 
         //TODO: should return to os instead of this, also make outside class

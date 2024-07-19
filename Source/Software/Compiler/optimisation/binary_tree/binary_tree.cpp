@@ -25,17 +25,13 @@ void TreeNode::set_token(IToken *_token) {
     token = _token;
 }
 
-TreeNode::~TreeNode() {
-    free(token);
+BinaryTree::BinaryTree(ILine *line) {
+    root = construct_tree_from_rpn(line);
 }
 
-BinaryTree::BinaryTree(std::span<IToken*> tokens) {
-    root = construct_tree_from_rpn(tokens);
-}
-
-TreeNode* BinaryTree::construct_tree_from_rpn(std::span<IToken*> rpn) {
+TreeNode* BinaryTree::construct_tree_from_rpn(ILine *line) {
     std::stack<TreeNode*> nodes;
-    for(IToken *token : rpn) {
+    for(IToken *token : line->get_tokens()) {
         if(token->get_type() == eToken::Operator) {
             /* Is an operator */
             IOperator *op = dynamic_cast<IOperator*>(token);
@@ -106,6 +102,6 @@ void BinaryTree::printout_from_node(TreeNode* node, unsigned int rows, unsigned 
     printout_from_node(node->get_right(), rows, collumns, row + 1, collumn + 1, tree_nodes_2d);
 }
 
-TreeNode* BinaryTree::get_root(void) {
+TreeNode* BinaryTree::get_root(void) const {
     return root;
 }

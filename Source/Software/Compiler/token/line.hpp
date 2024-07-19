@@ -21,6 +21,7 @@ class ILine {
         virtual eLine get_type(void) const = 0;
         virtual void replace_token(IToken *new_token, unsigned int index) = 0;
         virtual void replace_token(IToken *old_token, IToken *new_token) = 0;
+        virtual void delete_token(IToken *token) = 0;
 };
 
 class Line : public ILine {
@@ -41,6 +42,7 @@ class Line : public ILine {
         eLine get_type(void) const override;
         void replace_token(IToken *new_token, unsigned int index) override;
         void replace_token(IToken *old_token, IToken *new_token) override;
+        void delete_token(IToken *token) override;
 };
 
 class LineAssignation : public Line {

@@ -1,10 +1,12 @@
-// #include "IOptimisation.hpp"
+#include "line.hpp"
+#include <vector>
 
-// #pragma once
+#pragma once
 
-// class ConstantFolding : IOptimisation {
-//     public:
-//         ConstantFolding();
-//         ~ConstantFolding() override = default;
-//         void calculate(std::vector<ILine *> &all_lines) override;
-// };
+class ConstantFolding {
+    private:
+        ConstantFolding() = default;
+        ~ConstantFolding() = default;
+    public:
+        static void calculate(std::vector<ILine *> &all_lines);
+};

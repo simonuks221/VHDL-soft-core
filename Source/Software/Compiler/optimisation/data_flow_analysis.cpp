@@ -80,7 +80,7 @@ void DataFlowAnalysis::analyze(std::vector<ILine *> &all_lines) {
                 assert(false);
             }
             /* Defined, replace this token with definition one */
-            line->replace_token(token, definition);
+            //line->replace_token(token, definition);
             //free(token);
             //token =
         }

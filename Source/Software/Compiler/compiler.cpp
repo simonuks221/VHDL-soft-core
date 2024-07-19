@@ -11,7 +11,6 @@
 #include "token/assembly.hpp"
 #include "token/tokenizer.hpp"
 #include "token/line.hpp"
-#include "binary_tree/binary_tree.hpp"
 #include "optimisation/constant_folding.hpp"
 #include "optimisation/data_flow_analysis.hpp"
 
@@ -80,30 +79,6 @@ int main(int argc, char* argv[]) {
         }
         std::cout << std::endl;
     }
-
-    // std::cout << "Got stack ops:" <<std::endl;
-    // for(std::vector<IToken*> token_line : stack_token_list) {
-    //     for(IToken *token : token_line) {
-    //         std::cout << *token << " ";
-    //     }
-    //     std::cout << std::endl;
-    // }
-
-    // /* Convert to binary trees */
-    // std::vector<BinaryTree> binary_trees;
-    // std::cout << "Got binary tree:" << std::endl;
-    // for(std::vector<IToken*> token_line : stack_token_list) {
-    //     BinaryTree temp_binary_tree = BinaryTree(token_line);
-    //     binary_trees.push_back(temp_binary_tree);
-    //     std::cout << temp_binary_tree << std::endl;
-    // }
-    // /* Do constant folding */
-    // std::cout << "Constant folding: " << std::endl;
-    // ConstantFolding constant_folding = ConstantFolding();
-    // for(BinaryTree binary_tree : binary_trees) {
-    //     constant_folding.calculate(binary_tree.get_root());
-    //     std::cout << binary_tree << std::endl;
-    // }
     /* Do data flow analysis */
     DataFlowAnalysis data_flow_analysis; //TODO: singleton
     data_flow_analysis.analyze(lines);
@@ -117,6 +92,15 @@ int main(int argc, char* argv[]) {
         std::cout << std::endl;
         for(const IToken *token : line->get_tokens()) {
             std::cout << token << " ";
+        }
+        std::cout << std::endl;
+    }
+    /* Do constant folding */
+    ConstantFolding::calculate(lines);
+    std::cout << "Tokens left:" <<std::endl;
+    for(ILine *line : lines) {
+        for(const IToken *token : line->get_tokens()) {
+            std::cout << *token << " ";
         }
         std::cout << std::endl;
     }
