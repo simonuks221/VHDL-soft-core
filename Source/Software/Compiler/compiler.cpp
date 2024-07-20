@@ -71,6 +71,7 @@ int main(int argc, char* argv[]) {
     /* Tokenize */
     std::vector<ILine *> lines;
     Tokenizer::tokenize(inputFile, lines);
+    Tokenizer::process_tokens(lines);
     inputFile.close();
     std::cout << "Got tokens:" <<std::endl;
     for(ILine *line : lines) {

@@ -1,4 +1,5 @@
 #include "tokenizer.hpp"
+#include "keywords.hpp"
 
 #include <unordered_set>
 #include <algorithm>
@@ -21,11 +22,14 @@ FunctionOperator sin_func("sin", "SINE"); //TODO: won't have these sinthesisable
 FunctionOperator max_func("max", "MAX");
 IgnoreOperator comma(",");
 BaseOperator assign("=", 0, true, "ASSGN"); //TODO: should not synthesize
-BaseOperator if_cond("if", 0, true, "ASSGN");
-BaseOperator true_cond("true", 0, true, "1");
-BaseOperator false_cond("false", 0, true, "0");
 // BaseOperator open_braces("{", 0, true, "{"); //TODO: now hardcoded in
 // BaseOperator closed_braces("}", 0, true, "}");
+CurlyBracesKeyword open_braces("{");
+CurlyBracesKeyword closed_braces("}");
+// Keyword if_cond("if");
+// Keyword true_cond("true");
+// Keyword false_cond("false");
+WhileKeyword while_cond("while");
 
 void Tokenizer::add_operator(IToken* token) {
     IOperator *op = static_cast<IOperator *>(token);
@@ -68,12 +72,12 @@ bool Tokenizer::tokenize(std::ifstream &input_stream, std::vector<ILine *> &line
                 /* Found start of comment */
                 break;
             }
-            if((ch == '{') || (ch == '}')) {
-                /* Found braces keyword */ //TODO: no hardcode
-                Keyword *new_token = new Keyword(std::string(1, ch));
-                temp_tokens.push_back(new_token);
-                continue;
-            }
+            // if((ch == '{') || (ch == '}')) {
+            //     /* Found braces keyword */ //TODO: no hardcode
+            //     Keyword *new_token = new Keyword(std::string(1, ch));
+            //     temp_tokens.push_back(new_token);
+            //     continue;
+            // }
             if(isdigit(ch) || isalnum(ch)) {
                 temp_token += ch;
                 continue;
@@ -105,6 +109,57 @@ bool Tokenizer::tokenize(std::ifstream &input_stream, std::vector<ILine *> &line
         }
 
         lines.push_back(new_line);
+    }
+    return true;
+}
+
+bool Tokenizer::process_tokens(std::vector<ILine *> &lines) {
+    /* Find all braces and index them */
+    std::stack<unsigned int> brace_indexes;
+    unsigned int max_braces_index = 1;
+    for(ILine *line : lines) {
+        for(IToken *token : line->get_tokens()) {
+            if(token->get_type() != eToken::Keyword) {
+                continue;
+            }
+            CurlyBracesKeyword *keyword = dynamic_cast<CurlyBracesKeyword *>(token);
+            if(keyword == nullptr) {
+                continue;
+            }
+            if(keyword->get_open()) {
+                keyword->set_brace_idx(max_braces_index);
+                brace_indexes.push(max_braces_index);
+                max_braces_index++;
+            } else {
+                if(brace_indexes.empty()) {
+                    std::cerr << "Invalid braces" << std::endl;
+                    assert(false);
+                }
+                keyword->set_brace_idx(brace_indexes.top());
+                brace_indexes.pop();
+            }
+        }
+    }
+    if(!brace_indexes.empty()) {
+        std::cerr << "Invalid braces" << std::endl;
+        assert(false);
+    }
+    /* Find all jump operations */
+    for(ILine *line : lines) {
+        for(IToken *token : line->get_tokens()) {
+            if(token->get_type() != eToken::Keyword) {
+                continue;
+            }
+            WhileKeyword *keyword = dynamic_cast<WhileKeyword *>(token);
+            if(keyword == nullptr) {
+                continue;
+            }
+            if(!keyword->parse_for_brace(line->get_tokens())) {
+                std::cerr << "Failed to parse for while braces " << std::endl;
+                assert(false);
+                return false;
+            }
+        }
     }
     return true;
 }

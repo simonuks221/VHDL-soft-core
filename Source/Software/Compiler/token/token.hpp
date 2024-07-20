@@ -44,7 +44,7 @@ class Token : public IToken {
     private:
         std::string str;
     public:
-        Token(std::string _str);
+        Token(std::string _str) : str(_str) {};
         ~Token() override = default;
 
         IToken *clone(void) const override;
@@ -81,7 +81,7 @@ class Keyword : public Token {
     private:
         mutable std::string instruction;
     public:
-        Keyword(std::string _str) : Token(_str) {}; //TODO: token to int
+        Keyword(std::string _str);
         virtual ~Keyword() = default;
 
         IToken *clone(void) const override;

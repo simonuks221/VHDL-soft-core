@@ -1,3 +1,6 @@
+while jump to .1
+LOAD true
+#.1
 
 LOAD a
 PUSH 7
@@ -9,4 +12,5 @@ PUSH 3
 ADD
 ASSGN
 
+.1
 
