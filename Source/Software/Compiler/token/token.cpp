@@ -45,3 +45,15 @@ std::string_view Constant::assemble_instruction(void) const {
     instruction = std::string("PUSH " + std::string(get_str()));
     return instruction;
 }
+
+IToken *Keyword::clone() const {
+    return new Keyword(*this);
+}
+
+eToken Keyword::get_type(void) const {
+    return eToken::Keyword;
+}
+
+std::string_view Keyword::assemble_instruction(void) const {
+    return "todo";
+}

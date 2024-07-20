@@ -8,7 +8,9 @@ enum class eToken {
     Invalid,
     Constant,
     Variable,
-    Operator
+    Operator, /* For +-*^ */
+    Symbol,   /* For ;{}, no instruction */
+    Keyword   /* For void, int, no instruction  */
 };
 
 class IToken {
@@ -60,6 +62,18 @@ class Constant : public Token {
     public:
         Constant(std::string _str) : Token(_str) {}; //TODO: token to int
         virtual ~Constant() = default;
+
+        IToken *clone(void) const override;
+        eToken get_type(void) const override;
+        std::string_view assemble_instruction(void) const override;
+};
+
+class Keyword : public Token {
+    private:
+        mutable std::string instruction;
+    public:
+        Keyword(std::string _str) : Token(_str) {}; //TODO: token to int
+        virtual ~Keyword() = default;
 
         IToken *clone(void) const override;
         eToken get_type(void) const override;

@@ -116,6 +116,9 @@ void ParentehsiesOperator::shunting_yard_action(std::stack<IOperator*> &operator
             output.push_back(operator_stack.top());
             operator_stack.pop();
         }
+    } else {
+        std::cerr << "Invalid parantheses operator: " << get_str() << std::endl;
+        assert(false);
     }
 }
 
