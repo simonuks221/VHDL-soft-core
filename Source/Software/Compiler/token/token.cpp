@@ -2,10 +2,6 @@
 #include "tokenizer.hpp"
 #include <cassert>
 
-Token::Token(std::string _str) : str(_str) {
-
-};
-
 IToken *Token::clone(void) const {
     return new Token(*this);
 }
@@ -60,3 +56,7 @@ ITokenPredefined::ITokenPredefined() {
     }
     Tokenizer::add_operator(token);
 }
+
+Keyword::Keyword(std::string _str) : Token(_str) {
+    Tokenizer::add_operator(this);
+};

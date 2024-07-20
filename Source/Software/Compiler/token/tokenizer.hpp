@@ -19,5 +19,6 @@ class Tokenizer {
         static void try_parse_token(std::string &token, std::vector<IToken*> &tokens); //TODO: string view
     public:
         static bool tokenize(std::ifstream &input_stream, std::vector<ILine *> &lines);
+        static bool process_tokens(std::vector<ILine *> &lines);
         static void add_operator(IToken* token);
 };
