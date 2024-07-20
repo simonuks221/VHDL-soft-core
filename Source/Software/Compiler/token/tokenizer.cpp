@@ -24,8 +24,8 @@ BaseOperator assign("=", 0, true, "ASSGN"); //TODO: should not synthesize
 BaseOperator if_cond("if", 0, true, "ASSGN");
 BaseOperator true_cond("true", 0, true, "1");
 BaseOperator false_cond("false", 0, true, "0");
-BaseOperator open_braces("{", 0, true, "{");
-BaseOperator closed_braces("}", 0, true, "}");
+// BaseOperator open_braces("{", 0, true, "{"); //TODO: now hardcoded in
+// BaseOperator closed_braces("}", 0, true, "}");
 
 void Tokenizer::add_operator(IToken* token) {
     IOperator *op = static_cast<IOperator *>(token);
@@ -68,12 +68,18 @@ bool Tokenizer::tokenize(std::ifstream &input_stream, std::vector<ILine *> &line
                 /* Found start of comment */
                 break;
             }
+            if((ch == '{') || (ch == '}')) {
+                /* Found braces keyword */ //TODO: no hardcode
+                Keyword *new_token = new Keyword(std::string(1, ch));
+                temp_tokens.push_back(new_token);
+                continue;
+            }
             if(isdigit(ch) || isalnum(ch)) {
                 temp_token += ch;
                 continue;
             }
-            std::string ch_str(1, ch);
             try_parse_token(temp_token, temp_tokens);
+            std::string ch_str(1, ch);
             if(operators.find(ch_str) != operators.end()) {
                 /* Found operator */
                 IToken *new_token = operators.at(ch_str)->clone();
