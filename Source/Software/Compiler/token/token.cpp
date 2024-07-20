@@ -1,4 +1,6 @@
 #include "token.hpp"
+#include "tokenizer.hpp"
+#include <cassert>
 
 Token::Token(std::string _str) : str(_str) {
 
@@ -13,10 +15,6 @@ eToken Token::get_type(void) const {
 }
 
 std::string_view Token::get_str() const {
-    return str;
-}
-
-std::string_view Token::assemble_instruction(void) const {
     return str;
 }
 
@@ -54,6 +52,11 @@ eToken Keyword::get_type(void) const {
     return eToken::Keyword;
 }
 
-std::string_view Keyword::assemble_instruction(void) const {
-    return "todo";
+ITokenPredefined::ITokenPredefined() {
+    IToken *token = reinterpret_cast<IToken *>(this); //TODO: figure a way to use dynamic_cast
+    if(token == nullptr) {
+        std::cerr << "Predefined token not in Itoken child" << std::endl;
+        assert(false);
+    }
+    Tokenizer::add_operator(token);
 }

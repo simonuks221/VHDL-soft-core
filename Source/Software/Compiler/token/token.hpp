@@ -22,12 +22,22 @@ class IToken {
         virtual eToken get_type(void) const = 0;
 
         virtual std::string_view get_str(void) const = 0;
-        virtual std::string_view assemble_instruction(void) const = 0;
 
         friend std::ostream& operator<<(std::ostream& os, const IToken& IToken) {
             os << IToken.get_str();
             return os;
         }
+};
+
+class ITokenAssemblable {
+    public:
+        virtual std::string_view assemble_instruction(void) const = 0;
+};
+
+/* Token that is predefined and not user created (void, int, +, *) */
+class ITokenPredefined {
+    public:
+        ITokenPredefined();
 };
 
 class Token : public IToken {
@@ -41,10 +51,9 @@ class Token : public IToken {
         eToken get_type(void) const override;
 
         std::string_view get_str(void) const override;
-        std::string_view assemble_instruction(void) const override;
 };
 
-class Variable : public Token {
+class Variable : public Token, public ITokenAssemblable {
     private:
         mutable std::string instruction;
     public:
@@ -56,7 +65,7 @@ class Variable : public Token {
         std::string_view assemble_instruction(void) const override;
 };
 
-class Constant : public Token {
+class Constant : public Token, public ITokenAssemblable {
     private:
         mutable std::string instruction;
     public:
@@ -77,6 +86,5 @@ class Keyword : public Token {
 
         IToken *clone(void) const override;
         eToken get_type(void) const override;
-        std::string_view assemble_instruction(void) const override;
 };
 
