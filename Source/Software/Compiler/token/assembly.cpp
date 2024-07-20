@@ -9,7 +9,11 @@ void Assembly::assemble(std::span<ILine *> all_lines) {
     }
     for(ILine* line : all_lines) {
         for(const IToken * token : line->get_tokens()) {
-            assembly_file << token->assemble_instruction() << std::endl;
+            const ITokenAssemblable *assemblable_token = dynamic_cast<const ITokenAssemblable *>(token);
+            if(assemblable_token == nullptr) {
+                continue;
+            }
+            assembly_file << assemblable_token->assemble_instruction() << std::endl;
         }
         assembly_file << std::endl;
     }

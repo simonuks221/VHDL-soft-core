@@ -4,15 +4,15 @@
 #include <cassert>
 
 BaseOperator::BaseOperator(std::string _str, unsigned int _presedence, bool _left, std::string _asm_instruction, uint8_t _properties) : IOperator(_str), presedence(_presedence), left_associative(_left), asm_instruction(_asm_instruction), properties(_properties) {
-    Tokenizer::add_operator(this);
+    //Tokenizer::add_operator(this);
 };
 
 BaseOperator::BaseOperator(std::string _str, unsigned int _presedence, bool _left, std::string _asm_instruction) : IOperator(_str), presedence(_presedence), left_associative(_left), asm_instruction(_asm_instruction), properties(0) {
-    Tokenizer::add_operator(this);
+    //Tokenizer::add_operator(this);
 };
 
 BaseOperator::BaseOperator(std::string _str, unsigned int _presedence, bool _left) : IOperator(_str), presedence(_presedence), left_associative(_left), asm_instruction(""), properties(0) {
-    Tokenizer::add_operator(this);
+    //Tokenizer::add_operator(this);
 };
 
 unsigned int BaseOperator::get_presedence() const {

@@ -1,4 +1,3 @@
-todo
 
 LOAD a
 PUSH 7
@@ -10,5 +9,4 @@ PUSH 3
 ADD
 ASSGN
 
-todo
 

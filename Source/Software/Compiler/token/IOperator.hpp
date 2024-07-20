@@ -12,9 +12,9 @@ enum class eOperatorProperty {
     Associative = 1 << 1,
 };
 
-class IOperator : public Token {
+class IOperator : public Token, public ITokenAssemblable, public ITokenPredefined {
     public:
-        IOperator(std::string _str) : Token(_str) {};
+        IOperator(std::string _str) : Token(_str), ITokenPredefined() {};
         virtual ~IOperator() = default;
 
         virtual unsigned int get_presedence(void) const = 0;
