@@ -15,17 +15,46 @@ BaseOperator subtraction("-", 2, true, "SUB");
 BaseOperator multiplication("*", 3, true, "MULT", associative_and_commutative);
 BaseOperator division("/", 3, true, "DIV");
 BaseOperator power("^", 4, false, "PWR");
-ParentehsiesOperator closing_parentheses(")");
-ParentehsiesOperator opening_parentheses("(");
+ParentehsiesOperator closed_parentheses(")");
+ParentehsiesOperator open_parentheses("(");
 FunctionOperator sin_func("sin", "SINE"); //TODO: won't have these sinthesisable
 FunctionOperator max_func("max", "MAX");
 IgnoreOperator comma(",");
 BaseOperator assign("=", 0, true, "ASSGN"); //TODO: should not synthesize
+BaseOperator if_cond("if", 0, true, "ASSGN");
+BaseOperator true_cond("true", 0, true, "1");
+BaseOperator false_cond("false", 0, true, "0");
+BaseOperator open_braces("{", 0, true, "{");
+BaseOperator closed_braces("}", 0, true, "}");
 
 void Tokenizer::add_operator(IToken* token) {
     IOperator *op = static_cast<IOperator *>(token);
     assert(op != nullptr);
     operators.insert_or_assign(op->get_str().data(), op); //TODO: map with string_views?
+}
+
+void Tokenizer::try_parse_token(std::string &token, std::vector<IToken*> &tokens) {
+    if(token.empty()) {
+        return;
+    }
+    if(operators.find(token) != operators.end()) {
+        /* Operator in temp_token */
+        IToken *new_token = operators.at(token)->clone();
+        tokens.push_back(new_token);
+    } else {
+        /* No operator in temp_token */
+        IToken *new_token = nullptr;
+        bool is_all_num = std::all_of(token.begin(), token.end(), ::isdigit);
+        if(is_all_num) {
+            /* All numbers - constant */
+            new_token = new Constant(token);
+        } else {
+            /* Variable */
+            new_token = new Variable(token);
+        }
+        tokens.push_back(new_token);
+    }
+    token.clear();
 }
 
 bool Tokenizer::tokenize(std::ifstream &input_stream, std::vector<ILine *> &lines) {
@@ -44,56 +73,15 @@ bool Tokenizer::tokenize(std::ifstream &input_stream, std::vector<ILine *> &line
                 continue;
             }
             std::string ch_str(1, ch);
-            if(!temp_token.empty()) {
-                if(operators.find(temp_token) != operators.end()) {
-                    /* Operator in temp_token */
-                    IToken *new_token = operators.at(temp_token)->clone();
-                    temp_tokens.push_back(new_token);
-                    temp_token.clear();
-                } else {
-                    /* No operator in temp_token */
-                    IToken *new_token = nullptr;
-                    bool is_all_num = std::all_of(temp_token.begin(), temp_token.end(), ::isdigit);
-                    if(is_all_num) {
-                        /* All numbers - constant */
-                        new_token = new Constant(temp_token);
-                    } else {
-                        /* Variable */
-                        new_token = new Variable(temp_token);
-                    }
-                    temp_tokens.push_back(new_token);
-                    temp_token.clear();
-                }
-            }
+            try_parse_token(temp_token, temp_tokens);
             if(operators.find(ch_str) != operators.end()) {
-                /* found operator */
-                IOperator *ttt = operators.at(ch_str);
+                /* Found operator */
                 IToken *new_token = operators.at(ch_str)->clone();
                 temp_tokens.push_back(new_token);
                 temp_token.clear();
             }
         }
-        if(!temp_token.empty()) {
-            //TODO: duplicated code
-            if(operators.find(temp_token) != operators.end()) {
-                /* Operator in temp_token */
-                IOperator *ttt = operators.at(temp_token);
-                IToken *new_token = operators.at(temp_token)->clone();
-                temp_tokens.push_back(new_token);
-            } else {
-                /* No operator in temp_token*/
-                IToken *new_token = nullptr;
-                bool is_all_num = std::all_of(temp_token.begin(), temp_token.end(), ::isdigit);
-                if(is_all_num) {
-                    /* All numbers - constant */
-                    new_token = new Constant(temp_token);
-                } else {
-                    /* Variable */
-                    new_token = new Variable(temp_token);
-                }
-                temp_tokens.push_back(new_token);
-            }
-        }
+        try_parse_token(temp_token, temp_tokens);
         /* End of line, add to lines container */
         if(temp_tokens.empty()) {
             continue;
