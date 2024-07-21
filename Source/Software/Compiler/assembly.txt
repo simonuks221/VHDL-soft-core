@@ -1,0 +1,7 @@
+LOAD a
+PUSH 0
+ASSGN
+
+LOAD a
+PUSH 10
+.1start

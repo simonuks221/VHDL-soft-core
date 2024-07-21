@@ -30,18 +30,10 @@ Possible optimisations:
 
 bool convert_to_stack_ops(std::vector<IToken *> &tokens) {
     /* Shunting yard algorithm to convert tokens to stack operations */
-    std::stack<IOperator *> operator_stack;
+    std::stack<IToken *> operator_stack;
     std::vector<IToken *> output;
     for (IToken *token : tokens) {
-        if(token->get_type() != eToken::Operator) {
-            /* Not an operator */
-            output.push_back(token);
-            continue;
-        }
-        IOperator *op = dynamic_cast<IOperator*>(token);
-        assert(op != nullptr);
-        /* Found operator */
-        op->shunting_yard_action(operator_stack, output);
+        token->shunting_yard_action(operator_stack, output, token);
     }
     /* Add all operators that are left from stack */
     while(!operator_stack.empty()) {

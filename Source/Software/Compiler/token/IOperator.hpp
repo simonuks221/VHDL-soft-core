@@ -14,13 +14,9 @@ enum class eOperatorProperty {
 
 class IOperator : public Token, public ITokenAssemblable, public ITokenPredefined {
     public:
-        IOperator(std::string _str) : Token(_str), ITokenPredefined() {};
+        IOperator(std::string _str, unsigned int _input_amount, unsigned int _presedence, bool _left_associative) : Token(_str, _input_amount, _presedence, _left_associative), ITokenPredefined() {};
         virtual ~IOperator() = default;
 
-        virtual unsigned int get_presedence(void) const = 0;
-        virtual bool get_left_associative(void) const = 0;
         virtual uint8_t get_properties(void) const = 0;
         virtual bool has_property(eOperatorProperty) const = 0;
-
-        virtual void shunting_yard_action(std::stack<IOperator*> &operator_stack, std::vector<IToken*> &output) const = 0;
 };

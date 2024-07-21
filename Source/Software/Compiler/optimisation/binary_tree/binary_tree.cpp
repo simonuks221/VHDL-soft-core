@@ -29,13 +29,12 @@ BinaryTree::BinaryTree(ILine *line) {
     root = construct_tree_from_rpn(line);
 }
 
+/* Assumes line is already in RPN format */
 TreeNode* BinaryTree::construct_tree_from_rpn(ILine *line) {
     std::stack<TreeNode*> nodes;
     for(IToken *token : line->get_tokens()) {
-        if(token->get_type() == eToken::Operator) {
+        if(token->get_input_amount() == 2) { //TODO: hardcode 2, might need to allow 1
             /* Is an operator */
-            IOperator *op = dynamic_cast<IOperator*>(token);
-            assert(op != nullptr);
             TreeNode* node = new TreeNode(token);
             node->set_right(nodes.top());
             nodes.pop();

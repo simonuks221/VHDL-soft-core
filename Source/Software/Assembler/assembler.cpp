@@ -26,7 +26,6 @@ int main(int argc, char* argv[]) {
         command_parser.parse_line(line);
     }
 
-
     inputFile.close();
 
     return 0;

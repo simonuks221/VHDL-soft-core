@@ -1,6 +1,9 @@
 #include "token.hpp"
 #include "tokenizer.hpp"
+#include "keywords.hpp"
 #include <cassert>
+
+/* Token */
 
 IToken *Token::clone(void) const {
     return new Token(*this);
@@ -10,9 +13,27 @@ eToken Token::get_type(void) const {
     return eToken::Invalid;
 }
 
+unsigned int Token::get_input_amount(void) const {
+    return input_amount;
+}
+
 std::string_view Token::get_str() const {
     return str;
 }
+
+unsigned int Token::get_presedence() const {
+    return presedence;
+}
+
+bool Token::get_left_associative() const {
+    return left_associative;
+}
+
+void Token::shunting_yard_action(std::stack<IToken*> &operator_stack, std::vector<IToken*> &output, IToken *current) const {
+    output.push_back(current);
+}
+
+/* Variable */
 
 IToken *Variable::clone() const {
     return new Variable(*this);
@@ -27,6 +48,8 @@ std::string_view Variable::assemble_instruction(void) const {
     return instruction;
 }
 
+/* Constant */
+
 IToken *Constant::clone() const {
     return new Constant(*this);
 }
@@ -40,6 +63,8 @@ std::string_view Constant::assemble_instruction(void) const {
     return instruction;
 }
 
+/* Keyword */
+
 IToken *Keyword::clone() const {
     return new Keyword(*this);
 }
@@ -47,6 +72,8 @@ IToken *Keyword::clone() const {
 eToken Keyword::get_type(void) const {
     return eToken::Keyword;
 }
+
+/* ITokenPredefined */
 
 ITokenPredefined::ITokenPredefined() {
     IToken *token = reinterpret_cast<IToken *>(this); //TODO: figure a way to use dynamic_cast
@@ -56,7 +83,3 @@ ITokenPredefined::ITokenPredefined() {
     }
     Tokenizer::add_operator(token);
 }
-
-Keyword::Keyword(std::string _str) : Token(_str) {
-    Tokenizer::add_operator(this);
-};

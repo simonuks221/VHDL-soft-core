@@ -1,16 +1,29 @@
-while jump to .1
-LOAD true
-#.1
-
 LOAD a
-PUSH 7
+PUSH 0
 ASSGN
 
-LOAD b
+.1start
 LOAD a
-PUSH 3
+PUSH 10
+IF FALSE JUMP .1end
+
+LOAD a
+LOAD a
+PUSH 1
 ADD
 ASSGN
 
-.1
+.2start
+LOAD a
+PUSH 7
+IF FALSE JUMP .2end
+
+LOAD a
+PUSH 8
+ASSGN
+
+.2end
+
+GOTO .1start
+.1end
 
