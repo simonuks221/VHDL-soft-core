@@ -35,6 +35,13 @@ class IToken {
             os << IToken.get_str();
             return os;
         }
+
+        friend std::ostream& operator<<(std::ostream& os, const std::vector<IToken *>& tokens) {
+            for(const IToken *token : tokens) {
+                os << *token << " ";
+            }
+            return os;
+        }
 };
 
 /* Token that can be converted to assembly instruction */

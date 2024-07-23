@@ -67,10 +67,7 @@ int main(int argc, char* argv[]) {
     inputFile.close();
     std::cout << "Got tokens:" <<std::endl;
     for(ILine *line : lines) {
-        for(const IToken *token : line->get_tokens()) {
-            std::cout << *token << " ";
-        }
-        std::cout << std::endl;
+        std::cout << line->get_tokens() << std::endl;
     }
     /* Do data flow analysis */
     DataFlowAnalysis data_flow_analysis; //TODO: singleton
@@ -79,10 +76,7 @@ int main(int argc, char* argv[]) {
     std::cout << "Stack operations: " << std::endl;
     for(ILine *line : lines) {
         convert_to_stack_ops(line->get_tokens());
-        for(const IToken *token : line->get_tokens()) {
-            std::cout << *token << " ";
-        }
-        std::cout << std::endl;
+        std::cout << line->get_tokens() << std::endl;
         for(const IToken *token : line->get_tokens()) {
             std::cout << token << " ";
         }
@@ -92,10 +86,7 @@ int main(int argc, char* argv[]) {
     ConstantFolding::calculate(lines);
     std::cout << "Tokens left:" <<std::endl;
     for(ILine *line : lines) {
-        for(const IToken *token : line->get_tokens()) {
-            std::cout << *token << " ";
-        }
-        std::cout << std::endl;
+        std::cout << line->get_tokens() << std::endl;
     }
     /* Assemble, convert into instructions */
     Assembly::assemble(lines);
