@@ -10,5 +10,6 @@ add_executable(compiler compiler.cpp)
 
 add_subdirectory(optimisation)
 add_subdirectory(token)
+add_subdirectory(resolvers)
 
-target_link_libraries(compiler PRIVATE optimisation binary_tree token)
+target_link_libraries(compiler PRIVATE optimisation binary_tree token resolvers)

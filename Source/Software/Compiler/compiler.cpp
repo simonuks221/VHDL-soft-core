@@ -13,6 +13,7 @@
 #include "token/line.hpp"
 #include "optimisation/constant_folding.hpp"
 #include "optimisation/data_flow_analysis.hpp"
+#include "resolvers/cycles_resolver.hpp"
 
 /*
 Possible optimisations:
@@ -63,8 +64,9 @@ int main(int argc, char* argv[]) {
     /* Tokenize */
     std::vector<ILine *> lines;
     Tokenizer::tokenize(inputFile, lines);
-    Tokenizer::process_tokens(lines);
     inputFile.close();
+    Tokenizer::process_tokens(lines);
+    CyclesResolver::resolve(lines);
     std::cout << "Got tokens:" <<std::endl;
     for(ILine *line : lines) {
         std::cout << line->get_tokens() << std::endl;
