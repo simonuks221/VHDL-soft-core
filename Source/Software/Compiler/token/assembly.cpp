@@ -1,4 +1,5 @@
 #include "assembly.hpp"
+#include <string_view>
 #include <fstream>
 
 void Assembly::assemble(std::span<ILine *> all_lines) {
@@ -13,7 +14,10 @@ void Assembly::assemble(std::span<ILine *> all_lines) {
             if(assemblable_token == nullptr) {
                 continue;
             }
-            assembly_file << assemblable_token->assemble_instruction() << std::endl;
+            std::string_view new_line = assemblable_token->assemble_instruction();
+            if(!new_line.empty()) {
+                assembly_file << new_line << std::endl;
+            }
         }
         assembly_file << std::endl;
     }

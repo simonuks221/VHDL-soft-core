@@ -23,6 +23,7 @@ bool VariablesResolver::resolve(std::vector<ILine *> &lines) {
                     assert(false);
                 }
                 assign_op->set_variable(variable);
+                variable->set_is_declaration(true);
                 if(variable_map.count(variable->get_str()) > 0) {
                     /* Redeclaring an existing variable */
                     unsigned int variable_idx = variable_map.at(variable->get_str())->get_ram_location();
@@ -30,7 +31,6 @@ bool VariablesResolver::resolve(std::vector<ILine *> &lines) {
                     continue;
                 }
                 /* New variable declaration received */
-                std::cout << "New variable " << variable->get_str() <<std::endl;
                 variable->set_ram_location(last_variable_idx);
                 last_variable_idx++;
                 variable_map[variable->get_str()] = variable;

@@ -1,4 +1,3 @@
-LOAD MEM 1	#a
 PUSH 0
 SAVE MEM 1	#a
 
@@ -7,7 +6,6 @@ LOAD MEM 1	#a
 PUSH 10
 IF FALSE JUMP .1end
 
-LOAD MEM 1	#a
 LOAD MEM 1	#a
 PUSH 1
 ADD
@@ -18,7 +16,6 @@ LOAD MEM 1	#a
 PUSH 7
 IF FALSE JUMP .2end
 
-LOAD MEM 1	#a
 PUSH 8
 SAVE MEM 1	#a
 

@@ -92,6 +92,7 @@ class Variable : public Token, public ITokenAssemblable {
         mutable std::string instruction;
         bool is_pointer = false;
         unsigned int ram_location = 0;
+        bool is_declaration = false;
     public:
         Variable(std::string _str) : Token(_str, 0, 0, false) {};
         virtual ~Variable() = default;
@@ -101,7 +102,9 @@ class Variable : public Token, public ITokenAssemblable {
         bool get_is_pointer(void) const;
         void set_is_pointer(bool new_value);
         void set_ram_location(unsigned int new_ram_location);
-        unsigned int get_ram_location(void);
+        unsigned int get_ram_location(void) const;
+        bool get_is_declaration(void) const;
+        void set_is_declaration(bool declaration);
         std::string_view assemble_instruction(void) const override;
 };
 

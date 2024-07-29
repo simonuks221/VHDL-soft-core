@@ -43,7 +43,20 @@ eToken Variable::get_type(void) const {
     return eToken::Variable;
 }
 
+bool Variable::get_is_declaration(void) const {
+    return is_declaration;
+}
+
+void Variable::set_is_declaration(bool declaration) {
+    is_declaration = declaration;
+}
+
+
 std::string_view Variable::assemble_instruction(void) const {
+    if(is_declaration) {
+        /* No need to load from memory if declaration */
+        return "";
+    }
     if(ram_location != 0) {
         /* Have variable in memory at RAM location */
         instruction = std::string("LOAD MEM " +std::to_string(ram_location) + "\t#" + std::string(get_str()));
@@ -65,7 +78,7 @@ void Variable::set_ram_location(unsigned int new_ram_location) {
     ram_location = new_ram_location;
 }
 
-unsigned int Variable::get_ram_location(void) {
+unsigned int Variable::get_ram_location(void) const {
     return ram_location;
 }
 
