@@ -16,6 +16,8 @@ BaseOperator subtraction("-", 2, true, "SUB");
 BaseOperator multiplication("*", 3, true, "MULT", associative_and_commutative);
 BaseOperator division("/", 3, true, "DIV");
 BaseOperator power("^", 4, false, "PWR");
+BaseOperator less_than("<", 4, false, "MORE_THAN");
+BaseOperator more_than(">", 4, false, "LESS_THAN");
 ParentehsiesOperator closed_parentheses(")");
 ParentehsiesOperator open_parentheses("(");
 FunctionOperator sin_func("sin", "SINE"); //TODO: won't have these sinthesisable

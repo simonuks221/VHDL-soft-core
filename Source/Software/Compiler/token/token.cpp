@@ -57,12 +57,12 @@ std::string_view Variable::assemble_instruction(void) const {
         /* No need to load from memory if declaration */
         return "";
     }
-    if(ram_location != 0) {
-        /* Have variable in memory at RAM location */
-        instruction = std::string("LOAD MEM " +std::to_string(ram_location) + "\t#" + std::string(get_str()));
-    } else {
-        instruction = std::string("LOAD MEM " + std::string(get_str()));
+    if(ram_location == 0) {
+        std::cerr << "Invalid variable ram location" << std::endl;
+        assert(false);
     }
+    /* Have variable in memory at RAM location */
+    instruction = std::string("LOAD_MEM " +std::to_string(ram_location) + "\t#" + std::string(get_str()));
     return instruction;
 }
 

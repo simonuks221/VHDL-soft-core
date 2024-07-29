@@ -122,6 +122,6 @@ std::string_view AssignOperator::assemble_instruction(void) const {
         std::cerr << "Assign operator variabel not set" << std::endl;
         assert(false);
     }
-    instruction = std::string("SAVE MEM " + std::to_string(variable->get_ram_location()) + "\t#" +  std::string(variable->get_str()));
+    instruction = std::string("SAVE_MEM " + std::to_string(variable->get_ram_location()) + "\t#" +  std::string(variable->get_str()));
     return instruction;
 }
