@@ -49,3 +49,18 @@ class ParentehsiesOperator : public BaseOperator {
 
         void shunting_yard_action(std::stack<IToken*> &operator_stack, std::vector<IToken*> &output, IToken *current) const override;
 };
+
+class AssignOperator : public BaseOperator {
+    private:
+        mutable std::string instruction;
+        Variable *variable = nullptr;
+    public:
+        AssignOperator(void) : BaseOperator("=", 0, true) {};
+        virtual ~AssignOperator() = default;
+        IToken *clone(void) const override;
+
+        void set_variable(Variable *new_variable);
+        Variable *set_variable(void);
+
+        std::string_view assemble_instruction(void) const override;
+};

@@ -102,3 +102,26 @@ void ParentehsiesOperator::shunting_yard_action(std::stack<IToken*> &operator_st
 IToken *ParentehsiesOperator::clone(void) const {
     return new ParentehsiesOperator(*this);
 }
+
+/* Assign Operator */
+
+IToken *AssignOperator::clone(void) const {
+    return new AssignOperator(*this);
+}
+
+void AssignOperator::set_variable(Variable *new_variable) {
+    variable = new_variable;
+}
+
+Variable *AssignOperator::set_variable(void) {
+    return variable;
+}
+
+std::string_view AssignOperator::assemble_instruction(void) const {
+    if(variable == nullptr) {
+        std::cerr << "Assign operator variabel not set" << std::endl;
+        assert(false);
+    }
+    instruction = std::string("SAVE MEM " + std::to_string(variable->get_ram_location()) + "\t#" +  std::string(variable->get_str()));
+    return instruction;
+}

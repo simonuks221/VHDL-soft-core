@@ -21,7 +21,8 @@ ParentehsiesOperator open_parentheses("(");
 FunctionOperator sin_func("sin", "SINE"); //TODO: won't have these sinthesisable
 FunctionOperator max_func("max", "MAX");
 IgnoreOperator comma(",");
-BaseOperator assign("=", 0, true, "ASSGN"); //TODO: should not synthesize
+AssignOperator assign; /* = */
+
 // BaseOperator open_braces("{", 0, true, "{"); //TODO: now hardcoded in
 // BaseOperator closed_braces("}", 0, true, "}");
 CurlyBracesKeyword open_braces("{");

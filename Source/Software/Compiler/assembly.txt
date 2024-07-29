@@ -1,7 +1,29 @@
-LOAD a
+LOAD MEM 1	#a
 PUSH 0
 ASSGN
 
-LOAD a
-PUSH 10
 .1start
+LOAD MEM a
+PUSH 10
+IF FALSE JUMP .1end
+
+LOAD MEM 1	#a
+LOAD MEM a
+PUSH 1
+ADD
+ASSGN
+
+.2start
+LOAD MEM a
+PUSH 7
+IF FALSE JUMP .2end
+
+LOAD MEM 1	#a
+PUSH 8
+ASSGN
+
+.2end
+
+GOTO .1start
+.1end
+

@@ -9,6 +9,7 @@ class CommandParser {
     public:
         CommandParser() = default;
         ~CommandParser() = default;
+
         bool parse_line(std::string_view line);
 };
 

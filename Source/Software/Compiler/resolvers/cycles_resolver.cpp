@@ -44,7 +44,6 @@ bool CyclesResolver::resolve(std::vector<ILine *> &lines) {
                     break;
                 } //TODO: clean up into functions
             }
-
             break; //TODO: will not work with 2 whiles in one line
         }
     }

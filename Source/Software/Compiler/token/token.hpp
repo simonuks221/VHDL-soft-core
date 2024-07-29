@@ -90,12 +90,18 @@ class Token : public IToken {
 class Variable : public Token, public ITokenAssemblable {
     private:
         mutable std::string instruction;
+        bool is_pointer = false;
+        unsigned int ram_location = 0;
     public:
         Variable(std::string _str) : Token(_str, 0, 0, false) {};
         virtual ~Variable() = default;
 
         IToken *clone(void) const override;
         eToken get_type(void) const override;
+        bool get_is_pointer(void) const;
+        void set_is_pointer(bool new_value);
+        void set_ram_location(unsigned int new_ram_location);
+        unsigned int get_ram_location(void);
         std::string_view assemble_instruction(void) const override;
 };
 
