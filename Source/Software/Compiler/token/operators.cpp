@@ -119,9 +119,13 @@ Variable *AssignOperator::set_variable(void) {
 
 std::string_view AssignOperator::assemble_instruction(void) const {
     if(variable == nullptr) {
-        std::cerr << "Assign operator variabel not set" << std::endl;
+        std::cerr << "Assign operator variable not set" << std::endl;
         assert(false);
     }
-    instruction = std::string("SAVE_MEM " + std::to_string(variable->get_ram_location()) + "\t#" +  std::string(variable->get_str()));
+    /* Push location only if not pointer */
+    if(!variable->get_is_pointer()) {
+        instruction = std::string("PUSH " + std::to_string(variable->get_ram_location())  + "\t#load " +  std::string(variable->get_str()) + " var loc\n");
+    }
+    instruction = std::string(instruction + "SAVE_MEM\t#save " + std::string(variable->get_str()) + " var");
     return instruction;
 }

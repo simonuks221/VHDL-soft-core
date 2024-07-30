@@ -62,7 +62,8 @@ std::string_view Variable::assemble_instruction(void) const {
         assert(false);
     }
     /* Have variable in memory at RAM location */
-    instruction = std::string("LOAD_MEM " +std::to_string(ram_location) + "\t#" + std::string(get_str()));
+    instruction = std::string("PUSH " + std::to_string(ram_location) + "\t#load " + std::string(get_str()) + " var loc\n");
+    instruction = std::string(instruction + "LOAD_MEM\t#load " + std::string(get_str()) + " var loc");
     return instruction;
 }
 

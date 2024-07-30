@@ -25,16 +25,12 @@ FunctionOperator max_func("max", "MAX");
 IgnoreOperator comma(",");
 AssignOperator assign; /* = */
 
-// BaseOperator open_braces("{", 0, true, "{"); //TODO: now hardcoded in
-// BaseOperator closed_braces("}", 0, true, "}");
 CurlyBracesKeyword open_braces("{");
 CurlyBracesKeyword closed_braces("}");
-// Keyword if_cond("if");
-// Keyword true_cond("true");
-// Keyword false_cond("false");
 ConditionalKeyword while_cond("while", true);
 ConditionalKeyword for_cond("for", true); //TODO: for examplory purpose only
 ConditionalKeyword if_cond("if", false);
+Keyword at("&", 0, 1, false);
 
 void Tokenizer::add_operator(IToken* token) {
     IOperator *op = static_cast<IOperator *>(token);

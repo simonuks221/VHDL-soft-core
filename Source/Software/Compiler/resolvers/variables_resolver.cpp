@@ -15,6 +15,7 @@ bool VariablesResolver::resolve(std::vector<ILine *> &lines) {
             Variable *variable = static_cast<Variable *>(token);
             assert(variable != nullptr);
             //TODO: should remake better :/
+            /* Check if assignation/declaration */
             if((i == 0) && (line->get_tokens().size() >= 3)) {
                 /* Variable at start, could be assignation */
                 AssignOperator *assign_op = static_cast<AssignOperator *>(line->get_tokens()[1]);
@@ -35,6 +36,27 @@ bool VariablesResolver::resolve(std::vector<ILine *> &lines) {
                 last_variable_idx++;
                 variable_map[variable->get_str()] = variable;
                 continue;
+            }
+            /* Check if writing to pointer */
+            if((i == 1) && (line->get_tokens().size() >= 4)) {
+                if(line->get_tokens()[0]->get_str() == "&") { //TODO: move into functions
+                    /* Is pointer writing */
+                    AssignOperator *assign_op = static_cast<AssignOperator *>(line->get_tokens()[2]);
+                    if(assign_op == nullptr) {
+                        std::cerr << "Invalid pointer variable at start of line without =" << std::endl;
+                        assert(false);
+                    }
+                    assign_op->set_variable(variable);
+                    if(variable_map.count(variable->get_str()) == 0) {
+                        std::cerr << "Undeclared pointer variable" << std::endl;
+                        assert(false);
+                    }
+                    /* Writing to pointer value */
+                    unsigned int variable_idx = variable_map.at(variable->get_str())->get_ram_location();
+                    variable->set_ram_location(variable_idx);
+                    variable->set_is_pointer(true);
+                    continue;
+                }
             }
             /* Try find old variable */
             if(variable_map.count(variable->get_str()) == 0) {

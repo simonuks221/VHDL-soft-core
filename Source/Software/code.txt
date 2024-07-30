@@ -6,3 +6,6 @@ while(a < 10) {
     }
 }
 #labas
+
+c = 5
+&c = 3
