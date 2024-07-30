@@ -1,4 +1,5 @@
 #include "line.hpp"
+#include "logging.hpp"
 #include <algorithm>
 
 Line::Line(std::vector<IToken *> &_tokens) : tokens(_tokens) {  //TODO: do not copy token vector
@@ -43,7 +44,7 @@ void Line::delete_token(IToken *token) {
                         token);
     if(it == tokens.end()) {
         /* No token found */
-        std::cerr << "No token found for deletion" << std::endl;
+        Logging::error("No token found for deletion");
         return;
     }
     tokens.erase(it);

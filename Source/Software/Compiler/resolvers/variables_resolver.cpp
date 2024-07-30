@@ -1,6 +1,7 @@
 #include "variables_resolver.hpp"
 #include "keywords.hpp"
 #include "operators.hpp"
+#include "logging.hpp"
 #include <cassert>
 #include <algorithm>
 
@@ -20,7 +21,7 @@ bool VariablesResolver::resolve(std::vector<ILine *> &lines) {
                 /* Variable at start, could be assignation */
                 AssignOperator *assign_op = static_cast<AssignOperator *>(line->get_tokens()[1]);
                 if(assign_op == nullptr) {
-                    std::cerr << "Invalid variable at start of line without =" << std::endl;
+                    Logging::error("Invalid variable at start of line without =");
                     assert(false);
                 }
                 assign_op->set_variable(variable);
@@ -43,12 +44,12 @@ bool VariablesResolver::resolve(std::vector<ILine *> &lines) {
                     /* Is pointer writing */
                     AssignOperator *assign_op = static_cast<AssignOperator *>(line->get_tokens()[2]);
                     if(assign_op == nullptr) {
-                        std::cerr << "Invalid pointer variable at start of line without =" << std::endl;
+                        Logging::error("Invalid pointer variable at start of line without =");
                         assert(false);
                     }
                     assign_op->set_variable(variable);
                     if(variable_map.count(variable->get_str()) == 0) {
-                        std::cerr << "Undeclared pointer variable" << std::endl;
+                        Logging::error("Undeclared pointer variable");
                         assert(false);
                     }
                     /* Writing to pointer value */
@@ -60,7 +61,7 @@ bool VariablesResolver::resolve(std::vector<ILine *> &lines) {
             }
             /* Try find old variable */
             if(variable_map.count(variable->get_str()) == 0) {
-                std::cerr << "Variable " << variable->get_str() << " has not been declared" <<std::endl;
+                Logging::error("Variable " + std::string(variable->get_str()) + " has not been declared");
                 assert(false);
             }
             /* Already existing variable */

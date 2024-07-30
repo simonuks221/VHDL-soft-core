@@ -1,6 +1,6 @@
 #include "tokenizer.hpp"
 #include "keywords.hpp"
-
+#include "logging.hpp"
 #include <unordered_set>
 #include <algorithm>
 #include <cassert>
@@ -133,7 +133,7 @@ bool Tokenizer::process_tokens(std::vector<ILine *> &lines) {
                 max_braces_index++;
             } else {
                 if(brace_indexes.empty()) {
-                    std::cerr << "Invalid braces" << std::endl;
+                    Logging::error("Invalid braces");
                     assert(false);
                 }
                 keyword->set_brace_idx(brace_indexes.top().first);
@@ -144,7 +144,7 @@ bool Tokenizer::process_tokens(std::vector<ILine *> &lines) {
         }
     }
     if(!brace_indexes.empty()) {
-        std::cerr << "Invalid braces at the end" << std::endl;
+        Logging::error("Invalid braces at the end");
         assert(false);
     }
     return true;

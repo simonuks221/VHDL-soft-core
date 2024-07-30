@@ -1,11 +1,12 @@
 #include "assembly.hpp"
+#include "logging.hpp"
 #include <string_view>
 #include <fstream>
 
 void Assembly::assemble(std::span<ILine *> all_lines) {
     std::ofstream assembly_file("assembly.txt");
     if (!assembly_file) {
-        std::cerr << "Error: Could not create the file." << std::endl;
+        Logging::error("Error: Could not create the file");
         return;
     }
     for(ILine* line : all_lines) {

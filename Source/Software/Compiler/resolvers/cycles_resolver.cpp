@@ -1,5 +1,6 @@
 #include "cycles_resolver.hpp"
 #include "keywords.hpp"
+#include "logging.hpp"
 #include <cassert>
 #include <algorithm>
 
@@ -15,7 +16,7 @@ bool CyclesResolver::resolve(std::vector<ILine *> &lines) {
                 continue;
             }
             if(!transition->parse_for_brace(line->get_tokens())) {
-                std::cerr << "Failed to parse for while braces " << std::endl;
+                Logging::error("Failed to parse for while braces ");
                 assert(false);
                 return false;
             }
@@ -23,7 +24,7 @@ bool CyclesResolver::resolve(std::vector<ILine *> &lines) {
             CurlyBracesKeyword *start_brace = transition->get_start_barce();
             auto it = std::find(line->get_tokens().begin(), line->get_tokens().end(), start_brace);
             if(it == line->get_tokens().end()) {
-                std::cerr << "Failed to refind brace in line" << std::endl;
+                Logging::error("Failed to refind brace in line");
                 assert(false);
             }
             line->get_tokens().erase(it);

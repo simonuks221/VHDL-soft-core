@@ -15,6 +15,7 @@
 #include "optimisation/data_flow_analysis.hpp"
 #include "resolvers/cycles_resolver.hpp"
 #include "resolvers/variables_resolver.hpp"
+#include "logging/logging.hpp"
 
 /*
 Possible optimisations:
@@ -50,7 +51,7 @@ int main(int argc, char* argv[]) {
     /* Open file specified from input arguments */
     std::string file_path;
     if(argc != 2) {
-        std::cerr << "Invalid amount of arguments" << std::endl;
+        Logging::error("Invalid amount of arguments");
         /* Use deafult path */
         file_path = "../code.txt";
     } else {
@@ -59,7 +60,7 @@ int main(int argc, char* argv[]) {
     /* Check if file correctly opened */
     std::ifstream inputFile(file_path);
     if (!inputFile.is_open()) {
-        std::cerr << "Failed to open the file: " << file_path << std::endl;
+        Logging::error("Failed to open the file " + file_path);
         return 1;
     }
     /* Tokenize */
@@ -69,7 +70,7 @@ int main(int argc, char* argv[]) {
     Tokenizer::process_tokens(lines);
     VariablesResolver::get_instance().resolve(lines);
     CyclesResolver::resolve(lines);
-    std::cout << "Got tokens:" <<std::endl;
+    Logging::info("Got tokens:");
     for(ILine *line : lines) {
         std::cout << line->get_tokens() << std::endl;
     }
@@ -77,7 +78,7 @@ int main(int argc, char* argv[]) {
     DataFlowAnalysis data_flow_analysis; //TODO: singleton
     data_flow_analysis.analyze(lines);
     /* Do shunting yard to convert sequentially */
-    std::cout << "Stack operations: " << std::endl;
+    Logging::info("Stack operations:");
     for(ILine *line : lines) {
         convert_to_stack_ops(line->get_tokens());
         std::cout << line->get_tokens() << std::endl;
@@ -88,11 +89,12 @@ int main(int argc, char* argv[]) {
     }
     /* Do constant folding */
     ConstantFolding::calculate(lines);
-    std::cout << "Tokens left:" <<std::endl;
+    Logging::info("Tokens left:");
     for(ILine *line : lines) {
         std::cout << line->get_tokens() << std::endl;
     }
     /* Assemble, convert into instructions */
     Assembly::assemble(lines);
+    Logging::info("Success");
     return 0;
 }

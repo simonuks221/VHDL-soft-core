@@ -1,6 +1,7 @@
 #include "token.hpp"
 #include "tokenizer.hpp"
 #include "keywords.hpp"
+#include "logging.hpp"
 #include <cassert>
 
 /* Token */
@@ -58,7 +59,7 @@ std::string_view Variable::assemble_instruction(void) const {
         return "";
     }
     if(ram_location == 0) {
-        std::cerr << "Invalid variable ram location" << std::endl;
+        Logging::error("Invalid variable ram location");
         assert(false);
     }
     /* Have variable in memory at RAM location */
@@ -113,7 +114,7 @@ eToken Keyword::get_type(void) const {
 ITokenPredefined::ITokenPredefined() {
     IToken *token = reinterpret_cast<IToken *>(this); //TODO: figure a way to use dynamic_cast
     if(token == nullptr) {
-        std::cerr << "Predefined token not in Itoken child" << std::endl;
+        Logging::error("Predefined token not in Itoken child");
         assert(false);
     }
     Tokenizer::add_operator(token);

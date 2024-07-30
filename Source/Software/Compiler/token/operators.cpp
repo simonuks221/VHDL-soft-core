@@ -1,5 +1,6 @@
 #include "tokenizer.hpp"
 #include "operators.hpp"
+#include "logging.hpp"
 #include <unordered_map>
 #include <cassert>
 
@@ -42,7 +43,7 @@ void BaseOperator::shunting_yard_action(std::stack<IToken*> &operator_stack, std
 std::string_view BaseOperator::assemble_instruction(void) const {
     if(asm_instruction == "") {
         /* Should not be sinthesisable */
-        std::cerr << "Invalid assemble instruction token: " << get_str() << std::endl;
+        Logging::error("Invalid assemble instruction token: " + std::string(get_str()));
         assert(false);
         return "";
     }
@@ -94,7 +95,7 @@ void ParentehsiesOperator::shunting_yard_action(std::stack<IToken*> &operator_st
             operator_stack.pop();
         }
     } else {
-        std::cerr << "Invalid parantheses operator: " << get_str() << std::endl;
+        Logging::error("Invalid parantheses operator: " + std::string(get_str()));
         assert(false);
     }
 }
@@ -119,7 +120,7 @@ Variable *AssignOperator::set_variable(void) {
 
 std::string_view AssignOperator::assemble_instruction(void) const {
     if(variable == nullptr) {
-        std::cerr << "Assign operator variable not set" << std::endl;
+        Logging::error("Assign operator variable not set");
         assert(false);
     }
     /* Push location only if not pointer */

@@ -1,4 +1,5 @@
 #include "data_flow_analysis.hpp"
+#include "logging.hpp"
 #include <cassert>
 #include <algorithm>
 
@@ -76,7 +77,7 @@ void DataFlowAnalysis::analyze(std::vector<ILine *> &all_lines) {
             IToken *definition = find_if_defined(token, last_block);
             if(definition == nullptr) {
                 /* Not defined */
-                std::cerr << "Can't find definition for variable: " << token->get_str() << std::endl;
+                Logging::error("Can't find definition for variable: " + std::string(token->get_str()));
                 assert(false);
             }
             /* Defined, replace this token with definition one */
