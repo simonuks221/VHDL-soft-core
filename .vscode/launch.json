@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": false,
-      "cwd": "c:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Software/Compiler",
-      "program": "c:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Software/Compiler/build/compiler.exe",
+      "cwd": "c:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Software/Assembler",
+      "program": "c:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Software/Assembler/build/assembler.exe",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [

@@ -1,7 +1,7 @@
 #include "commands.hpp"
 #include <iostream>
 
-CommandParsingResult CommandLoad::continue_parse(std::string_view input_word) {
+CommandParsingResult CommandPush::continue_parse(std::string_view input_word) {
     CommandParsingResult result = CommandParsingResult::End;
     unsigned value = 0;
     try {

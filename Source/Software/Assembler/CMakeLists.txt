@@ -6,8 +6,13 @@ project(assembler)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-add_executable(assembler assembler.cpp)
+add_executable(assembler
+    assembler.cpp
+)
 
 add_subdirectory(commands)
 
-target_link_libraries(assembler PRIVATE commands)
+target_link_libraries(assembler
+    PRIVATE
+        commands
+)

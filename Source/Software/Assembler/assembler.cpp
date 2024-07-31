@@ -9,7 +9,7 @@ int main(int argc, char* argv[]) {
     if(argc != 2) {
         std::cerr << "Invalid amount of arguments" << std::endl;
         /* Use deafult path */
-        file_path = "../code.txt";
+        file_path = "../assembly.txt";
     } else {
         file_path = argv[1];
     }
@@ -25,8 +25,15 @@ int main(int argc, char* argv[]) {
     while (std::getline(inputFile, line)) {
         command_parser.parse_line(line);
     }
-
     inputFile.close();
 
+    /* Output into file */
+    std::ofstream binary_file("binary.txt");
+    if (!binary_file) { //TODO: unify logging library
+        std::cerr << "Error: Could not create the file" << std::endl;
+        return 1;
+    }
+    binary_file.close();
+    std::cout << "Success" <<std::endl;
     return 0;
 }

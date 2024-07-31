@@ -1,12 +1,12 @@
 #include "command_base.hpp"
 
-class CommandLoad : public CommandBase {
+class CommandPush : public CommandBase {
     public:
-        CommandLoad() : CommandBase("LOAD", 2) {};
+        CommandPush() : CommandBase("PUSH", 1) {};
         CommandParsingResult continue_parse(std::string_view input_word) override;
 };
 
 class CommandPop : public CommandBase {
     public:
-        CommandPop() : CommandBase("POP", 1) {};
+        CommandPop() : CommandBase("POP", 0) {};
 };

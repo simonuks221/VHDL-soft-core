@@ -54,7 +54,8 @@
     "unordered_set": "cpp",
     "set": "cpp",
     "stack": "cpp",
-    "cassert": "cpp"
+    "cassert": "cpp",
+    "map": "cpp"
   },
   "C_Cpp_Runner.cCompilerPath": "gcc",
   "C_Cpp_Runner.cppCompilerPath": "g++",
