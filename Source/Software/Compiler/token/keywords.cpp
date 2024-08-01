@@ -43,7 +43,7 @@ IToken *ConditionalKeyword::clone(void) const {
 }
 
 std::string_view ConditionalKeyword::assemble_instruction(void) const {
-    instruction = std::string("IF FALSE JUMP ." + std::to_string(get_start_barce()->get_brace_idx()) + "end");
+    instruction = std::string("IF_FALSE_JUMP ." + std::to_string(get_start_barce()->get_brace_idx()) + "end");
     return instruction;
 }
 

@@ -1,14 +1,38 @@
 #include "commands.hpp"
 #include <iostream>
 
-CommandParsingResult CommandPush::continue_parse(std::string_view input_word) {
-    CommandParsingResult result = CommandParsingResult::End;
-    unsigned value = 0;
-    try {
-        value = std::stoul(std::string(input_word));
-    } catch (const std::exception& e) {
-        std::cerr << "Not integer value" << std::endl;
-        result = CommandParsingResult::Invalid;
-    }
-    return result;
+std::string CommandPush::parse_arguments(std::span<std::string_view> arguments) const {
+    return "PUSH";
+}
+
+std::string CommandPop::parse_arguments(std::span<std::string_view> arguments) const {
+    return "POP";
+}
+
+std::string CommandSaveMem::parse_arguments(std::span<std::string_view> arguments) const {
+    return "SAVE";
+}
+
+std::string CommandLoadMem::parse_arguments(std::span<std::string_view> arguments) const {
+    return "LOAD";
+}
+
+std::string CommandIfFalseJump::parse_arguments(std::span<std::string_view> arguments) const {
+    return "FALSE JUMP";
+}
+
+std::string CommandGoto::parse_arguments(std::span<std::string_view> arguments) const {
+    return "JUMP";
+}
+
+std::string CommandMoreThan::parse_arguments(std::span<std::string_view> arguments) const {
+    return "MORE THAN";
+}
+
+std::string CommandAdd::parse_arguments(std::span<std::string_view> arguments) const {
+    return "ADD";
+}
+
+std::string CommandLessThan::parse_arguments(std::span<std::string_view> arguments) const {
+    return "LESS THAN";
 }

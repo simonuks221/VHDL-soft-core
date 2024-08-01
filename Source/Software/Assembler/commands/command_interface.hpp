@@ -1,15 +1,15 @@
 #include <string_view>
+#include <string>
+#include <span>
 
-enum class CommandParsingResult {
-    Ok, /* Expected word received */
-    End,/* Expected word received, expect to be last in a series */
-    Invalid /* invalid word received */
-};
+#pragma once
 
-class CommandInterface {
+class ICommand {
     public:
-        CommandInterface() = default;
-        ~CommandInterface() = default;
-        virtual CommandParsingResult is_valid(std::string_view input_word) = 0;
-        virtual CommandParsingResult continue_parse(std::string_view input_word) = 0;
+        ICommand() = default;
+        ~ICommand() = default;
+
+        virtual std::string_view get_codeword(void) const = 0;
+        virtual std::string parse_arguments(std::span<std::string_view> arguments) const = 0;
+        virtual unsigned int get_argument_amount(void) const = 0;
 };

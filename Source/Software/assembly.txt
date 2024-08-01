@@ -1,4 +1,43 @@
 PUSH 0
 PUSH 1	#load a var loc
-POP
+SAVE_MEM	#save a var
+
+.1start
+PUSH 1	#load a var loc
+LOAD_MEM	#load a var loc
+PUSH 10
+MORE_THAN
+IF_FALSE_JUMP .1end
+
+PUSH 1	#load a var loc
+LOAD_MEM	#load a var loc
+PUSH 1
+ADD
+PUSH 1	#load a var loc
+SAVE_MEM	#save a var
+
+.2start
+PUSH 1	#load a var loc
+LOAD_MEM	#load a var loc
+PUSH 7
+LESS_THAN
+IF_FALSE_JUMP .2end
+
+PUSH 8
+PUSH 1	#load a var loc
+SAVE_MEM	#save a var
+
+.2end
+
+GOTO .1start
+.1end
+
+PUSH 5
+PUSH 2	#load c var loc
+SAVE_MEM	#save c var
+
+PUSH 2	#load c var loc
+LOAD_MEM	#load c var loc
+PUSH 3
+SAVE_MEM	#save c var
 

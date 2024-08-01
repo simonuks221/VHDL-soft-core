@@ -19,20 +19,19 @@ int main(int argc, char* argv[]) {
         std::cerr << "Failed to open the file: " << file_path << std::endl;
         return 1;
     }
-    /* Parse file line by line */
-    CommandParser &command_parser = CommandParserSingleton::get_instance();
-    std::string line;
-    while (std::getline(inputFile, line)) {
-        command_parser.parse_line(line);
-    }
-    inputFile.close();
-
     /* Output into file */
     std::ofstream binary_file("binary.txt");
     if (!binary_file) { //TODO: unify logging library
         std::cerr << "Error: Could not create the file" << std::endl;
         return 1;
     }
+    /* Parse file line by line into output file */
+    CommandParser &command_parser = CommandParserSingleton::get_instance();
+    std::string line;
+    while (std::getline(inputFile, line)) {
+        command_parser.parse_line(line, binary_file);
+    }
+    inputFile.close();
     binary_file.close();
     std::cout << "Success" <<std::endl;
     return 0;

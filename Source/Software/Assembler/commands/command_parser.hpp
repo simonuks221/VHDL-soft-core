@@ -1,19 +1,22 @@
 #include <unordered_map>
 #include <string_view>
+#include <fstream>
+#include "command_interface.hpp"
 
-class CommandBase;
+#pragma once
 
 class CommandParser {
     private:
-        static std::unordered_map<std::string_view, CommandBase*> commands;
+        static constexpr std::string word_delimiters = " \t";
+        static std::unordered_map<std::string_view, ICommand*> commands;
 
-        CommandBase *try_parse_token(std::string_view token);
+        ICommand *try_parse_token(std::string_view token);
     public:
         CommandParser() = default;
         ~CommandParser() = default;
 
-        void add_command(CommandBase *new_command);
-        bool parse_line(std::string_view line);
+        void add_command(ICommand *new_command);
+        bool parse_line(std::string_view line, std::ofstream &binary_file);
 };
 
 class CommandParserSingleton {
