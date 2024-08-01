@@ -1,5 +1,7 @@
 #include "commands.hpp"
 #include <iostream>
+#include <string>
+#include <cassert>
 
 std::string CommandPush::parse_arguments(std::span<std::string_view> arguments) const {
     return "PUSH";
@@ -18,21 +20,20 @@ std::string CommandLoadMem::parse_arguments(std::span<std::string_view> argument
 }
 
 std::string CommandIfFalseJump::parse_arguments(std::span<std::string_view> arguments) const {
-    return "FALSE JUMP";
+    return "FALSE_JUMP";
 }
 
 std::string CommandGoto::parse_arguments(std::span<std::string_view> arguments) const {
-    return "JUMP";
+    unsigned int jump_location = 0;
+    try {
+        jump_location = std::stoi(arguments[0].data());
+    } catch (...) {
+        std::cerr << "Failed integer conversion of: " << arguments[0] << std::endl;
+        assert(false);
+    }
+    return std::string("JUMP " + std::to_string(jump_location));
 }
 
-std::string CommandMoreThan::parse_arguments(std::span<std::string_view> arguments) const {
-    return "MORE THAN";
-}
-
-std::string CommandAdd::parse_arguments(std::span<std::string_view> arguments) const {
-    return "ADD";
-}
-
-std::string CommandLessThan::parse_arguments(std::span<std::string_view> arguments) const {
-    return "LESS THAN";
+std::string CommandAlu::parse_arguments(std::span<std::string_view> arguments) const {
+    return std::string(get_codeword().data() + std::to_string(alu_code));
 }

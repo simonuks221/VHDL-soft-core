@@ -1,4 +1,5 @@
 #include "command_base.hpp"
+#include <stdint.h>
 
 #pragma once
 
@@ -29,13 +30,13 @@ class CommandLoadMem : public CommandBase {
 
 class CommandIfFalseJump : public CommandBase {
     public:
-        CommandIfFalseJump() : CommandBase("IF_FALSE_JUMP", 0) {};
+        CommandIfFalseJump() : CommandBase("IF_FALSE_JUMP", 1) {};
         std::string parse_arguments(std::span<std::string_view> arguments) const override;
 };
 
 class CommandGoto : public CommandBase {
     public:
-        CommandGoto() : CommandBase("GOTO", 0) {};
+        CommandGoto() : CommandBase("GOTO", 1) {};
         std::string parse_arguments(std::span<std::string_view> arguments) const override;
 };
 
@@ -45,15 +46,11 @@ class CommandMoreThan : public CommandBase {
         std::string parse_arguments(std::span<std::string_view> arguments) const override;
 };
 
-class CommandAdd : public CommandBase {
+class CommandAlu : public CommandBase {
+    private:
+        uint8_t alu_code = 0x00;
     public:
-        CommandAdd() : CommandBase("ADD", 0) {};
-        std::string parse_arguments(std::span<std::string_view> arguments) const override;
-};
-
-class CommandLessThan : public CommandBase {
-    public:
-        CommandLessThan() : CommandBase("LESS_THAN", 0) {};
+        CommandAlu(std::string codeword, uint8_t alu_code) : CommandBase(codeword, 0), alu_code(alu_code) {};
         std::string parse_arguments(std::span<std::string_view> arguments) const override;
 };
 

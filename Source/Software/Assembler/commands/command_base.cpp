@@ -2,7 +2,7 @@
 #include "command_parser.hpp"
 
 CommandBase::CommandBase(std::string _codeword, unsigned int _argument_amount) : codeword(_codeword), argument_amount(_argument_amount) {
-    CommandParserSingleton::get_instance().add_command(this);
+    CommandParser::add_command(this);
 };
 
 unsigned int CommandBase::get_argument_amount(void) const {
