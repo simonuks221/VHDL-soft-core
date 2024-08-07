@@ -1,52 +1,88 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.NUMERIC_STD.ALL;
 
 entity decoder is
     Port (
         CLK : in STD_LOGIC;
-        EN : in STD_LOGIC;
+        EN : in STD_LOGIC; --TODO: not used
         INSTRUCTION: in STD_LOGIC_VECTOR(7 downto 0);
         DATA_OUT: out STD_LOGIC_VECTOR(7 downto 0);
-        PUSH: out STD_LOGIC;
-        POP: out STD_LOGIC;
-        PASSTHROUGH: out STD_LOGIC
+        ALU_OP: out STD_LOGIC_VECTOR(3 downto 0);
+        STACK_PUSH: out STD_LOGIC;
+        STACK_POP: out STD_LOGIC;
+        STACK_AMOUNT: out STD_LOGIC_VECTOR(4 downto 0);
+        STACK_SOURCE: out STD_LOGIC_VECTOR(1 downto 0)
     );
 end decoder;
 
 architecture Behavioral of decoder is
+    constant stack_source_immediate : STD_LOGIC_VECTOR(1 downto 0) := "00";
+    constant stack_source_alu : STD_LOGIC_VECTOR(1 downto 0) := "01";
+    constant stack_source_memory : STD_LOGIC_VECTOR(1 downto 0) := "10";
+
     signal push_delay : STD_LOGIC := '0';
     signal pop_delay : STD_LOGIC := '0';
 begin
 
--- MSB
-
--- X
--- X
--- X
--- X
-
--- X
--- EN_ALU
--- POP
--- PUSH
-
--- LSB
-
 process(CLK)
 begin
     if rising_edge(CLK) then
-        push_delay <= '0';
-        pop_delay <= '0';
-        if EN = '1' then
-            push_delay <= INSTRUCTION(0);
-            pop_delay <= INSTRUCTION(1);
-            PASSTHROUGH <= not INSTRUCTION(2);
-        end if;
-        PUSH <= push_delay;
-        POP <= pop_delay;
+        -- if EN = '0' then
+        --     STACK_AMOUNT <= (others => '0');
+        --     ALU_OP <= (others => '0');
+        --     DATA_OUT <= (others => '0');
+        --     STACK_SOURCE <= (others => '0');
+        --     STACK_POP <= '0';
+        --     STACK_PUSH <= '0';
+        -- else
+            DATA_OUT <= (others => '0');
+            STACK_SOURCE <= (others => '0');
+            STACK_AMOUNT <= (others => '0');
+            ALU_OP <= (others => '0');
+            STACK_POP <= '0';
+            STACK_PUSH <= '0';
+            case INSTRUCTION(7 downto 5) is
+                when "001" =>
+                    -- ALU operation
+                    STACK_SOURCE <= stack_source_alu;
+                    STACK_POP <= '1'; --Push and pop, TODO:bad practice
+                    STACK_PUSH <= '1';
+                    ALU_OP <= INSTRUCTION(3 downto 0);
+                    STACK_AMOUNT <= std_logic_vector(to_unsigned(1, STACK_AMOUNT'length));
+                when "000" =>
+                    -- Pop amount
+                    STACK_POP <= '1';
+                    STACK_AMOUNT <= INSTRUCTION(4 downto 0);
+                when "010" =>
+                    --Memory load/store
+                    --TODO
+                    STACK_PUSH <= '1';
+                    STACK_AMOUNT <= std_logic_vector(to_unsigned(1, STACK_AMOUNT'length));
+                when "011" =>
+                    --Jump
+                    --TODO
+                when others =>
+                    --Push constant
+                    STACK_SOURCE <= stack_source_immediate;
+                    STACK_PUSH <= '1';
+                    DATA_OUT <= "0" & INSTRUCTION(6 downto 0);
+                    STACK_AMOUNT <= std_logic_vector(to_unsigned(1, STACK_AMOUNT'length));
+
+            end case;
+        -- end if;
+        -- push_delay <= '0';
+        -- pop_delay <= '0';
+        -- if EN = '1' then
+        --     push_delay <= INSTRUCTION(0);
+        --     pop_delay <= INSTRUCTION(1);
+        --     PASSTHROUGH <= not INSTRUCTION(2);
+        -- end if;
+        -- STACK_PUSH <= push_delay;
+        -- STACK_POP <= pop_delay;
     end if;
 end process;
 
-DATA_OUT <= "0000" & INSTRUCTION( 7 downto 4);
+-- DATA_OUT <= "0000" & INSTRUCTION( 7 downto 4);
 
 end architecture;
