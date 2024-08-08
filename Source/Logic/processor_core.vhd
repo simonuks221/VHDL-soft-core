@@ -18,7 +18,9 @@ architecture Behavioral of processor_core is
 			P_COUNTER: out STD_LOGIC_VECTOR(7 downto 0);
 			DECODE_EN: out STD_LOGIC;
 			EXECUTE_EN: out STD_LOGIC;
-			STORE_EN: out STD_LOGIC
+			STORE_EN: out STD_LOGIC;
+			NEW_PC_EN: in STD_LOGIC;
+			NEW_PC: in STD_LOGIC_VECTOR(7 downto 0) := (others => '0')
 		);
 	end component;
 
@@ -47,7 +49,9 @@ architecture Behavioral of processor_core is
 			STACK_PUSH: out STD_LOGIC;
 			STACK_POP: out STD_LOGIC;
 			STACK_AMOUNT: out STD_LOGIC_VECTOR(4 downto 0);
-			STACK_SOURCE: out STD_LOGIC_VECTOR(1 downto 0)
+			STACK_SOURCE: out STD_LOGIC_VECTOR(1 downto 0);
+			NEW_PC_EN: out STD_LOGIC;
+			NEW_PC_IF_TRUE: out STD_LOGIC
 		);
 	end component;
 
@@ -70,6 +74,9 @@ architecture Behavioral of processor_core is
 	signal DECODE_EN: STD_LOGIC := '0';
 	signal EXECUTE_EN: STD_LOGIC := '0';
 	signal STORE_EN: STD_LOGIC := '0';
+	signal new_pc_en: STD_LOGIC := '0';
+	signal new_pc_condition: STD_LOGIC := '0';
+	signal new_pc : STD_LOGIC_VECTOR(7 downto 0) := (others => '0');
 	--Stack signals
 	signal stack_data_in : STD_LOGIC_VECTOR(7 downto 0) := (others => '0');
 	signal stack_top : STD_LOGIC_VECTOR(7 downto 0) := (others => '0');
@@ -83,6 +90,8 @@ architecture Behavioral of processor_core is
 	signal decoder_data : STD_LOGIC_VECTOR(7 downto 0) := (others => '0');
 	signal stack_source: STD_LOGIC_VECTOR(1 downto 0) := (others => '0');
 	signal alu_op: STD_LOGIC_VECTOR(3 downto 0) := (others => '0');
+	signal decoder_new_pc: STD_LOGIC := '0';
+	signal new_pc_if_true: STD_LOGIC := '0';
 	--ALU
 	signal alu_data : STD_LOGIC_VECTOR(7 downto 0) := (others => '0');
 
@@ -95,12 +104,37 @@ stack_data_in <= decoder_data when stack_source = stack_source_immediate else
 				memory_data when stack_source = stack_source_memory else
 				(others => '0');
 
-pc_1 : pc port map(CLK, PROGRAM_MEMORY_A, DECODE_EN, EXECUTE_EN, STORE_EN);
+new_pc_en <= new_pc_condition and decoder_new_pc;
+
+process(CLK)
+begin
+	if rising_edge(CLK) then
+		if EXECUTE_EN = '1' then
+			if new_pc_if_true = '1' and stack_next = std_logic_vector(to_unsigned(1, stack_next'length)) then
+				new_pc_condition <= '1';
+			elsif new_pc_if_true = '0' and stack_next /= std_logic_vector(to_unsigned(1, stack_next'length)) then
+				new_pc_condition <= '1';
+			else
+				new_pc_condition <= '0';
+			end if;
+		end if; --TODO: latch
+
+		-- new_pc_condition <= '1' when  else
+		-- 	'1' when new_pc_if_true = '0' and stack_next /= std_Logic_vector(to_unsigned(1, stack_next'length)) else
+		-- 	'0';
+	end if;
+end process;
+
+
+new_pc <= stack_top;
+
+pc_1 : pc port map(CLK, PROGRAM_MEMORY_A, DECODE_EN, EXECUTE_EN, STORE_EN, new_pc_en, new_pc);
 
 stack_1 : stack port map(CLK, STORE_EN, stack_data_in, stack_top, stack_next, stack_push, stack_pop, stack_amount,
 						overflow, underflow);
 
-decoder_1 : decoder port map (CLK, DECODE_EN, PROGRAM_MEMORY_D, decoder_data, alu_op, stack_push, stack_pop, stack_amount, stack_source);
+decoder_1 : decoder port map (CLK, DECODE_EN, PROGRAM_MEMORY_D, decoder_data, alu_op, stack_push, stack_pop, stack_amount,
+							stack_source, decoder_new_pc, new_pc_if_true);
 
 alu_1 : alu port map (CLK, EXECUTE_EN, stack_top, stack_next, alu_op, alu_data);
 

@@ -8,7 +8,9 @@ entity pc is
 		P_COUNTER: out STD_LOGIC_VECTOR(7 downto 0) := (others => '0');
 		DECODE_EN: out STD_LOGIC;
 		EXECUTE_EN: out STD_LOGIC;
-		STORE_EN: out STD_LOGIC
+		STORE_EN: out STD_LOGIC;
+		NEW_PC_EN: in STD_LOGIC;
+		NEW_PC: in STD_LOGIC_VECTOR(7 downto 0) := (others => '0')
 	);
 end pc;
 
@@ -16,6 +18,8 @@ architecture Behavioral of pc is
 	signal internal_counter : integer range 0 to 255 := 0;
 	signal delay_counter : integer range 0 to 4 := 0;
 begin
+
+P_COUNTER <= std_logic_vector(to_unsigned(internal_counter, P_COUNTER'length));
 
 process(CLK)
 begin
@@ -26,8 +30,11 @@ begin
 		delay_counter <= delay_counter + 1;
 		case delay_counter is
 			when 0 =>
-				internal_counter <= internal_counter + 1; --TODO: could be a problem that PC is delayed by 1
-				P_COUNTER <= std_logic_vector(to_unsigned(internal_counter, P_COUNTER'length));
+				if NEW_PC_EN = '1' then
+					internal_counter <= to_integer(unsigned(NEW_PC));
+				else
+					internal_counter <= internal_counter + 1; --TODO: could be a problem that PC is delayed by 1
+				end if;
 			when 1 =>
 				DECODE_EN <= '1';
 			when 2 =>

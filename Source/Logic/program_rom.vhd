@@ -13,7 +13,7 @@ entity program_rom is
 end program_rom;
 
 architecture Behavioral of program_rom is
-	constant max_program_count : integer := 8;
+	constant max_program_count : integer := 11;
 	type program_array_type is array (0 to max_program_count) of std_logic_vector(7 downto 0);
 	--Read from file hexadecimal data
 	file file_voltages: text;

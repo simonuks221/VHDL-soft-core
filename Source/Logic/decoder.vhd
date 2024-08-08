@@ -12,7 +12,9 @@ entity decoder is
         STACK_PUSH: out STD_LOGIC;
         STACK_POP: out STD_LOGIC;
         STACK_AMOUNT: out STD_LOGIC_VECTOR(4 downto 0);
-        STACK_SOURCE: out STD_LOGIC_VECTOR(1 downto 0)
+        STACK_SOURCE: out STD_LOGIC_VECTOR(1 downto 0);
+        NEW_PC_EN: out STD_LOGIC;
+        NEW_PC_IF_TRUE: out STD_LOGIC
     );
 end decoder;
 
@@ -42,6 +44,8 @@ begin
             ALU_OP <= (others => '0');
             STACK_POP <= '0';
             STACK_PUSH <= '0';
+            NEW_PC_EN <= '0';
+            NEW_PC_IF_TRUE <= '0';
             case INSTRUCTION(7 downto 5) is
                 when "001" =>
                     -- ALU operation
@@ -61,6 +65,10 @@ begin
                     STACK_AMOUNT <= std_logic_vector(to_unsigned(1, STACK_AMOUNT'length));
                 when "011" =>
                     --Jump
+                    NEW_PC_EN <= '1';
+                    STACK_POP <= '1';
+                    STACK_AMOUNT <= std_logic_vector(to_unsigned(2, STACK_AMOUNT'length));
+                    NEW_PC_IF_TRUE <= INSTRUCTION(0);
                     --TODO
                 when others =>
                     --Push constant

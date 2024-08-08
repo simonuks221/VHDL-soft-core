@@ -61,6 +61,8 @@ begin
                 stack_top_address <= stack_top_address - amount_int;
                 if stack_top_address /= amount_int then
                     stack_next_address <= stack_next_address - amount_int;
+                else
+                stack_next_address <= 0;
                 end if;
                 if stack_top_address < amount_int then
                     UNDERFLOW <= '1';
