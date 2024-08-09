@@ -51,7 +51,8 @@ architecture Behavioral of processor_core is
 			STACK_AMOUNT: out STD_LOGIC_VECTOR(4 downto 0);
 			STACK_SOURCE: out STD_LOGIC_VECTOR(1 downto 0);
 			NEW_PC_EN: out STD_LOGIC;
-			NEW_PC_IF_TRUE: out STD_LOGIC
+			NEW_PC_IF_TRUE: out STD_LOGIC;
+			MEMORY_WRITE: out STD_LOGIC
 		);
 	end component;
 
@@ -63,6 +64,16 @@ architecture Behavioral of processor_core is
 			OP_B : in STD_LOGIC_VECTOR(7 downto 0);
 			CMD : in STD_LOGIC_VECTOR(3 downto 0);
 			RESULT : out STD_LOGIC_VECTOR(7 downto 0)
+		);
+	end component;
+
+	component ram is
+		Port (
+			CLK    : in  std_logic;
+			WE     : in  std_logic;
+			ADDR   : in  std_logic_vector(7 downto 0);
+			DATA_IN  : in  std_logic_vector(7 downto 0);
+			DATA_OUT : out std_logic_vector(7 downto 0)
 		);
 	end component;
 
@@ -92,10 +103,10 @@ architecture Behavioral of processor_core is
 	signal alu_op: STD_LOGIC_VECTOR(3 downto 0) := (others => '0');
 	signal decoder_new_pc: STD_LOGIC := '0';
 	signal new_pc_if_true: STD_LOGIC := '0';
+	signal memory_write: STD_LOGIC := '0';
 	--ALU
 	signal alu_data : STD_LOGIC_VECTOR(7 downto 0) := (others => '0');
-
-	--UNUSED
+	--RAM
 	signal memory_data : STD_LOGIC_VECTOR(7 downto 0) := (others => '0');
 begin
 
@@ -117,14 +128,9 @@ begin
 			else
 				new_pc_condition <= '0';
 			end if;
-		end if; --TODO: latch
-
-		-- new_pc_condition <= '1' when  else
-		-- 	'1' when new_pc_if_true = '0' and stack_next /= std_Logic_vector(to_unsigned(1, stack_next'length)) else
-		-- 	'0';
+		end if;
 	end if;
 end process;
-
 
 new_pc <= stack_top;
 
@@ -134,8 +140,10 @@ stack_1 : stack port map(CLK, STORE_EN, stack_data_in, stack_top, stack_next, st
 						overflow, underflow);
 
 decoder_1 : decoder port map (CLK, DECODE_EN, PROGRAM_MEMORY_D, decoder_data, alu_op, stack_push, stack_pop, stack_amount,
-							stack_source, decoder_new_pc, new_pc_if_true);
+							stack_source, decoder_new_pc, new_pc_if_true, memory_write);
 
 alu_1 : alu port map (CLK, EXECUTE_EN, stack_top, stack_next, alu_op, alu_data);
+
+ram_1 : ram port map(CLK, memory_write, stack_top, stack_next, memory_data);
 
 end architecture;

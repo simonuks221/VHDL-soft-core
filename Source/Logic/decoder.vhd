@@ -14,7 +14,8 @@ entity decoder is
         STACK_AMOUNT: out STD_LOGIC_VECTOR(4 downto 0);
         STACK_SOURCE: out STD_LOGIC_VECTOR(1 downto 0);
         NEW_PC_EN: out STD_LOGIC;
-        NEW_PC_IF_TRUE: out STD_LOGIC
+        NEW_PC_IF_TRUE: out STD_LOGIC;
+        MEMORY_WRITE: out STD_LOGIC
     );
 end decoder;
 
@@ -46,14 +47,15 @@ begin
             STACK_PUSH <= '0';
             NEW_PC_EN <= '0';
             NEW_PC_IF_TRUE <= '0';
+            MEMORY_WRITE <= '0';
             case INSTRUCTION(7 downto 5) is
                 when "001" =>
                     -- ALU operation
                     STACK_SOURCE <= stack_source_alu;
-                    STACK_POP <= '1'; --Push and pop, TODO:bad practice
+                    STACK_POP <= '1'; --Push 1 and pop 2, TODO:bad practice
                     STACK_PUSH <= '1';
                     ALU_OP <= INSTRUCTION(3 downto 0);
-                    STACK_AMOUNT <= std_logic_vector(to_unsigned(1, STACK_AMOUNT'length));
+                    STACK_AMOUNT <= std_logic_vector(to_unsigned(2, STACK_AMOUNT'length));
                 when "000" =>
                     -- Pop amount
                     STACK_POP <= '1';
@@ -61,8 +63,18 @@ begin
                 when "010" =>
                     --Memory load/store
                     --TODO
-                    STACK_PUSH <= '1';
-                    STACK_AMOUNT <= std_logic_vector(to_unsigned(1, STACK_AMOUNT'length));
+                    if INSTRUCTION(0) = '1' then
+                        --Store
+                        STACK_POP <= '1';
+                        STACK_AMOUNT <= std_logic_vector(to_unsigned(2, STACK_AMOUNT'length));
+                    else
+                        --Load
+                        STACK_POP <= '1';
+                        STACK_PUSH <= '1';
+                        STACK_AMOUNT <= std_logic_vector(to_unsigned(1, STACK_AMOUNT'length));
+                    end if;
+                    MEMORY_WRITE <= INSTRUCTION(0);
+                    STACK_SOURCE <= stack_source_memory;
                 when "011" =>
                     --Jump
                     NEW_PC_EN <= '1';

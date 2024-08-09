@@ -39,16 +39,17 @@ begin
             --TODO: make into vector and make into decoder with when statements, maybe will speed up
             amount_int := to_integer(unsigned(AMOUNT));
             if PUSH = '1' and POP = '1' then
-                --Quick fix for ALU that pops 2 and pushes one --TODO: do not hardcode
-                stack_array(stack_top_address - 1) <= DATA_IN;
-                stack_top_address <= stack_top_address - 1;
-                if stack_top_address /= 1 then
-                    stack_next_address <= stack_next_address - amount_int;
+                --PUSH 1 and POP "amount_int"
+                stack_array(stack_top_address - amount_int + 1) <= DATA_IN;
+                stack_top_address <= stack_top_address - amount_int + 1;
+                if stack_top_address /= amount_int + 1 then
+                    stack_next_address <= stack_next_address - amount_int + 1;
                 end if;
-                if stack_top_address < 1 then
+                if stack_top_address < amount_int then
                     UNDERFLOW <= '1';
                 end if;
             elsif PUSH = '1' then
+                --PUSH to stack
                 stack_array(stack_top_address + 1) <= DATA_IN;
                 stack_top_address <= stack_top_address + 1;
                 if stack_top_address /= 0 then
@@ -58,6 +59,7 @@ begin
                     OVERFLOW <= '1';
                 end if;
             elsif POP = '1' then
+                --POP from stack
                 stack_top_address <= stack_top_address - amount_int;
                 if stack_top_address /= amount_int then
                     stack_next_address <= stack_next_address - amount_int;
