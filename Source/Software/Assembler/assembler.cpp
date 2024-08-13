@@ -1,8 +1,8 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include "commands/command_parser.hpp"
-#include "preprocessing/preprocessor.hpp"
+#include "command_parser.hpp"
+#include "preprocessor.hpp"
 
 /* Removes comments, empty lines from inputs */
 void read_lines(std::vector<std::string> &lines, std::ifstream &file) {

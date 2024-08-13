@@ -12,3 +12,7 @@ unsigned int CommandBase::get_argument_amount(void) const {
 std::string_view CommandBase::get_codeword(void) const {
     return codeword;
 }
+
+void CommandBase::parse_arguments(std::span<std::string_view> arguments) {
+    /* Needs to be implemented in children */
+}

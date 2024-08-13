@@ -15,7 +15,7 @@
 #include "optimisation/data_flow_analysis.hpp"
 #include "resolvers/cycles_resolver.hpp"
 #include "resolvers/variables_resolver.hpp"
-#include "logging/logging.hpp"
+#include "logging.hpp"
 
 /*
 Possible optimisations:

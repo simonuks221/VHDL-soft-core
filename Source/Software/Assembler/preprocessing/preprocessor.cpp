@@ -1,11 +1,14 @@
 #include <cassert>
 #include <string>
 #include <iostream>
+#include <cstring>
+#include <sstream>
 #include "preprocessor.hpp"
 
 void Preprocessor::process_links(std::vector<std::string> &lines) {
     find_all_links(lines);
     replace_all_links(lines);
+    add_link_loads_to_jump(lines);
 }
 
 void Preprocessor::find_all_links(std::vector<std::string> &lines) {
@@ -54,4 +57,24 @@ void Preprocessor::replace_if_link(std::string &line, size_t start, size_t end) 
         assert(false);
     }
     line.replace(start, end - start, std::to_string(all_links.at(link_word)));
+}
+
+void Preprocessor::add_link_loads_to_jump(std::vector<std::string> &lines) {
+    static constexpr std::string load_cmd = "JUMP";
+    for(unsigned int i = 0; i < lines.size(); i++) {
+        std::string &line = lines[i];
+        if(std::strncmp(load_cmd.c_str(), line.c_str(), load_cmd.size()) != 0) {
+            continue;
+        }
+        /* Get third argument that is jump location */
+        //TODO: make nicer
+        std::stringstream ss(line);
+        std::string word;
+        std::getline(ss, word, ' ');
+        std::getline(ss, word, ' ');
+        std::getline(ss, word, ' ');
+        std::string load_cmd = "PUSH " + word;
+        lines.insert(lines.begin() + i, load_cmd);
+        i++;
+    }
 }

@@ -12,6 +12,7 @@ class Preprocessor {
 
         void find_all_links(std::vector<std::string> &lines);
         void replace_all_links(std::vector<std::string> &lines);
+        void add_link_loads_to_jump(std::vector<std::string> &lines);
         void replace_if_link(std::string &line, size_t start, size_t end);
     public:
         Preprocessor() {};

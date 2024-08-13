@@ -1,5 +1,3 @@
-project(Resolvers)
-
 add_library(resolvers
     cycles_resolver.cpp
     variables_resolver.cpp

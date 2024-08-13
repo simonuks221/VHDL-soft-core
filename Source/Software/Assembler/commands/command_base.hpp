@@ -13,5 +13,6 @@ class CommandBase : ICommand {
         ~CommandBase() = default;
 
         std::string_view get_codeword(void) const override;
+        void parse_arguments(std::span<std::string_view> arguments) override;
         unsigned int get_argument_amount(void) const override;
 };

@@ -7,16 +7,22 @@
 
 std::unordered_map<std::string_view, ICommand*> CommandParser::commands;
 
+/* Command declaration */
 CommandPush push_cmd;
 CommandPop pop_cmd;
-CommandSaveMem save_mem_cmd;
-CommandLoadMem load_mem_cmd;
-CommandIfFalseJump if_false_jump_cmd;
-CommandGoto goto_cmd;
-/* ALU commands */
-CommandAlu more_than_cmd("MORE_THAN", 0x00);
-CommandAlu less_than_cmd("LESS_THAN", 0x00);
-CommandAlu add_cmd("ADD", 0x00);
+CommandAlu addition_cmd("ADD", 0x00);
+CommandAlu subtraction_cmd("SUB", 0x01);
+CommandAlu multiplication_cmd("MULT", 0x02);
+CommandAlu shift_right_cmd("SHFT_R", 0x03);
+CommandAlu shift_left_cmd("SHFT_L", 0x04);
+CommandAlu or_cmd("OR", 0x05);
+CommandAlu and_cmd("AND", 0x06);
+CommandAlu xor_cmd("XOR", 0x07);
+
+CommandBasic store_cmd("STORE", 0x40);
+CommandBasic load_cmd("LOAD", 0x41);
+CommandJump jump_cmd;
+
 
 void CommandParser::add_command(ICommand *new_command) {
     commands.insert_or_assign(new_command->get_codeword(), new_command);
@@ -72,7 +78,13 @@ bool CommandParser::parse_lines(std::vector<std::string> &lines, std::ofstream &
                     assert(false);
                 }
                 std::span<std::string_view> arguments(words.begin()+i+1, words.begin()+i+1+current_command->get_argument_amount());
-                binary_file << current_command->parse_arguments(arguments) << std::endl;
+                // binary_file << current_command->parse_arguments(arguments) << std::endl;
+                current_command->parse_arguments(arguments);
+                /* Convert command to hex string */
+                uint8_t command = current_command->assemble();
+                char buffer[2];
+                std::sprintf(buffer, "%02x", command);
+                binary_file << std::string(buffer) << std::endl;
                 i += current_command->get_argument_amount();
             }
         }

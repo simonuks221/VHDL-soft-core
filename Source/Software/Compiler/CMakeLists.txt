@@ -13,6 +13,9 @@ add_subdirectory(token)
 add_subdirectory(resolvers)
 add_subdirectory(logging)
 
+include_directories(logging)
+include_directories(token)
+
 target_link_libraries(compiler
     PRIVATE
         optimisation

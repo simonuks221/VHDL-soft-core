@@ -4,46 +4,29 @@
 #pragma once
 
 class CommandPush : public CommandBase {
+    private:
+        unsigned int constant = 0;
     public:
         CommandPush() : CommandBase("PUSH", 1) {};
-        std::string parse_arguments(std::span<std::string_view> arguments) const override;
-
+        void parse_arguments(std::span<std::string_view> arguments) override;
+        uint8_t assemble(void) const override;
 };
 
-class CommandPop : public CommandBase {
+class CommandPop : public CommandBase { //TODO: could be single command class with bit masking
+    private:
+        unsigned int amount = 0;
     public:
-        CommandPop() : CommandBase("POP", 0) {};
-        std::string parse_arguments(std::span<std::string_view> arguments) const override;
+        CommandPop() : CommandBase("POP", 1) {};
+        void parse_arguments(std::span<std::string_view> arguments) override;
+        uint8_t assemble(void) const override;
 };
 
-class CommandSaveMem : public CommandBase {
+class CommandBasic : public CommandBase {
+    private:
+        const uint8_t instruction = 0;
     public:
-        CommandSaveMem() : CommandBase("SAVE_MEM", 0) {};
-        std::string parse_arguments(std::span<std::string_view> arguments) const override;
-};
-
-class CommandLoadMem : public CommandBase {
-    public:
-        CommandLoadMem() : CommandBase("LOAD_MEM", 0) {};
-        std::string parse_arguments(std::span<std::string_view> arguments) const override;
-};
-
-class CommandIfFalseJump : public CommandBase {
-    public:
-        CommandIfFalseJump() : CommandBase("IF_FALSE_JUMP", 1) {};
-        std::string parse_arguments(std::span<std::string_view> arguments) const override;
-};
-
-class CommandGoto : public CommandBase {
-    public:
-        CommandGoto() : CommandBase("GOTO", 1) {};
-        std::string parse_arguments(std::span<std::string_view> arguments) const override;
-};
-
-class CommandMoreThan : public CommandBase {
-    public:
-        CommandMoreThan() : CommandBase("MORE_THAN", 0) {};
-        std::string parse_arguments(std::span<std::string_view> arguments) const override;
+        CommandBasic(std::string codeword, uint8_t instruction) : CommandBase(codeword, 0), instruction(instruction) {};
+        uint8_t assemble(void) const override;
 };
 
 class CommandAlu : public CommandBase {
@@ -51,6 +34,14 @@ class CommandAlu : public CommandBase {
         uint8_t alu_code = 0x00;
     public:
         CommandAlu(std::string codeword, uint8_t alu_code) : CommandBase(codeword, 0), alu_code(alu_code) {};
-        std::string parse_arguments(std::span<std::string_view> arguments) const override;
+        uint8_t assemble(void) const override;
 };
 
+class CommandJump : public CommandBase {
+    private:
+        bool jump_condition = false;
+    public:
+        CommandJump() : CommandBase("JUMP", 1) {};
+        void parse_arguments(std::span<std::string_view> arguments) override;
+        uint8_t assemble(void) const override;
+};
