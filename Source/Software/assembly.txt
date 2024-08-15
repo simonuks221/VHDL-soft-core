@@ -8,5 +8,14 @@ LOAD
 ADD
 PUSH 0
 STORE
+#Setup GPIO
+PUSH 1
+PUSH 50
+STORE
+#Write GPIO 1 high
+PUSH 1
+PUSH 51
+STORE
+#Continue
 PUSH 1
 JUMP 1 .start_loop

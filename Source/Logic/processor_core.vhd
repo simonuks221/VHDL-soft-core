@@ -6,7 +6,11 @@ entity processor_core is
 	Port (
 		CLK : in STD_LOGIC;
 		PROGRAM_MEMORY_D : in STD_LOGIC_VECTOR(7 downto 0);
-		PROGRAM_MEMORY_A : out STD_LOGIC_VECTOR(7 downto 0)
+		PROGRAM_MEMORY_A : out STD_LOGIC_VECTOR(7 downto 0);
+		DATA_BUS_CORE_D : out STD_LOGIC_VECTOR(7 downto 0); --Data from core
+		DATA_BUS_MEMORY_D : in STD_LOGIC_VECTOR(7 downto 0); --Data from memory
+		DATA_BUS_A : out STD_LOGIC_VECTOR(7 downto 0);
+		DATA_BUS_WR : out STD_LOGIC
 	);
 end processor_core;
 
@@ -117,6 +121,10 @@ stack_data_in <= decoder_data when stack_source = stack_source_immediate else
 				(others => '0');
 
 new_pc_en <= new_pc_condition and decoder_new_pc;
+
+DATA_BUS_WR <= ram_memory_write;
+DATA_BUS_A <= stack_top; --when ram_memory_write = '1' else (others => '0');
+DATA_BUS_CORE_D <= stack_next; -- when ram_memory_write = '1' else (others => '0');
 
 process(CLK)
 begin

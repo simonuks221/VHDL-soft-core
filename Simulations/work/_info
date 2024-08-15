@@ -22,9 +22,9 @@ VJ5DbFa60AJ<l;H469=Dma2
 !s100 ?hkT^MX:aUi0h=8Nb2<I11
 Z7 OV;C;10.5b;63
 32
-Z8 !s110 1723711476
+Z8 !s110 1723901435
 !i10b 1
-Z9 !s108 1723711476.000000
+Z9 !s108 1723901435.000000
 Z10 !s90 -reportprogress|300|-work|work|-2002|-explicit|-stats=none|C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/alu.vhd|
 Z11 !s107 C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/alu.vhd|
 !i113 1
@@ -50,7 +50,7 @@ R11
 R12
 R13
 Edecoder
-Z14 w1723710861
+Z14 w1723898562
 R1
 R2
 R3
@@ -76,10 +76,10 @@ R1
 R2
 R3
 DEx4 work 7 decoder 0 22 GKP?cAVe>0ga^b^>;@fBI1
-l29
+l26
 L22
-VoHP[X]NdjUeE>0L03bQ3n1
-!s100 MG90NZL<gL`hQK3_5]@jD0
+Vbj0Bm:@fo0^ge9R`gZ<OJ2
+!s100 zY]>7>D]>l]Tih4=lzIPf1
 R7
 32
 R8
@@ -90,14 +90,55 @@ R18
 !i113 1
 R12
 R13
-Epc
-Z19 w1723710254
+Egpio
+Z19 w1723901353
 R1
 R2
 R3
 R4
-Z20 8C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/pc.vhd
-Z21 FC:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/pc.vhd
+Z20 8C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/peripherals/gpio.vhd
+Z21 FC:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/peripherals/gpio.vhd
+l0
+L5
+VRJ5[:kzlDhezkP8KczOkO2
+!s100 Ba48NjhT>DeJ[d]gVLBo;2
+R7
+32
+R8
+!i10b 1
+R9
+Z22 !s90 -reportprogress|300|-work|work|-2002|-explicit|-stats=none|C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/peripherals/gpio.vhd|
+Z23 !s107 C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/peripherals/gpio.vhd|
+!i113 1
+R12
+R13
+Abehavioral
+R1
+R2
+R3
+Z24 DEx4 work 4 gpio 0 22 RJ5[:kzlDhezkP8KczOkO2
+l41
+L28
+Z25 V^e:U4OTQI;goMTG?=;ehd1
+Z26 !s100 Q0VBz5_Oab60PF2<UTY3f3
+R7
+32
+R8
+!i10b 1
+R9
+R22
+R23
+!i113 1
+R12
+R13
+Epc
+Z27 w1723710254
+R1
+R2
+R3
+R4
+Z28 8C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/pc.vhd
+Z29 FC:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/pc.vhd
 l0
 L5
 VoNXhNgEi[A2I[VSn0D5z?3
@@ -107,8 +148,8 @@ R7
 R8
 !i10b 1
 R9
-Z22 !s90 -reportprogress|300|-work|work|-2002|-explicit|-stats=none|C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/pc.vhd|
-Z23 !s107 C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/pc.vhd|
+Z30 !s90 -reportprogress|300|-work|work|-2002|-explicit|-stats=none|C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/pc.vhd|
+Z31 !s107 C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/pc.vhd|
 !i113 1
 R12
 R13
@@ -126,30 +167,30 @@ R7
 R8
 !i10b 1
 R9
-R22
-R23
+R30
+R31
 !i113 1
 R12
 R13
 Eprocessor
-Z24 w1723057946
+Z32 w1723901423
 R1
 R2
 R3
 R4
-Z25 8C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/processor.vhd
-Z26 FC:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/processor.vhd
+Z33 8C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/processor.vhd
+Z34 FC:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/processor.vhd
 l0
 L5
-VKg[R_2NMiY@hi40g^l[4o0
-!s100 TN`46o1QD[BDT8Vz`PHR30
+V>AkNeE1cjLmNHE5?MoYnG3
+!s100 iO8A5AcEDz??]]66Zh3kJ1
 R7
 32
 R8
 !i10b 1
 R9
-Z27 !s90 -reportprogress|300|-work|work|-2002|-explicit|-stats=none|C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/processor.vhd|
-Z28 !s107 C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/processor.vhd|
+Z35 !s90 -reportprogress|300|-work|work|-2002|-explicit|-stats=none|C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/processor.vhd|
+Z36 !s107 C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/processor.vhd|
 !i113 1
 R12
 R13
@@ -157,40 +198,40 @@ Abehavioral
 R1
 R2
 R3
-DEx4 work 9 processor 0 22 Kg[R_2NMiY@hi40g^l[4o0
-l32
-L11
-VSNm32o>5FTUULH:QOej;]0
-!s100 n@]CajIH1EQdIZ`B>Y?J=0
+DEx4 work 9 processor 0 22 >AkNeE1cjLmNHE5?MoYnG3
+l73
+L18
+VJ?dKJOo@SKj4ZK2OWIDC30
+!s100 oG466NGO6Qz4<jz6K;ock2
 R7
 32
 R8
 !i10b 1
 R9
-R27
-R28
+R35
+R36
 !i113 1
 R12
 R13
 Eprocessor_core
-Z29 w1723711474
+Z37 w1723901428
 R1
 R2
 R3
 R4
-Z30 8C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/processor_core.vhd
-Z31 FC:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/processor_core.vhd
+Z38 8C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/processor_core.vhd
+Z39 FC:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/processor_core.vhd
 l0
 L5
-VTX4OKXN901Rlk74P3F_Ki2
-!s100 @zUEf00O=0Aa^79f1AZZ?1
+V64T:IEF9DUc[nYVUO]@Hi1
+!s100 3G^UNgHLB0_1@zVl@8dUG2
 R7
 32
 R8
 !i10b 1
 R9
-Z32 !s90 -reportprogress|300|-work|work|-2002|-explicit|-stats=none|C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/processor_core.vhd|
-Z33 !s107 C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/processor_core.vhd|
+Z40 !s90 -reportprogress|300|-work|work|-2002|-explicit|-stats=none|C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/processor_core.vhd|
+Z41 !s107 C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/processor_core.vhd|
 !i113 1
 R12
 R13
@@ -198,40 +239,40 @@ Abehavioral
 R1
 R2
 R3
-DEx4 work 14 processor_core 0 22 TX4OKXN901Rlk74P3F_Ki2
-l112
-L13
-VL7I?IYVJ2[6ZzADCkPG=91
-!s100 oD3AS:mkAMnAlMJW><f6G0
+DEx4 work 14 processor_core 0 22 64T:IEF9DUc[nYVUO]@Hi1
+l116
+L17
+V_1_I2Jk_l6[[zIJSATneS3
+!s100 9LL]PHhY;P@LT]UY[>;Xl0
 R7
 32
 R8
 !i10b 1
 R9
-R32
-R33
+R40
+R41
 !i113 1
 R12
 R13
 Eprocessor_core_tb
-Z34 w1718900316
+Z42 w1718900316
 R1
 R2
 R3
 R4
-Z35 8C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Testbenches/processor_tb.vhd
-Z36 FC:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Testbenches/processor_tb.vhd
+Z43 8C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Testbenches/processor_tb.vhd
+Z44 FC:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Testbenches/processor_tb.vhd
 l0
 L5
 VokA0E][<NL6^iXRCTQIgc2
 !s100 nnT0[>JW?bUR49L8TD5We3
 R7
 32
-Z37 !s110 1719125312
+Z45 !s110 1719125312
 !i10b 1
-Z38 !s108 1719125312.000000
-Z39 !s90 -reportprogress|300|-work|work|-2002|-explicit|-stats=none|C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Testbenches/processor_tb.vhd|
-Z40 !s107 C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Testbenches/processor_tb.vhd|
+Z46 !s108 1719125312.000000
+Z47 !s90 -reportprogress|300|-work|work|-2002|-explicit|-stats=none|C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Testbenches/processor_tb.vhd|
+Z48 !s107 C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Testbenches/processor_tb.vhd|
 !i113 1
 R12
 R13
@@ -246,33 +287,33 @@ V`ZIekNVJ=OhXGdzgNBUiX3
 !s100 Ogz_:MPAH8n50El7UeAN?1
 R7
 32
-R37
+R45
 !i10b 1
-R38
-R39
-R40
+R46
+R47
+R48
 !i113 1
 R12
 R13
 Eprocessor_tb
-R24
+Z49 w1723901265
 R1
 R2
 R3
 R4
-R35
-R36
+R43
+R44
 l0
 L5
 V4^HEFSXA?gaNgf_>FDE2n0
 !s100 0YKW3Z0>>EViNb<8jE1_d0
 R7
 32
-Z41 !s110 1723737440
+R8
 !i10b 1
-Z42 !s108 1723737440.000000
-R39
-R40
+R9
+R47
+R48
 !i113 1
 R12
 R13
@@ -280,46 +321,46 @@ Abehavioral
 R1
 R2
 R3
-Z43 DEx4 work 12 processor_tb 0 22 4^HEFSXA?gaNgf_>FDE2n0
-l19
+DEx4 work 12 processor_tb 0 22 4^HEFSXA?gaNgf_>FDE2n0
+l33
 L9
-Z44 V7BJzWE^l9QWVDnanmOGgC2
-Z45 !s100 z0Q^Xbg]J:]_AKD>E66H71
+ViZVm5_Q@<_igeeKU61NRo3
+!s100 B]F`NDD:EYb7LgXYYDRU60
 R7
 32
-R41
+R8
 !i10b 1
-R42
-R39
-R40
+R9
+R47
+R48
 !i113 1
 R12
 R13
 Eprogram_rom
-Z46 w1723709456
-Z47 DPx4 ieee 16 std_logic_textio 0 22 V5TSK`;aJKC<l]CEg1>mz1
+Z50 w1723709456
+Z51 DPx4 ieee 16 std_logic_textio 0 22 V5TSK`;aJKC<l]CEg1>mz1
 R1
 R2
 R3
 R4
-Z48 8C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/program_rom.vhd
-Z49 FC:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/program_rom.vhd
+Z52 8C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/program_rom.vhd
+Z53 FC:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/program_rom.vhd
 l0
 L7
 VdV1Vdhjca<CCL?QHgC4=<1
 !s100 Gjcob=<R;]<kef06]nM6I3
 R7
 32
-Z50 !s110 1723711477
+R8
 !i10b 1
 R9
-Z51 !s90 -reportprogress|300|-work|work|-2002|-explicit|-stats=none|C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/program_rom.vhd|
-Z52 !s107 C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/program_rom.vhd|
+Z54 !s90 -reportprogress|300|-work|work|-2002|-explicit|-stats=none|C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/program_rom.vhd|
+Z55 !s107 C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/program_rom.vhd|
 !i113 1
 R12
 R13
 Abehavioral
-R47
+R51
 R1
 R2
 R3
@@ -330,33 +371,33 @@ V9z=Ni@OIRD0P0@XkI>[3m0
 !s100 CG^cOOSW1Ta[BlOiC>M`b2
 R7
 32
-R50
+R8
 !i10b 1
 R9
-R51
-R52
+R54
+R55
 !i113 1
 R12
 R13
 Eprogram_rom_impl
-Z53 w1718899416
+Z56 w1718899416
 R1
 R2
 R3
 R4
-Z54 8C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/program_rom.vhd
-Z55 FC:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/program_rom.vhd
+Z57 8C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/program_rom.vhd
+Z58 FC:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/program_rom.vhd
 l0
 L5
 V`L3iO37EIW452GV3`25l63
 !s100 7hS[?fUR=e:ZKRcL3LD8X0
 R7
 32
-Z56 !s110 1718899464
+Z59 !s110 1718899464
 !i10b 1
-Z57 !s108 1718899464.000000
-Z58 !s90 -reportprogress|300|-work|work|-2002|-explicit|-stats=none|C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/program_rom.vhd|
-Z59 !s107 C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/program_rom.vhd|
+Z60 !s108 1718899464.000000
+Z61 !s90 -reportprogress|300|-work|work|-2002|-explicit|-stats=none|C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/program_rom.vhd|
+Z62 !s107 C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/program_rom.vhd|
 !i113 1
 R12
 R13
@@ -371,41 +412,41 @@ V8<6[7eo6U8DcZJlRb>:GL3
 !s100 iJNO<DV;PP93d=O6@`R^J0
 R7
 32
-R56
-!i10b 1
-R57
-R58
 R59
+!i10b 1
+R60
+R61
+R62
 !i113 1
 R12
 R13
 Eram
-Z60 w1723215286
-Z61 DPx4 ieee 15 std_logic_arith 0 22 [G314=:2zXJ`VORJe1J@Z1
-Z62 DPx4 ieee 18 std_logic_unsigned 0 22 ;eZjO2D4ZDz<]0>8AL<ne1
+Z63 w1723215286
+Z64 DPx4 ieee 15 std_logic_arith 0 22 [G314=:2zXJ`VORJe1J@Z1
+Z65 DPx4 ieee 18 std_logic_unsigned 0 22 ;eZjO2D4ZDz<]0>8AL<ne1
 R1
 R2
 R3
 R4
-Z63 8C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/ram.vhd
-Z64 FC:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/ram.vhd
+Z66 8C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/ram.vhd
+Z67 FC:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/ram.vhd
 l0
 L6
 V[P^2]7XOlWWA`^[1MTZAK3
 !s100 SP10g;J;_ETUiUZgZJo^=3
 R7
 32
-R50
+R8
 !i10b 1
-Z65 !s108 1723711477.000000
-Z66 !s90 -reportprogress|300|-work|work|-2002|-explicit|-stats=none|C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/ram.vhd|
-Z67 !s107 C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/ram.vhd|
+R9
+Z68 !s90 -reportprogress|300|-work|work|-2002|-explicit|-stats=none|C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/ram.vhd|
+Z69 !s107 C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/ram.vhd|
 !i113 1
 R12
 R13
 Abehavioral
-R61
-R62
+R64
+R65
 R1
 R2
 R3
@@ -416,22 +457,22 @@ V5mZI>1N=6jV[G5FKa2jHU1
 !s100 42G<WH`V7X^0BZNTjHlZb3
 R7
 32
-R50
+R8
 !i10b 1
-R65
-R66
-R67
+R9
+R68
+R69
 !i113 1
 R12
 R13
 Estack
-Z68 w1723216671
+Z70 w1723216671
 R1
 R2
 R3
 R4
-Z69 8C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/stack.vhd
-Z70 FC:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/stack.vhd
+Z71 8C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/stack.vhd
+Z72 FC:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/stack.vhd
 l0
 L5
 Vdf<3QYJSLLCazliF1Z<A33
@@ -441,8 +482,8 @@ R7
 R8
 !i10b 1
 R9
-Z71 !s90 -reportprogress|300|-work|work|-2002|-explicit|-stats=none|C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/stack.vhd|
-Z72 !s107 C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/stack.vhd|
+Z73 !s90 -reportprogress|300|-work|work|-2002|-explicit|-stats=none|C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/stack.vhd|
+Z74 !s107 C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Logic/stack.vhd|
 !i113 1
 R12
 R13
@@ -460,29 +501,29 @@ R7
 R8
 !i10b 1
 R9
-R71
-R72
+R73
+R74
 !i113 1
 R12
 R13
 Estack_data_bus
-Z73 w1717951534
+Z75 w1717951534
 R2
 R3
 R4
-Z74 8C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/stack_data_bus.vhd
-Z75 FC:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/stack_data_bus.vhd
+Z76 8C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/stack_data_bus.vhd
+Z77 FC:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/stack_data_bus.vhd
 l0
 L4
 VF@Q7=KbhZ?6zPPRzRen_<0
 !s100 ?:4WJ>PW1CBmn0Djjb^?m3
 R7
 32
-Z76 !s110 1718899132
+Z78 !s110 1718899132
 !i10b 1
-Z77 !s108 1718899132.000000
-Z78 !s90 -reportprogress|300|-work|work|-2002|-explicit|-stats=none|C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/stack_data_bus.vhd|
-Z79 !s107 C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/stack_data_bus.vhd|
+Z79 !s108 1718899132.000000
+Z80 !s90 -reportprogress|300|-work|work|-2002|-explicit|-stats=none|C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/stack_data_bus.vhd|
+Z81 !s107 C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/stack_data_bus.vhd|
 !i113 1
 R12
 R13
@@ -496,33 +537,33 @@ V`OWlWP6AooIi5m2SUk?b<2
 !s100 Bd;?8j<^[0Xz?j[aL50@g1
 R7
 32
-R76
-!i10b 1
-R77
 R78
+!i10b 1
 R79
+R80
+R81
 !i113 1
 R12
 R13
 Estack_ram_imp
-Z80 w1717951050
+Z82 w1717951050
 R1
 R2
 R3
 R4
-Z81 8C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/stack_ram_imp.vhd
-Z82 FC:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/stack_ram_imp.vhd
+Z83 8C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/stack_ram_imp.vhd
+Z84 FC:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/stack_ram_imp.vhd
 l0
 L8
 VPA8bJhT^Ki>OaMXRj<[Xd0
 !s100 KTz752M:n9gE4dmXZF3Zg3
 R7
 32
-Z83 !s110 1718899131
+Z85 !s110 1718899131
 !i10b 1
-Z84 !s108 1718899131.000000
-Z85 !s90 -reportprogress|300|-work|work|-2002|-explicit|-stats=none|C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/stack_ram_imp.vhd|
-Z86 !s107 C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/stack_ram_imp.vhd|
+Z86 !s108 1718899131.000000
+Z87 !s90 -reportprogress|300|-work|work|-2002|-explicit|-stats=none|C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/stack_ram_imp.vhd|
+Z88 !s107 C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/stack_ram_imp.vhd|
 !i113 1
 R12
 R13
@@ -537,33 +578,33 @@ V^lZoX8HEUoGKjHGEDi4e42
 !s100 X;4gQ]O^?`8Tc6G^Bi<i>0
 R7
 32
-R83
-!i10b 1
-R84
 R85
+!i10b 1
 R86
+R87
+R88
 !i113 1
 R12
 R13
 Estack_tb
-Z87 w1723123956
+Z89 w1723123956
 R1
 R2
 R3
 R4
-Z88 8C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Testbenches/stack_tb.vhd
-Z89 FC:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Testbenches/stack_tb.vhd
+Z90 8C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Testbenches/stack_tb.vhd
+Z91 FC:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Testbenches/stack_tb.vhd
 l0
 L5
 V=FN3HU9PRaneVZ8[ki25X2
 !s100 f[8BNbeSCQ4X6FP11cgd[2
 R7
 32
-R50
+R8
 !i10b 1
-R65
-Z90 !s90 -reportprogress|300|-work|work|-2002|-explicit|-stats=none|C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Testbenches/stack_tb.vhd|
-Z91 !s107 C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Testbenches/stack_tb.vhd|
+R9
+Z92 !s90 -reportprogress|300|-work|work|-2002|-explicit|-stats=none|C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Testbenches/stack_tb.vhd|
+Z93 !s107 C:/Users/simon/Desktop/Dalykai/Elektronika/FPGA/VHDL-soft-core/Source/Testbenches/stack_tb.vhd|
 !i113 1
 R12
 R13
@@ -578,11 +619,11 @@ VhYQFefoKLEA6=98j?Mo9c2
 !s100 30Z27ho_h37gW4Y6O^nNW2
 R7
 32
-R50
+R8
 !i10b 1
-R65
-R90
-R91
+R9
+R92
+R93
 !i113 1
 R12
 R13
