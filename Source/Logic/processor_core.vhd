@@ -82,9 +82,9 @@ architecture Behavioral of processor_core is
     constant stack_source_memory : STD_LOGIC_VECTOR(1 downto 0) := "10";
 
 	--Instruction
-	signal DECODE_EN: STD_LOGIC := '0';
-	signal EXECUTE_EN: STD_LOGIC := '0';
-	signal STORE_EN: STD_LOGIC := '0';
+	signal decode_en: STD_LOGIC := '0';
+	signal execute_en: STD_LOGIC := '0';
+	signal store_en: STD_LOGIC := '0';
 	signal new_pc_en: STD_LOGIC := '0';
 	signal new_pc_condition: STD_LOGIC := '0';
 	signal new_pc : STD_LOGIC_VECTOR(7 downto 0) := (others => '0');
@@ -103,11 +103,12 @@ architecture Behavioral of processor_core is
 	signal alu_op: STD_LOGIC_VECTOR(3 downto 0) := (others => '0');
 	signal decoder_new_pc: STD_LOGIC := '0';
 	signal new_pc_if_true: STD_LOGIC := '0';
-	signal memory_write: STD_LOGIC := '0';
+	signal decoder_memory_write: STD_LOGIC := '0';
 	--ALU
 	signal alu_data : STD_LOGIC_VECTOR(7 downto 0) := (others => '0');
 	--RAM
 	signal memory_data : STD_LOGIC_VECTOR(7 downto 0) := (others => '0');
+	signal ram_memory_write: STD_LOGIC := '0';
 begin
 
 stack_data_in <= decoder_data when stack_source = stack_source_immediate else
@@ -133,17 +134,18 @@ begin
 end process;
 
 new_pc <= stack_top;
+ram_memory_write <= decoder_memory_write and STORE_EN;
 
-pc_1 : pc port map(CLK, PROGRAM_MEMORY_A, DECODE_EN, EXECUTE_EN, STORE_EN, new_pc_en, new_pc);
+pc_1 : pc port map(CLK, PROGRAM_MEMORY_A, decode_en, execute_en, store_en, new_pc_en, new_pc);
 
 stack_1 : stack port map(CLK, STORE_EN, stack_data_in, stack_top, stack_next, stack_push, stack_pop, stack_amount,
 						overflow, underflow);
 
 decoder_1 : decoder port map (CLK, DECODE_EN, PROGRAM_MEMORY_D, decoder_data, alu_op, stack_push, stack_pop, stack_amount,
-							stack_source, decoder_new_pc, new_pc_if_true, memory_write);
+							stack_source, decoder_new_pc, new_pc_if_true, decoder_memory_write);
 
 alu_1 : alu port map (CLK, EXECUTE_EN, stack_top, stack_next, alu_op, alu_data);
 
-ram_1 : ram port map(CLK, memory_write, stack_top, stack_next, memory_data);
+ram_1 : ram port map(CLK, ram_memory_write, stack_top, stack_next, memory_data);
 
 end architecture;

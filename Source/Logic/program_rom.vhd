@@ -13,21 +13,26 @@ entity program_rom is
 end program_rom;
 
 architecture Behavioral of program_rom is
-	constant max_program_count : integer := 11;
+	constant max_program_count : integer := 255;
 	type program_array_type is array (0 to max_program_count) of std_logic_vector(7 downto 0);
 	--Read from file hexadecimal data
-	file file_voltages: text;
 	impure function init return program_array_type is
 		variable r : program_array_type := (others => (others => '0'));
 		variable iline: line;
 		variable temp_data : std_logic_vector(7 downto 0);
-		begin
-			file_open(file_voltages, "rom_preload.txt", read_mode);
-			for i in 0 to max_program_count-1 loop
-				readline(file_voltages, iline);
-				HREAD(iline,temp_data);
+		variable i : integer := 0;
+		file file_instructions : text;
+	begin
+		file_open(file_instructions, "rom_preload.txt", read_mode);
+		while not endfile(file_instructions) loop
+			readline(file_instructions, iline);
+			HREAD(iline, temp_data);
+			if i < r'LENGTH then
 				r(i) := temp_data;
-			end loop;
+				i := i + 1;
+			end if;
+		end loop;
+		file_close(file_instructions);
 		return r;
 	end function init;
 

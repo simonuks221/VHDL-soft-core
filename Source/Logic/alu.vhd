@@ -27,29 +27,28 @@ begin
 		op_b_int := to_integer(unsigned(OP_B));
 		case CMD is
 			when "0000" =>
-				result_int := 0;
-				RESULT <= std_logic_vector(to_unsigned(result_int, RESULT'length));
-			when "0001" =>
 				result_int := op_a_int + op_b_int;
 				RESULT <= std_logic_vector(to_unsigned(result_int, RESULT'length));
-			when "0010" =>
+			when "0001" =>
 				result_int := op_a_int - op_b_int;
 				RESULT <= std_logic_vector(to_unsigned(result_int, RESULT'length));
-			when "0011" =>
+			when "0010" =>
 				result_int := op_a_int * op_b_int;
 				RESULT <= std_logic_vector(to_unsigned(result_int, RESULT'length));
-			when "0100" =>
+			when "0011" =>
 				--Shift right
 				--TODO
-			when "0101" =>
+			when "0100" =>
 				--Shift left
 				--TODO
-			when "0110" =>
+			when "0101" =>
 				RESULT <= OP_A or OP_B;
-			when "0111" =>
+			when "0110" =>
 				RESULT <= OP_A and OP_B;
-			when "1000" =>
+			when "0111" =>
 				RESULT <= OP_A xor OP_B;
+			when "1000" =>
+				--TODO: nothing?
 			when others =>
 				RESULT <= (others => '0');
 		end case;

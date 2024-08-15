@@ -16,6 +16,9 @@ void read_lines(std::vector<std::string> &lines, std::ifstream &file) {
         if(comment_pos != std::string::npos) {
             new_line = new_line.substr(0, comment_pos);
         }
+        if(new_line.empty()) {
+            continue;
+        }
         lines.push_back(new_line);
     }
 }

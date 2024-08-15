@@ -52,7 +52,7 @@ begin
                 when "001" =>
                     -- ALU operation
                     STACK_SOURCE <= stack_source_alu;
-                    STACK_POP <= '1'; --Push 1 and pop 2, TODO:bad practice
+                    STACK_POP <= '1'; --Push 1 and pop 2, TODO:hacky
                     STACK_PUSH <= '1';
                     ALU_OP <= INSTRUCTION(3 downto 0);
                     STACK_AMOUNT <= std_logic_vector(to_unsigned(2, STACK_AMOUNT'length));
@@ -64,16 +64,16 @@ begin
                     --Memory load/store
                     --TODO
                     if INSTRUCTION(0) = '1' then
-                        --Store
-                        STACK_POP <= '1';
-                        STACK_AMOUNT <= std_logic_vector(to_unsigned(2, STACK_AMOUNT'length));
-                    else
                         --Load
                         STACK_POP <= '1';
                         STACK_PUSH <= '1';
                         STACK_AMOUNT <= std_logic_vector(to_unsigned(1, STACK_AMOUNT'length));
+                    else
+                        --Store
+                        STACK_POP <= '1';
+                        STACK_AMOUNT <= std_logic_vector(to_unsigned(2, STACK_AMOUNT'length));
                     end if;
-                    MEMORY_WRITE <= INSTRUCTION(0);
+                    MEMORY_WRITE <= not INSTRUCTION(0);
                     STACK_SOURCE <= stack_source_memory;
                 when "011" =>
                     --Jump

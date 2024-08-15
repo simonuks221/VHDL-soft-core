@@ -8,7 +8,7 @@ entity pc is
 		P_COUNTER: out STD_LOGIC_VECTOR(7 downto 0) := (others => '0');
 		DECODE_EN: out STD_LOGIC;
 		EXECUTE_EN: out STD_LOGIC;
-		STORE_EN: out STD_LOGIC;
+		STORE_EN: out STD_LOGIC := '1';
 		NEW_PC_EN: in STD_LOGIC;
 		NEW_PC: in STD_LOGIC_VECTOR(7 downto 0) := (others => '0')
 	);
@@ -16,7 +16,7 @@ end pc;
 
 architecture Behavioral of pc is
 	signal internal_counter : integer range 0 to 255 := 0;
-	signal delay_counter : integer range 0 to 4 := 0;
+	signal delay_counter : integer range 0 to 4 := 1;
 begin
 
 P_COUNTER <= std_logic_vector(to_unsigned(internal_counter, P_COUNTER'length));
@@ -43,7 +43,8 @@ begin
 				STORE_EN <= '1';
 				delay_counter <= 0;
 			when others =>
-
+				delay_counter <= 0;
+				STORE_EN <= '1';
 		end case;
 	end if;
 end process;

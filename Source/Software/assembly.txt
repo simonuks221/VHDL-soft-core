@@ -1,8 +1,12 @@
+#Init
+
+#Loop
+.start_loop
 PUSH 1
-PUSH 15
-POP 1
-POP 4
+PUSH 0
+LOAD
 ADD
-.1
-SUB
-JUMP 1 .1
+PUSH 0
+STORE
+PUSH 1
+JUMP 1 .start_loop
