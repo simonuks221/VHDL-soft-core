@@ -1,21 +1,28 @@
 #Init
-
-#Loop
-.start_loop
-PUSH 1
-PUSH 0
-LOAD
-ADD
-PUSH 0
-STORE
-#Setup GPIO
-PUSH 1
+#Setup LED GPIO OUTPUT
+PUSH 3
 PUSH 50
 STORE
-#Write GPIO 1 high
+#Write LED_1 high
 PUSH 1
 PUSH 51
 STORE
+.start_loop
+#Read BTN_1
+PUSH 52
+LOAD
+PUSH 32
+AND
+PUSH 5
+SHFT_R
+PUSH .end_led_2_if
+JUMP 0
+#Turn on LED_2
+PUSH 3
+PUSH 51
+STORE
+.end_led_2_if
 #Continue
 PUSH 1
-JUMP 1 .start_loop
+PUSH .start_loop
+JUMP 1

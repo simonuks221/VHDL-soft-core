@@ -110,7 +110,8 @@ architecture Behavioral of processor_core is
 	signal decoder_memory_write: STD_LOGIC := '0';
 	--ALU
 	signal alu_data : STD_LOGIC_VECTOR(7 downto 0) := (others => '0');
-	--RAM
+	--Memory
+	signal memory_data_ram : std_Logic_vector(7 downto 0) := (others => '0');
 	signal memory_data : STD_LOGIC_VECTOR(7 downto 0) := (others => '0');
 	signal ram_memory_write: STD_LOGIC := '0';
 begin
@@ -143,6 +144,7 @@ end process;
 
 new_pc <= stack_top;
 ram_memory_write <= decoder_memory_write and STORE_EN;
+memory_data <= memory_data_ram or DATA_BUS_MEMORY_D;
 
 pc_1 : pc port map(CLK, PROGRAM_MEMORY_A, decode_en, execute_en, store_en, new_pc_en, new_pc);
 
@@ -154,6 +156,6 @@ decoder_1 : decoder port map (CLK, DECODE_EN, PROGRAM_MEMORY_D, decoder_data, al
 
 alu_1 : alu port map (CLK, EXECUTE_EN, stack_top, stack_next, alu_op, alu_data);
 
-ram_1 : ram port map(CLK, ram_memory_write, stack_top, stack_next, memory_data);
+ram_1 : ram port map(CLK, ram_memory_write, stack_top, stack_next, memory_data_ram);
 
 end architecture;

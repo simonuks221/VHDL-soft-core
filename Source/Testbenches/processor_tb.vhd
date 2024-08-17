@@ -40,9 +40,12 @@ process
 begin
 	BTN_1 <= '0';
 	BTN_2 <= '0';
-	wait for 500 ns;
+	RGB_R <= 'L';
+	RGB_G <= 'L';
+	RGB_B <= 'L';
+	wait for 1 us;
 	BTN_1 <= '1';
-	wait for 100 ns;
+	wait for 1 us;
 	BTN_1 <= '0';
 	wait;
 end process;

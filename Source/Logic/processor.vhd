@@ -41,7 +41,8 @@ architecture Behavioral of processor is
         generic (
             DATA_WIDTH : integer := 8;
             ADDR_WIDTH : integer := 8;
-            ADDR_BASE : integer := 50
+            ADDR_BASE : integer := 50;
+            GPIO_USED : integer := 8
         );
         port (
             CLK : in STD_LOGIC;
@@ -69,13 +70,13 @@ architecture Behavioral of processor is
     signal data_bus_wr : STD_LOGIC;
     signal data_bus_memory_led1_d : STD_LOGIC_VECTOR(7 downto 0);
     --GPIO
-    signal gpio_bank_1_7 : STD_LOGIC;
+    signal gpio_bank_1_7 : STD_LOGIC := '0';
 begin
 
 data_bus_memory_d <= data_bus_memory_led1_d;
 
 core_1 : processor_core port map(CLK_12, program_memory_d, program_memory_a, data_bus_core_d, data_bus_memory_d, data_bus_a, data_bus_wr);
 program_rom_1 : program_rom port map(CLK_12, program_memory_a, program_memory_d);
-gpio_bank_1 : gpio generic map (8, 8, 50) port map(CLK_12, LED_1, LED_2, RGB_R, RGB_G, RGB_B, BTN_1, BTN_2, gpio_bank_1_7, data_bus_wr, data_bus_a, data_bus_core_d, data_bus_memory_led1_d);
+gpio_bank_1 : gpio generic map (8, 8, 50, 7) port map(CLK_12, LED_1, LED_2, RGB_R, RGB_G, RGB_B, BTN_1, BTN_2, gpio_bank_1_7, data_bus_wr, data_bus_a, data_bus_core_d, data_bus_memory_led1_d);
 
 end architecture;

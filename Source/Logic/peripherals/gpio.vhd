@@ -6,7 +6,8 @@ entity gpio is
     generic (
         DATA_WIDTH : integer := 8;
         ADDR_WIDTH : integer := 8;
-        ADDR_BASE : integer := 50
+        ADDR_BASE : integer := 50;
+        GPIO_USED : integer := 8
     );
 	port (
 		CLK : in STD_LOGIC;
@@ -37,7 +38,7 @@ architecture Behavioral of gpio is
     signal data_registers : registers_type := (others => (others => '0'));
     signal read_addr : std_logic_vector(ADDR_WIDTH-1 downto 0) := (others => '0');
     signal gpio_output_vector : std_logic_vector(7 downto 0) := (others => 'Z');
-    signal gpio_input_vector : std_logic_vector(7 downto 0) := (others => 'Z');
+    signal gpio_input_vector : std_logic_vector(7 downto 0) := (others => '0');
 begin
     --GPIO outputting
     GPIO_0 <= gpio_output_vector(0);
@@ -60,7 +61,7 @@ begin
     process(CLK)
     begin
         if rising_edge(CLK) then
-            for i in 0 to 7 loop
+            for i in 0 to GPIO_USED - 1 loop
                 if data_registers(REGISTER_GPIO_STATE)(i) = '0' then
                     data_registers(REGISTER_INPUT_STATE)(i) <= gpio_input_vector(i);
                 else
@@ -74,7 +75,7 @@ begin
     begin
         if rising_edge(CLK) then
             --Write to input state
-            for i in 0 to 7 loop
+            for i in 0 to GPIO_USED - 1 loop
                 if data_registers(REGISTER_GPIO_STATE)(i) = '0' then
                     gpio_output_vector(i) <= 'Z';
                 else
