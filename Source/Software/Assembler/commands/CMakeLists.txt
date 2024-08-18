@@ -4,3 +4,13 @@ add_library(commands
     command_parser.cpp
     commands.cpp
 )
+
+target_include_directories(commands
+    PUBLIC
+        ${CMAKE_SOURCE_DIR}/lines
+)
+
+target_link_libraries(commands
+    PRIVATE
+        lines
+)

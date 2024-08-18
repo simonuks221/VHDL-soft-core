@@ -3,22 +3,26 @@
 #include <string>
 #include "command_parser.hpp"
 #include "preprocessor.hpp"
+#include "line.hpp"
 
 /* Removes comments, empty lines from inputs */
-void read_lines(std::vector<std::string> &lines, std::ifstream &file) {
-    std::string new_line;
-    while (std::getline(file, new_line)) {
-        if(new_line.empty()) {
+void read_lines(std::vector<Line> &lines, std::ifstream &file) {
+    std::string new_line_string;
+    unsigned int assembly_line = 0;
+    while (std::getline(file, new_line_string)) {
+        assembly_line++;
+        if(new_line_string.empty()) {
             continue;
         }
-        size_t comment_pos = new_line.find('#');
+        size_t comment_pos = new_line_string.find('#');
 
         if(comment_pos != std::string::npos) {
-            new_line = new_line.substr(0, comment_pos);
+            new_line_string = new_line_string.substr(0, comment_pos);
         }
-        if(new_line.empty()) {
+        if(new_line_string.empty()) {
             continue;
         }
+        Line new_line(assembly_line, new_line_string);
         lines.push_back(new_line);
     }
 }
@@ -40,11 +44,10 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    std::vector<std::string> assembly_lines;
+    std::vector<Line> assembly_lines;
     read_lines(assembly_lines, inputFile);
     Preprocessor preprocessor;
     preprocessor.process_links(assembly_lines);
-    // Preprocessor::process_links(assembly_lines);
     /* Output into file */
     std::ofstream binary_file("binary.txt");
     if (!binary_file) { //TODO: unify logging library

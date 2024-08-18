@@ -12,13 +12,16 @@ add_executable(assembler
 
 add_subdirectory(commands)
 add_subdirectory(preprocessing)
+add_subdirectory(lines)
 
 # So no directory is needed in includes
 include_directories(commands)
 include_directories(preprocessing)
+include_directories(lines)
 
 target_link_libraries(assembler
     PRIVATE
         commands
         preprocessing
+        lines
 )

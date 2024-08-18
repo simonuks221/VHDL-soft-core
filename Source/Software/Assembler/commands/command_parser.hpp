@@ -1,10 +1,11 @@
+#pragma once
+
 #include <unordered_map>
 #include <string_view>
 #include <fstream>
 #include <vector>
 #include "command_interface.hpp"
-
-#pragma once
+#include "line.hpp"
 
 class CommandParser {
     private:
@@ -17,5 +18,5 @@ class CommandParser {
         ~CommandParser() = default;
 
         static void add_command(ICommand *new_command);
-        static bool parse_lines(std::vector<std::string> &lines, std::ofstream &binary_file);
+        static bool parse_lines(std::vector<Line> &lines, std::ofstream &binary_file);
 };

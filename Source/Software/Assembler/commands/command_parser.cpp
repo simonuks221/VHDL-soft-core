@@ -40,9 +40,10 @@ ICommand *CommandParser::try_parse_token(std::string_view token) {
     return commands.at(token);
 }
 
-bool CommandParser::parse_lines(std::vector<std::string> &lines, std::ofstream &binary_file) { //TODO: span
-    for(std::string_view line : lines) {
-        if(line.empty()) {
+bool CommandParser::parse_lines(std::vector<Line> &lines, std::ofstream &binary_file) { //TODO: span
+    for(Line line : lines) {
+        std::string_view line_content = line.get_content();
+        if(line_content.empty()) {
             return true;
         }
         ICommand *current_command = nullptr;
@@ -50,15 +51,15 @@ bool CommandParser::parse_lines(std::vector<std::string> &lines, std::ofstream &
         /* Parse line for words */
         size_t prev = 0;
         size_t pos = 0;
-        while ((pos = line.find_first_of(word_delimiters, prev)) != std::string::npos)
+        while ((pos = line_content.find_first_of(word_delimiters, prev)) != std::string::npos)
         {
             if (pos > prev) {
-                words.push_back(line.substr(prev, pos-prev));
+                words.push_back(line_content.substr(prev, pos-prev));
             }
             prev = pos+1;
         }
-        if (prev < line.length()) {
-            words.push_back(line.substr(prev, std::string::npos));
+        if (prev < line_content.length()) {
+            words.push_back(line_content.substr(prev, std::string::npos));
         }
         for(unsigned int i = 0; i < words.size(); i++) {
             std::string_view curr_word = words[i];
