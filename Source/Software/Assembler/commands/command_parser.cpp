@@ -8,7 +8,8 @@
 std::unordered_map<std::string_view, ICommand*> CommandParser::commands;
 
 /* Command declaration */
-CommandPush push_cmd;
+CommandPush push_unsigned_cmd("PUSH", false);
+CommandPush push_signed_cmd("PUSHS", true);
 CommandPop pop_cmd;
 CommandAlu addition_cmd("ADD", 0x00);
 CommandAlu subtraction_cmd("SUB", 0x01);
@@ -40,9 +41,9 @@ ICommand *CommandParser::try_parse_token(std::string_view token) {
     return commands.at(token);
 }
 
-std::vector<std::string_view> CommandParser::parse_words(Line line) {
-    std::vector<std::string_view> words;
-    std::string_view line_content = line.get_content();
+std::vector<std::string> CommandParser::parse_words(Line line) {
+    std::vector<std::string> words;
+    std::string line_content = line.get_content().data();
     if(line_content.empty()) {
         return words;
     }
@@ -64,7 +65,7 @@ std::vector<std::string_view> CommandParser::parse_words(Line line) {
 
 bool CommandParser::parse_lines(std::vector<Line> &lines, std::ofstream &binary_file) { //TODO: span
     for(Line line : lines) {
-        std::vector<std::string_view> words = parse_words(line);
+        std::vector<std::string> words = parse_words(line);
         ICommand *current_command = nullptr;
         for(unsigned int i = 0; i < words.size(); i++) {
             std::string_view curr_word = words[i];
@@ -83,7 +84,7 @@ bool CommandParser::parse_lines(std::vector<Line> &lines, std::ofstream &binary_
                     std::cerr << "Not enough arguments in line" << std::endl;
                     assert(false);
                 }
-                std::span<std::string_view> arguments(words.begin()+i+1, words.begin()+i+1+current_command->get_argument_amount());
+                std::span<std::string> arguments(words.begin()+i+1, words.begin()+i+1+current_command->get_argument_amount());
                 current_command->parse_arguments(arguments);
                 /* Convert command to hex string */
                 uint8_t command = current_command->assemble();
@@ -99,7 +100,7 @@ bool CommandParser::parse_lines(std::vector<Line> &lines, std::ofstream &binary_
 
 bool CommandParser::expand_commands(std::vector<Line> &lines) {
     for(unsigned int line_i = 0; line_i < lines.size(); line_i++) {
-        std::vector<std::string_view> words = parse_words(lines[line_i]);
+        std::vector<std::string> words = parse_words(lines[line_i]);
         ICommand *current_command = nullptr;
         for(unsigned int word_i = 0; word_i < words.size(); word_i++) {
             std::string_view curr_word = words[word_i];
@@ -118,9 +119,9 @@ bool CommandParser::expand_commands(std::vector<Line> &lines) {
                     std::cerr << "Not enough arguments in line" << std::endl;
                     assert(false);
                 }
-                std::span<std::string_view> arguments(words.begin()+word_i+1, words.begin()+word_i+1+current_command->get_argument_amount());
+                std::span<std::string> arguments(words.begin()+word_i+1, words.begin()+word_i+1+current_command->get_argument_amount());
                 current_command->parse_arguments(arguments);
-                current_command->expand_command(lines, lines.begin() + word_i);
+                current_command->expand_command(lines, lines.begin() + line_i);
             }
         }
     }

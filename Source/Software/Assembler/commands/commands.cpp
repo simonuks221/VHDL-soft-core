@@ -4,7 +4,7 @@
 #include <cassert>
 
 /* PUSH command */
-void CommandPush::parse_arguments(std::span<std::string_view> arguments) {
+void CommandPush::parse_arguments(std::span<std::string> arguments) {
     try {
         /* If is a number */
         constant = std::stoi(arguments[0].data());
@@ -19,31 +19,71 @@ void CommandPush::expand_command(std::vector<Line>& lines, std::vector<Line>::it
         /* Skip if houses link */
         return;
     }
+    std::vector<Line> new_lines;
     unsigned int constant_int = std::get<int>(constant);
+    if(signed_constant) {
+        expand_command_signed(*it, new_lines, constant_int);
+    } else {
+        expand_command_unsigned(*it, new_lines, constant_int);
+    }
+    if(new_lines.size() == 0) {
+        /* No expansion, leave everything as it is */
+        return;
+    }
+    lines.erase(it);
+    lines.insert(it, new_lines.begin(), new_lines.end());
+}
+
+void CommandPush::expand_command_signed(Line &current_line, std::vector<Line> &new_lines, int constant_int) {
+    /* Make the number provided into two numbers that add to the signed constant_int */
+    if((constant_int > INT8_MAX) || (constant_int < INT8_MIN)) {
+       std::cerr << "Signed constant invalid" << std::endl;
+        assert(false);
+    }
+    int8_t target_int = static_cast<int8_t>(constant_int);
+    if(target_int >= 0) {
+        /* No expansion required */
+        return;
+    }
+    /* Need expanding as negative number */
+    if(constant_int == -1) {
+        /* Hardcoded solution for all 1s */
+        new_lines.push_back(Line(current_line.get_assembly_line(), std::string("PUSH 5")));
+        new_lines.push_back(Line(current_line.get_assembly_line(), std::string("PUSH 51")));
+        new_lines.push_back(Line(current_line.get_assembly_line(), std::string("MULT")));
+    } else {
+        /* Constant not all 1s */
+        unsigned int unsigned_representation = 256 - abs(constant_int);
+         unsigned int offset = unsigned_representation - 127;
+        new_lines.push_back(Line(current_line.get_assembly_line(), std::string("PUSH 127")));
+        new_lines.push_back(Line(current_line.get_assembly_line(), std::string("PUSH " + std::to_string(offset))));
+        new_lines.push_back(Line(current_line.get_assembly_line(), std::string("ADD")));
+    }
+}
+
+void CommandPush::expand_command_unsigned(Line &current_line, std::vector<Line> &new_lines, int constant_int) {
     /* Check if not over 7 bits */
     if(constant_int <= 127) {
         /* No need for expansion */
         return;
     }
-    if(constant_int > 255) {
-        std::cerr << "Constant bigger than 255 at line: " << std::to_string(it->get_assembly_line()) << std::endl;
+    if(constant_int > UINT8_MAX) {
+        std::cerr << "Constant bigger than 255" << std::endl;
         assert(false);
     }
-    std::vector<Line> new_lines;
-    lines.erase(it);
-    if(constant_int == 255) {
+    if(constant_int == UINT8_MAX) {
         /* Hardcoded solution */
-        new_lines.push_back(Line(it->get_assembly_line(), std::string("PUSH 5")));
-        new_lines.push_back(Line(it->get_assembly_line(), std::string("PUSH 51")));
-        new_lines.push_back(Line(it->get_assembly_line(), std::string("MULT")));
+        new_lines.push_back(Line(current_line.get_assembly_line(), std::string("PUSH 5")));
+        new_lines.push_back(Line(current_line.get_assembly_line(), std::string("PUSH 51")));
+        new_lines.push_back(Line(current_line.get_assembly_line(), std::string("MULT")));
     } else {
         /* Constant not 255 */
         unsigned int offset = constant_int - 127;
-        new_lines.push_back(Line(it->get_assembly_line(), std::string("PUSH 127")));
-        new_lines.push_back(Line(it->get_assembly_line(), std::string("PUSH " + std::to_string(offset))));
-        new_lines.push_back(Line(it->get_assembly_line(), std::string("ADD")));
+        new_lines.push_back(Line(current_line.get_assembly_line(), std::string("PUSH 127")));
+        new_lines.push_back(Line(current_line.get_assembly_line(), std::string("PUSH " + std::to_string(offset))));
+        new_lines.push_back(Line(current_line.get_assembly_line(), std::string("ADD")));
     }
-    lines.insert(it, new_lines.begin(), new_lines.end());
+
 }
 
 uint8_t CommandPush::assemble(void) const {
@@ -61,7 +101,7 @@ uint8_t CommandPush::assemble(void) const {
 }
 
 /* POP command */
-void CommandPop::parse_arguments(std::span<std::string_view> arguments) {
+void CommandPop::parse_arguments(std::span<std::string> arguments) {
     try {
         amount = std::stoi(arguments[0].data());
     } catch (...) {
@@ -91,7 +131,7 @@ uint8_t CommandAlu::assemble(void) const {
 }
 
 /* JUMP command */
-void CommandJump::parse_arguments(std::span<std::string_view> arguments) {
+void CommandJump::parse_arguments(std::span<std::string> arguments) {
     unsigned int arguemnt_1 = 0;
     try {
         arguemnt_1 = std::stoi(arguments[0].data());

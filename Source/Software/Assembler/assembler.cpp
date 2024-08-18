@@ -43,7 +43,6 @@ int main(int argc, char* argv[]) {
         std::cerr << "Failed to open the file: " << file_path << std::endl;
         return 1;
     }
-
     std::vector<Line> assembly_lines;
     read_lines(assembly_lines, inputFile);
     /* Expand functions */

@@ -14,7 +14,7 @@ class CommandParser {
 
         static ICommand *try_parse_token(std::string_view token);
 
-        static std::vector<std::string_view> parse_words(Line line);
+        static std::vector<std::string> parse_words(Line line);
     public:
         CommandParser() = default;
         ~CommandParser() = default;

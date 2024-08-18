@@ -13,7 +13,7 @@ std::string_view CommandBase::get_codeword(void) const {
     return codeword;
 }
 
-void CommandBase::parse_arguments(std::span<std::string_view> arguments) {
+void CommandBase::parse_arguments(std::span<std::string> arguments) {
     /* Needs to be implemented in children */
 }
 
