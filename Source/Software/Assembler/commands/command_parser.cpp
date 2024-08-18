@@ -40,27 +40,32 @@ ICommand *CommandParser::try_parse_token(std::string_view token) {
     return commands.at(token);
 }
 
+std::vector<std::string_view> CommandParser::parse_words(Line line) {
+    std::vector<std::string_view> words;
+    std::string_view line_content = line.get_content();
+    if(line_content.empty()) {
+        return words;
+    }
+    /* Parse line for words */
+    size_t prev = 0;
+    size_t pos = 0;
+    while ((pos = line_content.find_first_of(word_delimiters, prev)) != std::string::npos)
+    {
+        if (pos > prev) {
+            words.push_back(line_content.substr(prev, pos-prev));
+        }
+        prev = pos+1;
+    }
+    if (prev < line_content.length()) {
+        words.push_back(line_content.substr(prev, std::string::npos));
+    }
+    return words;
+}
+
 bool CommandParser::parse_lines(std::vector<Line> &lines, std::ofstream &binary_file) { //TODO: span
     for(Line line : lines) {
-        std::string_view line_content = line.get_content();
-        if(line_content.empty()) {
-            return true;
-        }
+        std::vector<std::string_view> words = parse_words(line);
         ICommand *current_command = nullptr;
-        std::vector<std::string_view> words;
-        /* Parse line for words */
-        size_t prev = 0;
-        size_t pos = 0;
-        while ((pos = line_content.find_first_of(word_delimiters, prev)) != std::string::npos)
-        {
-            if (pos > prev) {
-                words.push_back(line_content.substr(prev, pos-prev));
-            }
-            prev = pos+1;
-        }
-        if (prev < line_content.length()) {
-            words.push_back(line_content.substr(prev, std::string::npos));
-        }
         for(unsigned int i = 0; i < words.size(); i++) {
             std::string_view curr_word = words[i];
             if(curr_word.empty()) {
@@ -75,11 +80,10 @@ bool CommandParser::parse_lines(std::vector<Line> &lines, std::ofstream &binary_
                 current_command = try_parse_token(curr_word);
                 assert(current_command != nullptr);
                 if(current_command->get_argument_amount() + 1 > words.size()) {
-                    std::cerr << "Not enough arguemtns in line" << std::endl;
+                    std::cerr << "Not enough arguments in line" << std::endl;
                     assert(false);
                 }
                 std::span<std::string_view> arguments(words.begin()+i+1, words.begin()+i+1+current_command->get_argument_amount());
-                // binary_file << current_command->parse_arguments(arguments) << std::endl;
                 current_command->parse_arguments(arguments);
                 /* Convert command to hex string */
                 uint8_t command = current_command->assemble();
@@ -87,6 +91,36 @@ bool CommandParser::parse_lines(std::vector<Line> &lines, std::ofstream &binary_
                 std::sprintf(buffer, "%02x", command);
                 binary_file << std::string(buffer) << std::endl;
                 i += current_command->get_argument_amount();
+            }
+        }
+    }
+    return true;
+}
+
+bool CommandParser::expand_commands(std::vector<Line> &lines) {
+    for(unsigned int line_i = 0; line_i < lines.size(); line_i++) {
+        std::vector<std::string_view> words = parse_words(lines[line_i]);
+        ICommand *current_command = nullptr;
+        for(unsigned int word_i = 0; word_i < words.size(); word_i++) {
+            std::string_view curr_word = words[word_i];
+            if(curr_word.empty()) {
+                break;
+            }
+            /* Check if comment */
+            if(curr_word[0] == '.') { //TODO: remove comments and tags in preprocessor
+                break;
+            }
+            if(word_i == 0) {
+                /* First word should be command */
+                current_command = try_parse_token(curr_word);
+                assert(current_command != nullptr);
+                if(current_command->get_argument_amount() + 1 > words.size()) {
+                    std::cerr << "Not enough arguments in line" << std::endl;
+                    assert(false);
+                }
+                std::span<std::string_view> arguments(words.begin()+word_i+1, words.begin()+word_i+1+current_command->get_argument_amount());
+                current_command->parse_arguments(arguments);
+                current_command->expand_command(lines, lines.begin() + word_i);
             }
         }
     }

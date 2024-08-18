@@ -8,7 +8,7 @@ entity decoder is
         EN : in STD_LOGIC; --TODO: not used
         INSTRUCTION: in STD_LOGIC_VECTOR(7 downto 0);
         DATA_OUT: out STD_LOGIC_VECTOR(7 downto 0);
-        ALU_OP: out STD_LOGIC_VECTOR(3 downto 0);
+        ALU_OP: out STD_LOGIC_VECTOR(2 downto 0);
         STACK_PUSH: out STD_LOGIC;
         STACK_POP: out STD_LOGIC;
         STACK_AMOUNT: out STD_LOGIC_VECTOR(4 downto 0);
@@ -43,7 +43,7 @@ begin
                 STACK_SOURCE <= stack_source_alu;
                 STACK_POP <= '1'; --Push 1 and pop 2, TODO:hacky
                 STACK_PUSH <= '1';
-                ALU_OP <= INSTRUCTION(3 downto 0);
+                ALU_OP <= INSTRUCTION(2 downto 0);
                 STACK_AMOUNT <= std_logic_vector(to_unsigned(2, STACK_AMOUNT'length));
             when "000" =>
                 -- Pop amount

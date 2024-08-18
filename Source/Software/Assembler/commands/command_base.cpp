@@ -16,3 +16,7 @@ std::string_view CommandBase::get_codeword(void) const {
 void CommandBase::parse_arguments(std::span<std::string_view> arguments) {
     /* Needs to be implemented in children */
 }
+
+void CommandBase::expand_command(std::vector<Line>& lines, std::vector<Line>::iterator it) {
+    /* Needs to be implemented in children */
+}

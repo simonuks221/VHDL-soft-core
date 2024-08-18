@@ -8,7 +8,7 @@ entity alu is
 		EN : in STD_LOGIC; --TODO: not used, delete
 		OP_A : in STD_LOGIC_VECTOR(7 downto 0); --TOP of stack
 		OP_B : in STD_LOGIC_VECTOR(7 downto 0); --NEXT of stack
-		CMD : in STD_LOGIC_VECTOR(3 downto 0);
+		CMD : in STD_LOGIC_VECTOR(2 downto 0);
 		RESULT: out STD_LOGIC_VECTOR(7 downto 0)
 	);
 end alu;
@@ -27,16 +27,16 @@ begin
 		op_a_int := to_integer(unsigned(OP_A));
 		op_b_int := to_integer(unsigned(OP_B));
 		case CMD is
-			when "0000" =>
+			when "000" =>
 				result_int := op_a_int + op_b_int;
 				RESULT <= std_logic_vector(to_unsigned(result_int, RESULT'length));
-			when "0001" =>
+			when "001" =>
 				result_int := op_a_int - op_b_int;
 				RESULT <= std_logic_vector(to_unsigned(result_int, RESULT'length));
-			when "0010" =>
+			when "010" =>
 				result_int := op_a_int * op_b_int;
 				RESULT <= std_logic_vector(to_unsigned(result_int, RESULT'length));
-			when "0011" =>
+			when "011" =>
 				--Shift right
 				--DIY barrel shifter, could be a costly implementation TODO: check
 				shifted_val := OP_B(7 downto 0);
@@ -51,7 +51,7 @@ begin
 				end if;
 				result_int := to_integer(unsigned(shifted_val));
 				RESULT <= std_logic_vector(to_unsigned(result_int, RESULT'length));
-			when "0100" =>
+			when "100" =>
 				--Shift left
 				shifted_val := OP_B(7 downto 0);
 				if OP_A(0) = '1' then
@@ -65,14 +65,12 @@ begin
 				end if;
 				result_int := to_integer(unsigned(shifted_val));
 				RESULT <= std_logic_vector(to_unsigned(result_int, RESULT'length));
-			when "0101" =>
+			when "101" =>
 				RESULT <= OP_A or OP_B;
-			when "0110" =>
+			when "110" =>
 				RESULT <= OP_A and OP_B;
-			when "0111" =>
+			when "111" =>
 				RESULT <= OP_A xor OP_B;
-			when "1000" =>
-				--TODO: nothing?
 			when others =>
 				RESULT <= (others => '0');
 		end case;

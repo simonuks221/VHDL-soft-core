@@ -42,8 +42,10 @@ begin
                 --PUSH 1 and POP "amount_int"
                 stack_array(stack_top_address - amount_int + 1) <= DATA_IN;
                 stack_top_address <= stack_top_address - amount_int + 1;
-                if stack_top_address /= amount_int + 1 then
+                if stack_next_address >= amount_int then
                     stack_next_address <= stack_next_address - amount_int + 1;
+                else
+                    stack_next_address <= 0;
                 end if;
                 if stack_top_address < amount_int then
                     UNDERFLOW <= '1';
@@ -61,10 +63,10 @@ begin
             elsif POP = '1' then
                 --POP from stack
                 stack_top_address <= stack_top_address - amount_int;
-                if stack_top_address /= amount_int then
+                if stack_next_address >= amount_int then
                     stack_next_address <= stack_next_address - amount_int;
                 else
-                stack_next_address <= 0;
+                    stack_next_address <= 0;
                 end if;
                 if stack_top_address < amount_int then
                     UNDERFLOW <= '1';

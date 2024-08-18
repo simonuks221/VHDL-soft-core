@@ -1,14 +1,16 @@
+#pragma once
+
 #include "command_base.hpp"
 #include <stdint.h>
-
-#pragma once
+#include <variant>
 
 class CommandPush : public CommandBase {
     private:
-        unsigned int constant = 0;
+        std::variant<int, std::string> constant = "";
     public:
         CommandPush() : CommandBase("PUSH", 1) {};
         void parse_arguments(std::span<std::string_view> arguments) override;
+        void expand_command(std::vector<Line>& lines, std::vector<Line>::iterator it) override;
         uint8_t assemble(void) const override;
 };
 

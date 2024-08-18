@@ -49,7 +49,7 @@ architecture Behavioral of processor_core is
 			EN : in STD_LOGIC;
 			INSTRUCTION: in STD_LOGIC_VECTOR(7 downto 0);
 			DATA_OUT: out STD_LOGIC_VECTOR(7 downto 0);
-			ALU_OP: out STD_LOGIC_VECTOR(3 downto 0);
+			ALU_OP: out STD_LOGIC_VECTOR(2 downto 0);
 			STACK_PUSH: out STD_LOGIC;
 			STACK_POP: out STD_LOGIC;
 			STACK_AMOUNT: out STD_LOGIC_VECTOR(4 downto 0);
@@ -66,7 +66,7 @@ architecture Behavioral of processor_core is
 			EN : in STD_LOGIC;
 			OP_A : in STD_LOGIC_VECTOR(7 downto 0);
 			OP_B : in STD_LOGIC_VECTOR(7 downto 0);
-			CMD : in STD_LOGIC_VECTOR(3 downto 0);
+			CMD : in STD_LOGIC_VECTOR(2 downto 0);
 			RESULT : out STD_LOGIC_VECTOR(7 downto 0)
 		);
 	end component;
@@ -104,7 +104,7 @@ architecture Behavioral of processor_core is
 	signal stack_amount : STD_LOGIC_VECTOR(4 downto 0);
 	signal decoder_data : STD_LOGIC_VECTOR(7 downto 0) := (others => '0');
 	signal stack_source: STD_LOGIC_VECTOR(1 downto 0) := (others => '0');
-	signal alu_op: STD_LOGIC_VECTOR(3 downto 0) := (others => '0');
+	signal alu_op: STD_LOGIC_VECTOR(2 downto 0) := (others => '0');
 	signal decoder_new_pc: STD_LOGIC := '0';
 	signal new_pc_if_true: STD_LOGIC := '0';
 	signal decoder_memory_write: STD_LOGIC := '0';

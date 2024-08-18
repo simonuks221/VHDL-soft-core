@@ -46,8 +46,9 @@ int main(int argc, char* argv[]) {
 
     std::vector<Line> assembly_lines;
     read_lines(assembly_lines, inputFile);
-    Preprocessor preprocessor;
-    preprocessor.process_links(assembly_lines);
+    /* Expand functions */
+    CommandParser::expand_commands(assembly_lines);
+    Preprocessor::process_links(assembly_lines);
     /* Output into file */
     std::ofstream binary_file("binary.txt");
     if (!binary_file) { //TODO: unify logging library

@@ -5,6 +5,8 @@
 #include <sstream>
 #include "preprocessor.hpp"
 
+std::unordered_map<std::string, unsigned int> Preprocessor::all_links {};
+
 void Preprocessor::process_links(std::vector<Line> &lines) {
     find_all_links(lines);
     replace_all_links(lines);
