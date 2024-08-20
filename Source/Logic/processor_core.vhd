@@ -92,6 +92,7 @@ architecture Behavioral of processor_core is
 	signal new_pc_en: STD_LOGIC := '0';
 	signal new_pc_condition: STD_LOGIC := '0';
 	signal new_pc : STD_LOGIC_VECTOR(7 downto 0) := (others => '0');
+	signal current_pc : STD_LOGIC_VECTOR(7 downto 0) := (others => '0');
 	--Stack signals
 	signal stack_data_in : STD_LOGIC_VECTOR(7 downto 0) := (others => '0');
 	signal stack_top : STD_LOGIC_VECTOR(7 downto 0) := (others => '0');
@@ -142,11 +143,13 @@ begin
 	end if;
 end process;
 
-new_pc <= stack_top;
+new_pc <= std_logic_vector(to_unsigned(to_integer(signed(stack_top)) + to_integer(unsigned(current_pc)), new_pc'length));
 ram_memory_write <= decoder_memory_write and STORE_EN;
 memory_data <= memory_data_ram or DATA_BUS_MEMORY_D;
 
-pc_1 : pc port map(CLK, PROGRAM_MEMORY_A, decode_en, execute_en, store_en, new_pc_en, new_pc);
+PROGRAM_MEMORY_A <= current_pc;
+
+pc_1 : pc port map(CLK, current_pc, decode_en, execute_en, store_en, new_pc_en, new_pc);
 
 stack_1 : stack port map(CLK, STORE_EN, stack_data_in, stack_top, stack_next, stack_push, stack_pop, stack_amount,
 						overflow, underflow);

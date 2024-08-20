@@ -17,6 +17,15 @@ void CommandBase::parse_arguments(std::span<std::string> arguments) {
     /* Needs to be implemented in children */
 }
 
-void CommandBase::expand_command(std::vector<Line>& lines, std::vector<Line>::iterator it) {
+void CommandBase::expand_command(std::vector<ICommand *> &commands, std::vector<ICommand *>::iterator it) {
     /* Needs to be implemented in children */
+}
+
+uint8_t CommandBase::assemble(void) const {
+    /* Needs to be implemented in children */
+    return 0x00;
+}
+
+ICommand *CommandBase::clone(void) const {
+    return new CommandBase(*this);
 }

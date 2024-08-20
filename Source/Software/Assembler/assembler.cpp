@@ -44,10 +44,13 @@ int main(int argc, char* argv[]) {
         return 1;
     }
     std::vector<Line> assembly_lines;
+    std::vector<ICommand *> assembly_commands;
     read_lines(assembly_lines, inputFile);
+    inputFile.close();
+    CommandParser::parse_commands(assembly_lines, assembly_commands);
+    Preprocessor::process_links(assembly_commands);
     /* Expand functions */
-    CommandParser::expand_commands(assembly_lines);
-    Preprocessor::process_links(assembly_lines);
+    CommandParser::expand_commands(assembly_commands);
     /* Output into file */
     std::ofstream binary_file("binary.txt");
     if (!binary_file) { //TODO: unify logging library
@@ -55,9 +58,7 @@ int main(int argc, char* argv[]) {
         return 1;
     }
     /* Parse file line by line into output file */
-    CommandParser::parse_lines(assembly_lines, binary_file);
-
-    inputFile.close();
+    CommandParser::assemble_commands(assembly_commands, binary_file);
     binary_file.close();
     std::cout << "Success" <<std::endl;
     return 0;

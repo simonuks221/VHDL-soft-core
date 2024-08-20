@@ -43,7 +43,7 @@ begin
 	RGB_R <= 'L';
 	RGB_G <= 'L';
 	RGB_B <= 'L';
-	wait for 1 us;
+	wait for 2 us;
 	BTN_1 <= '1';
 	wait for 1 us;
 	BTN_1 <= '0';

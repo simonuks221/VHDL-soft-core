@@ -20,6 +20,7 @@ class CommandParser {
         ~CommandParser() = default;
 
         static void add_command(ICommand *new_command);
-        static bool parse_lines(std::vector<Line> &lines, std::ofstream &binary_file);
-        static bool expand_commands(std::vector<Line> &lines);
+        static bool assemble_commands(std::vector<ICommand *> &commands, std::ofstream &binary_file);
+        static bool parse_commands(std::vector<Line> &lines, std::vector<ICommand *> &commands);
+        static bool expand_commands(std::vector<ICommand *> &commands);
 };

@@ -63,7 +63,17 @@ std::vector<std::string> CommandParser::parse_words(Line line) {
     return words;
 }
 
-bool CommandParser::parse_lines(std::vector<Line> &lines, std::ofstream &binary_file) { //TODO: span
+bool CommandParser::assemble_commands(std::vector<ICommand *> &commands, std::ofstream &binary_file) { //TODO: span
+    for(const ICommand *command : commands) {
+        uint8_t cmd = command->assemble();
+        char buffer[2];
+        std::sprintf(buffer, "%02x", cmd);
+        binary_file << std::string(buffer) << std::endl;
+    }
+    return true;
+}
+
+bool CommandParser::parse_commands(std::vector<Line> &lines, std::vector<ICommand *> &commands) {
     for(Line line : lines) {
         std::vector<std::string> words = parse_words(line);
         ICommand *current_command = nullptr;
@@ -72,13 +82,16 @@ bool CommandParser::parse_lines(std::vector<Line> &lines, std::ofstream &binary_
             if(curr_word.empty()) {
                 break;
             }
-            /* Check if comment */
-            if(curr_word[0] == '.') { //TODO: remove comments and tags in preprocessor
+            /* Check if link */
+            if(curr_word[0] == '.') {
+                std::string link_string = curr_word.data();
+                CommandLink *link = new CommandLink(link_string);
+                commands.push_back(link);
                 break;
             }
             if(i == 0) {
                 /* First word should be command */
-                current_command = try_parse_token(curr_word);
+                current_command = try_parse_token(curr_word)->clone();
                 assert(current_command != nullptr);
                 if(current_command->get_argument_amount() + 1 > words.size()) {
                     std::cerr << "Not enough arguments in line" << std::endl;
@@ -86,44 +99,17 @@ bool CommandParser::parse_lines(std::vector<Line> &lines, std::ofstream &binary_
                 }
                 std::span<std::string> arguments(words.begin()+i+1, words.begin()+i+1+current_command->get_argument_amount());
                 current_command->parse_arguments(arguments);
-                /* Convert command to hex string */
-                uint8_t command = current_command->assemble();
-                char buffer[2];
-                std::sprintf(buffer, "%02x", command);
-                binary_file << std::string(buffer) << std::endl;
                 i += current_command->get_argument_amount();
+                commands.push_back(current_command);
             }
         }
     }
     return true;
 }
 
-bool CommandParser::expand_commands(std::vector<Line> &lines) {
-    for(unsigned int line_i = 0; line_i < lines.size(); line_i++) {
-        std::vector<std::string> words = parse_words(lines[line_i]);
-        ICommand *current_command = nullptr;
-        for(unsigned int word_i = 0; word_i < words.size(); word_i++) {
-            std::string_view curr_word = words[word_i];
-            if(curr_word.empty()) {
-                break;
-            }
-            /* Check if comment */
-            if(curr_word[0] == '.') { //TODO: remove comments and tags in preprocessor
-                break;
-            }
-            if(word_i == 0) {
-                /* First word should be command */
-                current_command = try_parse_token(curr_word);
-                assert(current_command != nullptr);
-                if(current_command->get_argument_amount() + 1 > words.size()) {
-                    std::cerr << "Not enough arguments in line" << std::endl;
-                    assert(false);
-                }
-                std::span<std::string> arguments(words.begin()+word_i+1, words.begin()+word_i+1+current_command->get_argument_amount());
-                current_command->parse_arguments(arguments);
-                current_command->expand_command(lines, lines.begin() + line_i);
-            }
-        }
+bool CommandParser::expand_commands(std::vector<ICommand *> &commands) {
+    for(unsigned int line_i = 0; line_i < commands.size(); line_i++) {
+        commands[line_i]->expand_command(commands, commands.begin() + line_i);
     }
     return true;
 }

@@ -6,16 +6,20 @@
 
 class CommandPush : public CommandBase {
     private:
-        std::variant<int, std::string> constant = "";
-        bool signed_constant = false;
 
-        void expand_command_signed(Line &current_line, std::vector<Line> &new_lines, int constant_int);
-        void expand_command_unsigned(Line &current_line, std::vector<Line> &new_lines, int constant_int);
+
+        void expand_command_signed(ICommand *current_command, std::vector<ICommand *> &new_lines, int constant_int);
+        void expand_command_unsigned(ICommand *current_command, std::vector<ICommand *> &new_lines, int constant_int);
     public:
         CommandPush(std::string codeword, bool signed_constant) : CommandBase(codeword, 1), signed_constant(signed_constant) {};
+        CommandPush(std::string codeword, bool signed_constant, int constant) : CommandBase(codeword, 1), signed_constant(signed_constant), constant(constant) {};
         void parse_arguments(std::span<std::string> arguments) override;
-        void expand_command(std::vector<Line>& lines, std::vector<Line>::iterator it) override;
+        void expand_command(std::vector<ICommand *>& commands, std::vector<ICommand *>::iterator it) override;
         uint8_t assemble(void) const override;
+        ICommand *clone(void) const override;
+
+        bool signed_constant = false;
+        std::variant<int, std::string> constant = ""; //TODO: getters setters
 };
 
 class CommandPop : public CommandBase { //TODO: could be single command class with bit masking
@@ -25,6 +29,7 @@ class CommandPop : public CommandBase { //TODO: could be single command class wi
         CommandPop() : CommandBase("POP", 1) {};
         void parse_arguments(std::span<std::string> arguments) override;
         uint8_t assemble(void) const override;
+        ICommand *clone(void) const override;
 };
 
 class CommandBasic : public CommandBase {
@@ -33,6 +38,7 @@ class CommandBasic : public CommandBase {
     public:
         CommandBasic(std::string codeword, uint8_t instruction) : CommandBase(codeword, 0), instruction(instruction) {};
         uint8_t assemble(void) const override;
+        ICommand *clone(void) const override;
 };
 
 class CommandAlu : public CommandBase {
@@ -41,6 +47,7 @@ class CommandAlu : public CommandBase {
     public:
         CommandAlu(std::string codeword, uint8_t alu_code) : CommandBase(codeword, 0), alu_code(alu_code) {};
         uint8_t assemble(void) const override;
+        ICommand *clone(void) const override;
 };
 
 class CommandJump : public CommandBase {
@@ -50,4 +57,13 @@ class CommandJump : public CommandBase {
         CommandJump() : CommandBase("JUMP", 1) {};
         void parse_arguments(std::span<std::string> arguments) override;
         uint8_t assemble(void) const override;
+        ICommand *clone(void) const override;
+};
+
+/* DUMMY COMMAND */
+class CommandLink : public CommandBase {
+    public:
+        std::string link;
+        CommandLink(std::string link) : CommandBase("...................", 0), link(link) {};
+
 };
