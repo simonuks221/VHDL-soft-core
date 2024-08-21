@@ -4,27 +4,33 @@
 #include <stdint.h>
 #include <variant>
 
+class CommandPushDummy : public CommandBase {
+    public:
+        CommandPushDummy() : CommandBase(".............", 0){};
+};
+
 class CommandPush : public CommandBase {
     private:
-
-
-        void expand_command_signed(ICommand *current_command, std::vector<ICommand *> &new_lines, int constant_int);
-        void expand_command_unsigned(ICommand *current_command, std::vector<ICommand *> &new_lines, int constant_int);
+        void expand_command_signed(std::vector<std::unique_ptr<ICommand>> &new_lines, int constant_int);
+        void expand_command_unsigned(std::vector<std::unique_ptr<ICommand>> &new_lines, int constant_int);
+        bool preallocated_space = false;
     public:
-        CommandPush(std::string codeword, bool signed_constant) : CommandBase(codeword, 1), signed_constant(signed_constant) {};
-        CommandPush(std::string codeword, bool signed_constant, int constant) : CommandBase(codeword, 1), signed_constant(signed_constant), constant(constant) {};
+        CommandPush(std::string _codeword, bool _signed_constant) : CommandBase(_codeword, 1), signed_constant(_signed_constant) {};
+        CommandPush(std::string _codeword, bool _signed_constant, int _constant) : CommandBase(_codeword, 1), signed_constant(_signed_constant), constant(_constant) {};
         void parse_arguments(std::span<std::string> arguments) override;
-        void expand_command(std::vector<ICommand *>& commands, std::vector<ICommand *>::iterator it) override;
+        void expand_command(std::vector<std::unique_ptr<ICommand>>& commands, unsigned int index) override;
         uint8_t assemble(void) const override;
         ICommand *clone(void) const override;
 
         bool signed_constant = false;
         std::variant<int, std::string> constant = ""; //TODO: getters setters
+        bool will_be_signed_link = false;
+        bool will_be_big_link = false;
 };
 
 class CommandPop : public CommandBase { //TODO: could be single command class with bit masking
     private:
-        unsigned int amount = 0;
+        int amount = 0;
     public:
         CommandPop() : CommandBase("POP", 1) {};
         void parse_arguments(std::span<std::string> arguments) override;
@@ -36,7 +42,7 @@ class CommandBasic : public CommandBase {
     private:
         const uint8_t instruction = 0;
     public:
-        CommandBasic(std::string codeword, uint8_t instruction) : CommandBase(codeword, 0), instruction(instruction) {};
+        CommandBasic(std::string _codeword, uint8_t _instruction) : CommandBase(_codeword, 0), instruction(_instruction) {};
         uint8_t assemble(void) const override;
         ICommand *clone(void) const override;
 };
@@ -45,7 +51,7 @@ class CommandAlu : public CommandBase {
     private:
         uint8_t alu_code = 0x00;
     public:
-        CommandAlu(std::string codeword, uint8_t alu_code) : CommandBase(codeword, 0), alu_code(alu_code) {};
+        CommandAlu(std::string _codeword, uint8_t _alu_code) : CommandBase(_codeword, 0), alu_code(_alu_code) {};
         uint8_t assemble(void) const override;
         ICommand *clone(void) const override;
 };
@@ -64,6 +70,7 @@ class CommandJump : public CommandBase {
 class CommandLink : public CommandBase {
     public:
         std::string link;
-        CommandLink(std::string link) : CommandBase("...................", 0), link(link) {};
-
+        CommandLink(std::string &_link) : CommandBase("dummy_link", 0), link(_link) {};
+        uint8_t assemble(void) const override;
+        ICommand *clone(void) const override;
 };

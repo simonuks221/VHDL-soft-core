@@ -14,10 +14,13 @@ std::string_view CommandBase::get_codeword(void) const {
 }
 
 void CommandBase::parse_arguments(std::span<std::string> arguments) {
+    (void)arguments;
     /* Needs to be implemented in children */
 }
 
-void CommandBase::expand_command(std::vector<ICommand *> &commands, std::vector<ICommand *>::iterator it) {
+void CommandBase::expand_command(std::vector<std::unique_ptr<ICommand>> &commands, unsigned int index) {
+    (void)commands;
+    (void)index;
     /* Needs to be implemented in children */
 }
 

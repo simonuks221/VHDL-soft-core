@@ -6,6 +6,12 @@ project(assembler)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
+if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+    add_compile_options(-Wall -Wextra -Wpedantic -Wshadow -Wconversion -Wsign-conversion -Wformat=2)
+elseif (CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
+    add_compile_options(/W4)
+endif()
+
 add_executable(assembler
     assembler.cpp
 )

@@ -6,7 +6,7 @@
 #include "line.hpp"
 
 /* Removes comments, empty lines from inputs */
-void read_lines(std::vector<Line> &lines, std::ifstream &file) {
+void read_lines(std::vector<std::unique_ptr<Line>> &lines, std::ifstream &file) {
     std::string new_line_string;
     unsigned int assembly_line = 0;
     while (std::getline(file, new_line_string)) {
@@ -22,8 +22,8 @@ void read_lines(std::vector<Line> &lines, std::ifstream &file) {
         if(new_line_string.empty()) {
             continue;
         }
-        Line new_line(assembly_line, new_line_string);
-        lines.push_back(new_line);
+        std::unique_ptr<Line> new_line = std::make_unique<Line>(assembly_line, new_line_string);
+        lines.push_back(std::move(new_line));
     }
 }
 
@@ -43,13 +43,19 @@ int main(int argc, char* argv[]) {
         std::cerr << "Failed to open the file: " << file_path << std::endl;
         return 1;
     }
-    std::vector<Line> assembly_lines;
-    std::vector<ICommand *> assembly_commands;
+    std::vector<std::unique_ptr<Line>> assembly_lines;
+    std::vector<std::unique_ptr<ICommand>> assembly_commands;
     read_lines(assembly_lines, inputFile);
     inputFile.close();
     CommandParser::parse_commands(assembly_lines, assembly_commands);
-    Preprocessor::process_links(assembly_commands);
-    /* Expand functions */
+    /* Find all links and update their expected (not final) sizes*/
+    Preprocessor::find_all_links(assembly_commands);
+    Preprocessor::inform_all_links(assembly_commands);
+    /* Expand complex commands, preallocate links */
+    CommandParser::expand_commands(assembly_commands);
+    /* Find and store all links */
+    Preprocessor::replace_all_links(assembly_commands);
+    /* Expand again the final time - replace preallocated jump pushes with actual values */
     CommandParser::expand_commands(assembly_commands);
     /* Output into file */
     std::ofstream binary_file("binary.txt");

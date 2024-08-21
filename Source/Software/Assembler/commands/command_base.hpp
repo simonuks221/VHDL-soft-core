@@ -14,7 +14,7 @@ class CommandBase : public ICommand {
 
         std::string_view get_codeword(void) const override;
         void parse_arguments(std::span<std::string> arguments) override;
-        void expand_command(std::vector<ICommand *>& commands, std::vector<ICommand *>::iterator it) override;
+        void expand_command(std::vector<std::unique_ptr<ICommand>>& commands, unsigned int index) override;
         unsigned int get_argument_amount(void) const override;
         uint8_t assemble(void) const override;
         ICommand *clone(void) const override;

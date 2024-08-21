@@ -8,34 +8,55 @@
 
 std::unordered_map<std::string, ICommand *> Preprocessor::all_links {};
 
-void Preprocessor::process_links(std::vector<ICommand *> &commands) {
-    find_all_links(commands);
-    replace_all_links(commands);
-    // add_link_loads_to_jump(lines);
-}
-
-void Preprocessor::find_all_links(std::vector<ICommand *> &commands) {
+void Preprocessor::find_all_links(std::vector<std::unique_ptr<ICommand>> &commands) {
     /* Can't have link at first line */ //TODO: might be issue
-    for(unsigned int i = 1; i < commands.size(); i++) {
-        CommandLink *link_command = dynamic_cast<CommandLink *>(commands[i]);
+    for(unsigned int i = 0; i < commands.size(); i++) {
+        CommandLink *link_command = dynamic_cast<CommandLink *>(commands[i].get());
         if(link_command == nullptr) {
             continue;
         }
         if(all_links.find(link_command->link) != all_links.end()) {
-            ICommand *duplicate = all_links.at(link_command->link);
+            // ICommand *duplicate = all_links.at(link_command->link);
             std::cerr << "Multiple definitions of same link: " << link_command->link << "at lines: " << " and " << i << std::endl;
             assert(false);
         }
         /* New link found, add it and line number to map */
-        all_links.insert_or_assign(link_command->link, commands[i-1]);
-        //TODO: free the ereased member or make unique ptr
-        // commands.erase(commands.begin() + i);
+        all_links.insert_or_assign(link_command->link, commands[i-1].get());
     }
 }
 
-void Preprocessor::replace_all_links(std::vector<ICommand *> &commands) {
+void Preprocessor::inform_all_links(std::vector<std::unique_ptr<ICommand>> &commands) {
     for(unsigned int i = 0; i < commands.size(); i++) {
-        CommandPush *push_command = static_cast<CommandPush *>(commands[i]);
+        CommandPush *push_command = dynamic_cast<CommandPush *>(commands[i].get());
+        if(push_command == nullptr) {
+            continue;
+        }
+        if(!std::holds_alternative<std::string>(push_command->constant)) {
+            continue;
+        }
+        if(all_links.find(std::get<std::string>(push_command->constant)) == all_links.end()) {
+            std::cerr << "Invalid link without definition: " << std::get<std::string>(push_command->constant) << std::endl;
+            assert(false);
+        }
+        const ICommand *target_command = all_links.at(std::get<std::string>(push_command->constant));
+        auto link_command = std::find_if(commands.begin(), commands.end(),
+            [target_command](const std::unique_ptr<ICommand> &cmd) {
+                return cmd.get() == target_command;
+            });
+        if(link_command == commands.end()) {
+            std::cerr << "Invalid link command" << std::endl;
+            assert(false);
+        }
+        int link_line = static_cast<int>(std::distance(commands.begin(), link_command));
+        int line_diff = link_line - static_cast<int>(i);
+        push_command->will_be_signed_link = line_diff < 0;
+        push_command->will_be_big_link = line_diff > 127;
+    }
+}
+
+void Preprocessor::replace_all_links(std::vector<std::unique_ptr<ICommand>> &commands) {
+    for(unsigned int i = 0; i < commands.size(); i++) {
+        CommandPush *push_command = dynamic_cast<CommandPush *>(commands[i].get());
         if(push_command == nullptr) {
             continue;
         }
@@ -46,26 +67,26 @@ void Preprocessor::replace_all_links(std::vector<ICommand *> &commands) {
     }
 }
 
-void Preprocessor::replace_if_link(CommandPush *command, unsigned int current_line, std::vector<ICommand *> &commands) {
-    if(all_links.find(std::get<std::string>(command->constant)) == all_links.end()) {
-        std::cerr << "Invalid link without definition: " << std::get<std::string>(command->constant) << std::endl;
-        assert(false);
+void Preprocessor::replace_if_link(CommandPush *this_command, unsigned int current_line, std::vector<std::unique_ptr<ICommand>> &commands) {
+    if(all_links.find(std::get<std::string>(this_command->constant)) == all_links.end()) {
+        std::cerr << "Invalid link without definition: " << std::get<std::string>(this_command->constant) << std::endl;
+        // assert(false);
     }
-    auto link_command = std::find(commands.begin(), commands.end(), all_links.at(std::get<std::string>(command->constant)));
-    if(link_command == commands.end()) {
+    ICommand *target_command = all_links.at(std::get<std::string>(this_command->constant));
+    auto it = std::find_if(commands.begin(), commands.end(),
+                           [target_command](const std::unique_ptr<ICommand> &cmd) {
+
+                               return cmd.get() == target_command;
+                           });
+    if(it == commands.end()) {
         std::cerr << "Invalid link command" << std::endl;
         assert(false);
     }
 
-    unsigned int link_line = std::distance(commands.begin(), link_command);
-    int line_diff = link_line - current_line;
-    /* TODO: workaround for signed link stuff */
-    if(line_diff < 0) {
-        line_diff -= 2;
-    }
-    //TODO: will only work on push commands TODO:fix
-    command->constant = line_diff;
-    command->signed_constant = line_diff < 0;
+    int link_line = static_cast<int>(std::distance(commands.begin(), it));
+    int line_diff = link_line - static_cast<int>(current_line);
+    this_command->constant = line_diff;
+    this_command->signed_constant = line_diff < 0;
 }
 
 // void Preprocessor::add_link_loads_to_jump(std::vector<std::string> &lines) {
