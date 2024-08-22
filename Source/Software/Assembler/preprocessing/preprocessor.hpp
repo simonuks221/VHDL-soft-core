@@ -12,7 +12,6 @@ class Preprocessor {
         /* Link declaration name and its corresponding link command */
         static std::unordered_map<std::string, ICommand *> all_links;
 
-
         static void add_link_loads_to_jump(std::vector<std::unique_ptr<ICommand>> &commands);
         static void replace_if_link(CommandPush *command, unsigned int current_line, std::vector<std::unique_ptr<ICommand>> &commands);
     public:

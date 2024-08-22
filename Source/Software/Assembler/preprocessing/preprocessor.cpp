@@ -6,7 +6,7 @@
 #include <algorithm>
 #include "preprocessor.hpp"
 
-std::unordered_map<std::string, ICommand *> Preprocessor::all_links {};
+std::unordered_map<std::string, ICommand *> Preprocessor::all_links;
 
 void Preprocessor::find_all_links(std::vector<std::unique_ptr<ICommand>> &commands) {
     /* Can't have link at first line */ //TODO: might be issue

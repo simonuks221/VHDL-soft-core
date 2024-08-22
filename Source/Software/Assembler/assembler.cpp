@@ -4,6 +4,7 @@
 #include "command_parser.hpp"
 #include "preprocessor.hpp"
 #include "line.hpp"
+#include "spellcheck.hpp"
 
 /* Removes comments, empty lines from inputs */
 void read_lines(std::vector<std::unique_ptr<Line>> &lines, std::ifstream &file) {

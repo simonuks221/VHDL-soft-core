@@ -4,8 +4,10 @@
 #include <vector>
 #include "command_parser.hpp"
 #include "commands.hpp"
+#include "spellcheck.hpp"
 
 std::unordered_map<std::string_view, ICommand*> CommandParser::commands;
+std::vector<std::string_view> CommandParser::all_command_names;
 
 /* Command declaration */
 CommandPush push_unsigned_cmd("PUSH", false);
@@ -27,6 +29,7 @@ CommandJump jump_cmd;
 
 void CommandParser::add_command(ICommand *new_command) {
     commands.insert_or_assign(new_command->get_codeword(), new_command);
+    all_command_names.push_back(new_command->get_codeword());
 }
 
 std::unique_ptr<ICommand> CommandParser::try_parse_token(std::string_view token) {
@@ -35,6 +38,10 @@ std::unique_ptr<ICommand> CommandParser::try_parse_token(std::string_view token)
     }
     if(commands.find(token) == commands.end()) {
         std::cerr << "Invalid token found: " << token << std::endl;
+        int best_match_index = SpellCheck::find_best_match(token, all_command_names);
+        if(best_match_index != -1) {
+            std::cerr << "Maybe you mean: \"" << all_command_names[best_match_index] << "\"?" << std::endl;
+        }
         assert(false);
     }
     /* Found valid command */

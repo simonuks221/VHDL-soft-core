@@ -8,9 +8,11 @@ add_library(commands
 target_include_directories(commands
     PUBLIC
         ${CMAKE_SOURCE_DIR}/lines
+        ${CMAKE_SOURCE_DIR}/common
 )
 
 target_link_libraries(commands
     PRIVATE
         lines
+        common
 )
