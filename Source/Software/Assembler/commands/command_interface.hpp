@@ -13,9 +13,8 @@ class ICommand {
         ~ICommand() = default;
 
         virtual std::string_view get_codeword(void) const = 0;
-        virtual void parse_arguments(std::span<std::string> arguments) = 0;
+        virtual bool parse_arguments(std::span<std::string> arguments) = 0;
         virtual bool expand_command(std::vector<std::unique_ptr<ICommand>>& lines, unsigned int index) = 0;
-        virtual unsigned int get_argument_amount(void) const = 0;
         virtual uint8_t assemble(void) const = 0;
 
         virtual ICommand *clone(void) const = 0;

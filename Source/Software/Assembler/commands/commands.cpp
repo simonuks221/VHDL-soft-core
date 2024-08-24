@@ -4,7 +4,10 @@
 #include <cassert>
 
 /* PUSH command */
-void CommandPush::parse_arguments(std::span<std::string> arguments) {
+bool CommandPush::parse_arguments(std::span<std::string> arguments) {
+    if(arguments.size() != 1) {
+        return false;
+    }
     try {
         /* If is a number */
         constant = std::stoi(arguments[0].data());
@@ -12,6 +15,7 @@ void CommandPush::parse_arguments(std::span<std::string> arguments) {
         /* Not a number, should be link */
         constant = arguments[0].data();
     }
+    return true;
 }
 
 bool CommandPush::expand_command(std::vector<std::unique_ptr<ICommand>> &commands, unsigned int index) {
@@ -123,7 +127,10 @@ ICommand *CommandPush::clone(void) const {
 }
 
 /* POP command */
-void CommandPop::parse_arguments(std::span<std::string> arguments) {
+bool CommandPop::parse_arguments(std::span<std::string> arguments) {
+    if(arguments.size() != 1) {
+        return false;
+    }
     try {
         amount = std::stoi(arguments[0].data());
     } catch (...) {
@@ -135,6 +142,7 @@ void CommandPop::parse_arguments(std::span<std::string> arguments) {
         std::cerr << "Amount too big: " << std::to_string(amount) << std::endl;
         assert(false);
     }
+    return true;
 }
 
 uint8_t CommandPop::assemble(void) const {
@@ -154,6 +162,40 @@ ICommand *CommandBasic::clone(void) const {
     return new CommandBasic(*this);
 }
 
+bool CommandBasic::parse_arguments(std::span<std::string> arguments) {
+    /* Save all arguments */
+    for(std::string_view string : arguments) {
+        int integer = 0;
+        try {
+            integer = std::stoi(string.data());
+            saved_arguments.push_back(integer);
+        } catch (...) {
+            saved_arguments.push_back(string.data());
+        }
+    }
+    return true;
+}
+
+bool CommandBasic::expand_command(std::vector<std::unique_ptr<ICommand>>& commands, unsigned int index) {
+    if(saved_arguments.size() == 0) {
+        return false;
+    }
+    for(int i = saved_arguments.size() - 1; i >= 0; i--) {
+        std::unique_ptr<CommandPush> new_command;
+        if(std::holds_alternative<std::string>(saved_arguments[i])) {
+            /* Holds link */
+            new_command = std::make_unique<CommandPush>("PUSH", 0, saved_arguments[i]);
+        } else {
+            /* Holds just value */
+            bool is_signed_argument = std::get<int>(saved_arguments[i]) < 0;
+            new_command = std::make_unique<CommandPush>("PUSH", is_signed_argument, saved_arguments[i]);
+        }
+        commands.insert(commands.begin() + index, std::move(new_command));
+    }
+    saved_arguments.clear();
+    return true;
+}
+
 /* Command ALU */
 uint8_t CommandAlu::assemble(void) const {
     return alu_code | 0x20;
@@ -164,7 +206,10 @@ ICommand *CommandAlu::clone(void) const {
 }
 
 /* JUMP command */
-void CommandJump::parse_arguments(std::span<std::string> arguments) {
+bool CommandJump::parse_arguments(std::span<std::string> arguments) {
+    if(arguments.size() != 1) {
+        return false;
+    }
     int arguemnt_1 = 0;
     try {
         arguemnt_1 = std::stoi(arguments[0].data());
@@ -177,6 +222,7 @@ void CommandJump::parse_arguments(std::span<std::string> arguments) {
         assert(false);
     }
     jump_condition = static_cast<bool>(arguemnt_1);
+    return true;
 }
 
 uint8_t CommandJump::assemble(void) const {

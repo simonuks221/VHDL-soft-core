@@ -2,17 +2,12 @@
 #Setup LED GPIO OUTPUT
 PUSH 253
 PUSHS -10
-PUSH 3
-PUSH 50
-STORE
+STORE 3 50
 #Write LED_1 high
-PUSH 1
-PUSH 51
-STORE
+STORE 1 51
 .start_loop
 #Read BTN_1
-PUSH 52
-LOAD
+LOAD 52
 PUSH 32
 AND
 PUSH 5
@@ -20,9 +15,7 @@ SHFT_R
 PUSH .end_led_2_if
 JUMP 0
 #Turn on LED_2
-PUSH 3
-PUSH 51
-STORE
+STORE 3 51
 .end_led_2_if
 #Continue
 PUSH 1

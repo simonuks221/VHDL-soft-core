@@ -101,14 +101,13 @@ bool CommandParser::parse_commands(std::vector<std::unique_ptr<Line>> &lines, st
                 /* First word should be command */
                 current_command = std::move(try_parse_token(curr_word));
                 assert(current_command != nullptr);
-                if(current_command->get_argument_amount() + 1 > words.size()) {
-                    std::cerr << "Not enough arguments in line" << std::endl;
+                std::span<std::string> arguments(words.begin()+i+1, words.end());
+                if(!current_command->parse_arguments(arguments)) {
+                    std::cerr << "Invalid argument parsing" << std::endl;
                     assert(false);
                 }
-                std::span<std::string> arguments(words.begin()+i+1, words.begin()+i+1+current_command->get_argument_amount());
-                current_command->parse_arguments(arguments);
-                i += current_command->get_argument_amount();
                 commands.push_back(std::move(current_command));
+                break;
             }
         }
     }
