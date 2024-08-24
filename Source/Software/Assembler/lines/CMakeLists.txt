@@ -1,3 +1,4 @@
-add_library(lines
-    line.cpp
+assembler_add_library(lines
+    SRC
+        line.cpp
 )

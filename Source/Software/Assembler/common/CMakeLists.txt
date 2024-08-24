@@ -1,3 +1,3 @@
-add_library(common
-    spellcheck.cpp
+assembler_add_library(common
+    SRC spellcheck.cpp
 )
