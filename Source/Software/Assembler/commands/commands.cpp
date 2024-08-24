@@ -14,7 +14,7 @@ void CommandPush::parse_arguments(std::span<std::string> arguments) {
     }
 }
 
-void CommandPush::expand_command(std::vector<std::unique_ptr<ICommand>> &commands, unsigned int index) {
+bool CommandPush::expand_command(std::vector<std::unique_ptr<ICommand>> &commands, unsigned int index) {
     std::vector<std::unique_ptr<ICommand>> new_commands;
     if(std::holds_alternative<std::string>(constant)) {
         /* Skip if houses link */
@@ -24,8 +24,9 @@ void CommandPush::expand_command(std::vector<std::unique_ptr<ICommand>> &command
             new_commands.push_back(std::make_unique<CommandPushDummy>());
             preallocated_space = true;
             commands.insert(commands.begin() + index, std::make_move_iterator(new_commands.begin()), std::make_move_iterator(new_commands.end()));
+            return true;
         }
-        return;
+        return false;
     }
     int constant_int = std::get<int>(constant);
     if(signed_constant) {
@@ -35,7 +36,7 @@ void CommandPush::expand_command(std::vector<std::unique_ptr<ICommand>> &command
     }
     if(new_commands.size() == 0) {
         /* No expansion, leave everything as it is */
-        return;
+        return false;
     }
     /* If expanding then delete current command and two before as they are preallocated dummies */
     if(preallocated_space) {
@@ -49,12 +50,13 @@ void CommandPush::expand_command(std::vector<std::unique_ptr<ICommand>> &command
         commands.erase(commands.begin() + index);
         commands.insert(commands.begin() + index, std::make_move_iterator(new_commands.begin()), std::make_move_iterator(new_commands.end()));
     }
+    return true;
 }
 
 void CommandPush::expand_command_signed(std::vector<std::unique_ptr<ICommand>> &new_commands, int constant_int) {
     /* Make the number provided into two numbers that add to the signed constant_int */
     if((constant_int > INT8_MAX) || (constant_int < INT8_MIN)) {
-       std::cerr << "Signed constant invalid" << std::endl;
+        std::cerr << "Signed constant invalid" << std::endl;
         assert(false);
     }
     int8_t target_int = static_cast<int8_t>(constant_int);
@@ -100,7 +102,6 @@ void CommandPush::expand_command_unsigned(std::vector<std::unique_ptr<ICommand>>
         new_commands.push_back(std::make_unique<CommandPush>("PUSH", false, offset));
         new_commands.push_back(std::make_unique<CommandAlu>("ADD", 0));
     }
-
 }
 
 uint8_t CommandPush::assemble(void) const {

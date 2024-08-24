@@ -18,7 +18,7 @@ class CommandPush : public CommandBase {
         CommandPush(std::string _codeword, bool _signed_constant) : CommandBase(_codeword, 1), signed_constant(_signed_constant) {};
         CommandPush(std::string _codeword, bool _signed_constant, int _constant) : CommandBase(_codeword, 1), signed_constant(_signed_constant), constant(_constant) {};
         void parse_arguments(std::span<std::string> arguments) override;
-        void expand_command(std::vector<std::unique_ptr<ICommand>>& commands, unsigned int index) override;
+        bool expand_command(std::vector<std::unique_ptr<ICommand>>& commands, unsigned int index) override;
         uint8_t assemble(void) const override;
         ICommand *clone(void) const override;
 

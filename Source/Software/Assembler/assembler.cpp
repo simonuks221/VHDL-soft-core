@@ -53,7 +53,7 @@ int main(int argc, char* argv[]) {
     Preprocessor::find_all_links(assembly_commands);
     Preprocessor::inform_all_links(assembly_commands);
     /* Expand complex commands, preallocate links */
-    CommandParser::expand_commands(assembly_commands);
+    CommandParser::expand_commands_recursive(assembly_commands);
     /* Find and store all links */
     Preprocessor::replace_all_links(assembly_commands);
     /* Expand again the final time - replace preallocated jump pushes with actual values */

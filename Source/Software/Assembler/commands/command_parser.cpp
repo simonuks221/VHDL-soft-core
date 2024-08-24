@@ -116,8 +116,18 @@ bool CommandParser::parse_commands(std::vector<std::unique_ptr<Line>> &lines, st
 }
 
 bool CommandParser::expand_commands(std::vector<std::unique_ptr<ICommand>> &commands) {
+    bool expanded = false;
     for(unsigned int line_i = 0; line_i < commands.size(); line_i++) {
-        commands[line_i]->expand_command(commands, line_i);
+        if(commands[line_i]->expand_command(commands, line_i)) {
+            expanded = true;
+        }
     }
-    return true;
+    return expanded;
+}
+
+void CommandParser::expand_commands_recursive(std::vector<std::unique_ptr<ICommand>> &commands) {
+    bool repeat = false;
+    do {
+        repeat = expand_commands(commands);
+    } while(repeat);
 }

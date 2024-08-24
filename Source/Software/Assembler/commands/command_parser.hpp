@@ -24,4 +24,5 @@ class CommandParser {
         static bool assemble_commands(std::vector<std::unique_ptr<ICommand>> &commands, std::ofstream &binary_file);
         static bool parse_commands(std::vector<std::unique_ptr<Line>> &lines, std::vector<std::unique_ptr<ICommand>> &commands);
         static bool expand_commands(std::vector<std::unique_ptr<ICommand>> &commands);
+        static void expand_commands_recursive(std::vector<std::unique_ptr<ICommand>> &commands);
 };
