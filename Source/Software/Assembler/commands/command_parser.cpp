@@ -5,6 +5,7 @@
 #include "command_parser.hpp"
 #include "commands.hpp"
 #include "spellcheck.hpp"
+#include "logging.hpp"
 
 std::unordered_map<std::string_view, ICommand*> CommandParser::commands;
 std::vector<std::string_view> CommandParser::all_command_names;
@@ -37,10 +38,10 @@ std::unique_ptr<ICommand> CommandParser::try_parse_token(std::string_view token)
         return nullptr;
     }
     if(commands.find(token) == commands.end()) {
-        std::cerr << "Invalid token found: " << token << std::endl;
+        Logging::err("Invalid token found: " + std::string(token));
         int best_match_index = SpellCheck::find_best_match(token, all_command_names);
         if(best_match_index != -1) {
-            std::cerr << "Maybe you mean: \"" << all_command_names[best_match_index] << "\"?" << std::endl;
+            Logging::wrn("Maybe you mean: " + std::string(all_command_names[best_match_index]) + "?");
         }
         assert(false);
     }
@@ -82,7 +83,8 @@ bool CommandParser::assemble_commands(std::vector<std::unique_ptr<ICommand>> &co
 }
 
 bool CommandParser::parse_commands(std::vector<std::unique_ptr<Line>> &lines, std::vector<std::unique_ptr<ICommand>> &commands) {
-    for(std::unique_ptr<Line> &line : lines) {
+    for(unsigned int line_i = 0; line_i < lines.size(); line_i++) {
+        std::unique_ptr<Line> &line = lines[line_i];
         std::vector<std::string> words = parse_words(line);
         std::unique_ptr<ICommand> current_command = nullptr;
         for(unsigned int i = 0; i < words.size(); i++) {
@@ -103,7 +105,7 @@ bool CommandParser::parse_commands(std::vector<std::unique_ptr<Line>> &lines, st
                 assert(current_command != nullptr);
                 std::span<std::string> arguments(words.begin()+i+1, words.end());
                 if(!current_command->parse_arguments(arguments)) {
-                    std::cerr << "Invalid argument parsing" << std::endl;
+                    Line::log_err(line.get(), "Invalid argument parsing");
                     assert(false);
                 }
                 commands.push_back(std::move(current_command));

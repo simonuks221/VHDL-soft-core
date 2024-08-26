@@ -1,3 +1,5 @@
 assembler_add_library(common
-    SRC spellcheck.cpp
+    SRC
+        spellcheck.cpp
+        logging.cpp
 )

@@ -15,4 +15,7 @@ class Line {
         std::string_view get_content(void) const;
         unsigned int get_assembly_line(void) const;
         void set_content(std::string &new_content);
+
+        static void log_err(Line &line, std::string_view message);
+        static void log_err(Line *line, std::string_view message);
 };

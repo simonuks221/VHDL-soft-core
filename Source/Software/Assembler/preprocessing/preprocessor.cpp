@@ -5,6 +5,7 @@
 #include <sstream>
 #include <algorithm>
 #include "preprocessor.hpp"
+#include "logging.hpp"
 
 std::unordered_map<std::string, ICommand *> Preprocessor::all_links;
 
@@ -17,7 +18,7 @@ void Preprocessor::find_all_links(std::vector<std::unique_ptr<ICommand>> &comman
         }
         if(all_links.find(link_command->link) != all_links.end()) {
             // ICommand *duplicate = all_links.at(link_command->link);
-            std::cerr << "Multiple definitions of same link: " << link_command->link << "at lines: " << " and " << i << std::endl;
+            Logging::err("Multiple definitions of same link: " + link_command->link);
             assert(false);
         }
         /* New link found, add it and line number to map */
@@ -35,7 +36,7 @@ void Preprocessor::inform_all_links(std::vector<std::unique_ptr<ICommand>> &comm
             continue;
         }
         if(all_links.find(std::get<std::string>(push_command->constant)) == all_links.end()) {
-            std::cerr << "Invalid link without definition: " << std::get<std::string>(push_command->constant) << std::endl;
+            Logging::err("Invalid link without definition: " + std::get<std::string>(push_command->constant));
             assert(false);
         }
         const ICommand *target_command = all_links.at(std::get<std::string>(push_command->constant));
@@ -44,7 +45,7 @@ void Preprocessor::inform_all_links(std::vector<std::unique_ptr<ICommand>> &comm
                 return cmd.get() == target_command;
             });
         if(link_command == commands.end()) {
-            std::cerr << "Invalid link command" << std::endl;
+            Logging::err("Invalid link command");
             assert(false);
         }
         int link_line = static_cast<int>(std::distance(commands.begin(), link_command));
@@ -69,8 +70,8 @@ void Preprocessor::replace_all_links(std::vector<std::unique_ptr<ICommand>> &com
 
 void Preprocessor::replace_if_link(CommandPush *this_command, unsigned int current_line, std::vector<std::unique_ptr<ICommand>> &commands) {
     if(all_links.find(std::get<std::string>(this_command->constant)) == all_links.end()) {
-        std::cerr << "Invalid link without definition: " << std::get<std::string>(this_command->constant) << std::endl;
-        // assert(false);
+        Logging::err("Invalid link without definition: " + std::get<std::string>(this_command->constant));
+        assert(false);
     }
     ICommand *target_command = all_links.at(std::get<std::string>(this_command->constant));
     auto it = std::find_if(commands.begin(), commands.end(),
@@ -79,7 +80,7 @@ void Preprocessor::replace_if_link(CommandPush *this_command, unsigned int curre
                                return cmd.get() == target_command;
                            });
     if(it == commands.end()) {
-        std::cerr << "Invalid link command" << std::endl;
+        Logging::err("Invalid link command");
         assert(false);
     }
 
@@ -88,23 +89,3 @@ void Preprocessor::replace_if_link(CommandPush *this_command, unsigned int curre
     this_command->constant = line_diff;
     this_command->signed_constant = line_diff < 0;
 }
-
-// void Preprocessor::add_link_loads_to_jump(std::vector<std::string> &lines) {
-//     static constexpr std::string load_cmd = "JUMP";
-//     for(unsigned int i = 0; i < lines.size(); i++) {
-//         std::string &line = lines[i];
-//         if(std::strncmp(load_cmd.c_str(), line.c_str(), load_cmd.size()) != 0) {
-//             continue;
-//         }
-//         /* Get third argument that is jump location */
-//         //TODO: make nicer
-//         // std::stringstream ss(line);
-//         // std::string word;
-//         // std::getline(ss, word, ' ');
-//         // std::getline(ss, word, ' ');
-//         // std::getline(ss, word, ' ');
-//         // std::string load_cmd = "PUSH " + word;
-//         // lines.insert(lines.begin() + i, load_cmd);
-//         // i++;
-//     }
-// }

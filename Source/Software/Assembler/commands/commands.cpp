@@ -1,4 +1,5 @@
 #include "commands.hpp"
+#include "logging.hpp"
 #include <iostream>
 #include <string>
 #include <cassert>
@@ -45,7 +46,7 @@ bool CommandPush::expand_command(std::vector<std::unique_ptr<ICommand>> &command
     /* If expanding then delete current command and two before as they are preallocated dummies */
     if(preallocated_space) {
         if((dynamic_cast<CommandPushDummy *>(commands[index - 1].get()) == nullptr) || (dynamic_cast<CommandPushDummy *>(commands[index - 2].get()) == nullptr)) {
-            std::cerr << "Preallocation invalid " << std::endl;
+            Logging::err("Preallocation invalid");
             assert(false);
         }
         commands.erase(commands.begin() + index - 2, commands.begin() + index + 1);
@@ -60,7 +61,7 @@ bool CommandPush::expand_command(std::vector<std::unique_ptr<ICommand>> &command
 void CommandPush::expand_command_signed(std::vector<std::unique_ptr<ICommand>> &new_commands, int constant_int) {
     /* Make the number provided into two numbers that add to the signed constant_int */
     if((constant_int > INT8_MAX) || (constant_int < INT8_MIN)) {
-        std::cerr << "Signed constant invalid" << std::endl;
+        Logging::err("Signed constant invalid");
         assert(false);
     }
     int8_t target_int = static_cast<int8_t>(constant_int);
@@ -91,7 +92,7 @@ void CommandPush::expand_command_unsigned(std::vector<std::unique_ptr<ICommand>>
         return;
     }
     if(constant_int > UINT8_MAX) {
-        std::cerr << "Constant bigger than 255" << std::endl;
+        Logging::err("Constant bigger than 255");
         assert(false);
     }
     if(constant_int == UINT8_MAX) {
@@ -110,13 +111,13 @@ void CommandPush::expand_command_unsigned(std::vector<std::unique_ptr<ICommand>>
 
 uint8_t CommandPush::assemble(void) const {
     if(std::holds_alternative<std::string>(constant)) {
-        std::cerr << "Push link not resolved" << std::endl;
+        Logging::err("Push link not resolved");
         assert(false);
     }
     int constant_int = std::get<int>(constant);
     if(constant_int > 127) {
         /* No need for expansion */
-        std::cerr << "Push constant too big" << std::endl;
+        Logging::err("Push constant too big");
         assert(false);
     }
     return static_cast<uint8_t>(constant_int) | 0x80;
@@ -134,12 +135,12 @@ bool CommandPop::parse_arguments(std::span<std::string> arguments) {
     try {
         amount = std::stoi(arguments[0].data());
     } catch (...) {
-        std::cerr << "Failed integer conversion of: " << arguments[0] << std::endl;
+        Logging::err("Failed integer conversion of: " + arguments[0]);
         assert(false);
     }
     /* Check if not over 4 bits */
     if(amount > 15) {
-        std::cerr << "Amount too big: " << std::to_string(amount) << std::endl;
+        Logging::err("Amount too big: " + std::to_string(amount));
         assert(false);
     }
     return true;
@@ -214,11 +215,11 @@ bool CommandJump::parse_arguments(std::span<std::string> arguments) {
     try {
         arguemnt_1 = std::stoi(arguments[0].data());
     } catch (...) {
-        std::cerr << "Failed integer conversion of: " << arguments[0] << std::endl;
+        Logging::err("Failed integer conversion of: " + arguments[0]);
         assert(false);
     }
     if((arguemnt_1 != 0) && (arguemnt_1 != 1)) {
-        std::cerr << "Invalid jump condition " << std::endl;
+        Logging::err("Invalid jump condition ");
         assert(false);
     }
     jump_condition = static_cast<bool>(arguemnt_1);

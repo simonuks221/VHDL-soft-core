@@ -5,6 +5,7 @@
 #include "line.hpp"
 #include "spellcheck.hpp"
 #include "preprocessor.hpp"
+#include "logging.hpp"
 
 /* Removes comments, empty lines from inputs */
 void read_lines(std::vector<std::unique_ptr<Line>> &lines, std::ifstream &file) {
@@ -29,10 +30,11 @@ void read_lines(std::vector<std::unique_ptr<Line>> &lines, std::ifstream &file) 
 }
 
 int main(int argc, char* argv[]) {
+    Logging::info("Starting");
     /* Open file specified from input arguments */
     std::string file_path;
     if(argc != 2) {
-        std::cerr << "Invalid amount of arguments" << std::endl;
+        Logging::err("Invalid amount of arguments");
         /* Use deafult path */
         file_path = "../assembly.txt";
     } else {
@@ -41,7 +43,7 @@ int main(int argc, char* argv[]) {
     /* Check if file correctly opened */
     std::ifstream inputFile(file_path);
     if (!inputFile.is_open()) {
-        std::cerr << "Failed to open the file: " << file_path << std::endl;
+        Logging::err("Failed to open the file: " + file_path);
         return 1;
     }
     std::vector<std::unique_ptr<Line>> assembly_lines;
@@ -60,13 +62,13 @@ int main(int argc, char* argv[]) {
     CommandParser::expand_commands(assembly_commands);
     /* Output into file */
     std::ofstream binary_file("binary.txt");
-    if (!binary_file) { //TODO: unify logging library
-        std::cerr << "Error: Could not create the file" << std::endl;
+    if (!binary_file) {
+        Logging::err("Error: Could not create the file");
         return 1;
     }
     /* Parse file line by line into output file */
     CommandParser::assemble_commands(assembly_commands, binary_file);
     binary_file.close();
-    std::cout << "Success" <<std::endl;
+    Logging::info("Success");
     return 0;
 }

@@ -10,8 +10,8 @@ STORE 1 51
 LOAD 52
 PUSH 32
 AND
-PUSH 5
-SHFT_R
+#PUSH 5
+SHFT_R 5
 PUSH .end_led_2_if
 JUMP 0
 #Turn on LED_2
