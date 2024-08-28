@@ -5,6 +5,7 @@
 #include "line.hpp"
 #include "spellcheck.hpp"
 #include "preprocessor.hpp"
+#include "ivt.hpp"
 #include "logging.hpp"
 
 /* Removes comments, empty lines from inputs */
@@ -51,6 +52,7 @@ int main(int argc, char* argv[]) {
     read_lines(assembly_lines, inputFile);
     inputFile.close();
     CommandParser::parse_commands(assembly_lines, assembly_commands);
+    IVT::initialise(assembly_commands);
     /* Expand complex commands */
     CommandParser::expand_commands_recursive(assembly_commands);
     /* Find all links and update their expected (not final) sizes, prepare for link preallocation */
@@ -62,6 +64,8 @@ int main(int argc, char* argv[]) {
     Preprocessor::replace_all_links(assembly_commands);
     /* Expand again the final time - replace preallocated jump pushes with actual values */
     CommandParser::expand_commands(assembly_commands);
+    /* Finish up IVT as all expansios already complete */
+    IVT::final_resolve_jumps(assembly_commands);
     /* Output into file */
     std::ofstream binary_file("binary.txt");
     if (!binary_file) {

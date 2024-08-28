@@ -16,3 +16,5 @@ JUMP 0
 STORE 3 51
 .end_led_2_if
 JUMP 1 1 .start_loop
+.IRQ_1
+PUSH 69
