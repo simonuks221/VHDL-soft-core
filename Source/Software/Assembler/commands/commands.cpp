@@ -4,6 +4,41 @@
 #include <string>
 #include <cassert>
 
+//TODO: move to parent class method
+static std::vector<std::variant<int, std::string>> parse_extra_arguments(std::span<std::string> arguments) {
+    std::vector<std::variant<int, std::string>> parsed;
+    for(std::string_view string : arguments) {
+        int integer = 0;
+        try {
+            integer = std::stoi(string.data());
+            parsed.push_back(integer);
+        } catch (...) {
+            parsed.push_back(string.data());
+        }
+    }
+    return parsed;
+}
+
+static bool expand_extra_arguments(std::vector<std::variant<int, std::string>> &extra_args, std::vector<std::unique_ptr<ICommand>>& commands, unsigned int index) {
+    if(extra_args.size() == 0) {
+        return false;
+    }
+    for(int i = extra_args.size() - 1; i >= 0; i--) {
+        std::unique_ptr<CommandPush> new_command;
+        if(std::holds_alternative<std::string>(extra_args[i])) {
+            /* Holds link */
+            new_command = std::make_unique<CommandPush>("PUSH", 0, extra_args[i]);
+        } else {
+            /* Holds just value */
+            bool is_signed_argument = std::get<int>(extra_args[i]) < 0;
+            new_command = std::make_unique<CommandPush>("PUSH", is_signed_argument, extra_args[i]);
+        }
+        commands.insert(commands.begin() + index, std::move(new_command));
+    }
+    extra_args.clear();
+    return true;
+}
+
 /* PUSH command */
 bool CommandPush::parse_arguments(std::span<std::string> arguments) {
     if(arguments.size() != 1) {
@@ -23,7 +58,7 @@ bool CommandPush::expand_command(std::vector<std::unique_ptr<ICommand>> &command
     std::vector<std::unique_ptr<ICommand>> new_commands;
     if(std::holds_alternative<std::string>(constant)) {
         /* Skip if houses link */
-        if((will_be_big_link || will_be_signed_link) && (!preallocated_space)) {
+        if((will_be_big_link || will_be_signed_link) && (!preallocated_space) && link_updated) {
             /* Preallocate two empty spaces */
             new_commands.push_back(std::make_unique<CommandPushDummy>());
             new_commands.push_back(std::make_unique<CommandPushDummy>());
@@ -33,6 +68,7 @@ bool CommandPush::expand_command(std::vector<std::unique_ptr<ICommand>> &command
         }
         return false;
     }
+    /* Not a link, update normally */
     int constant_int = std::get<int>(constant);
     if(signed_constant) {
         expand_command_signed(new_commands, constant_int);
@@ -164,37 +200,12 @@ ICommand *CommandBasic::clone(void) const {
 }
 
 bool CommandBasic::parse_arguments(std::span<std::string> arguments) {
-    /* Save all arguments */
-    for(std::string_view string : arguments) {
-        int integer = 0;
-        try {
-            integer = std::stoi(string.data());
-            saved_arguments.push_back(integer);
-        } catch (...) {
-            saved_arguments.push_back(string.data());
-        }
-    }
+    saved_arguments = parse_extra_arguments(arguments);
     return true;
 }
 
 bool CommandBasic::expand_command(std::vector<std::unique_ptr<ICommand>>& commands, unsigned int index) {
-    if(saved_arguments.size() == 0) {
-        return false;
-    }
-    for(int i = saved_arguments.size() - 1; i >= 0; i--) {
-        std::unique_ptr<CommandPush> new_command;
-        if(std::holds_alternative<std::string>(saved_arguments[i])) {
-            /* Holds link */
-            new_command = std::make_unique<CommandPush>("PUSH", 0, saved_arguments[i]);
-        } else {
-            /* Holds just value */
-            bool is_signed_argument = std::get<int>(saved_arguments[i]) < 0;
-            new_command = std::make_unique<CommandPush>("PUSH", is_signed_argument, saved_arguments[i]);
-        }
-        commands.insert(commands.begin() + index, std::move(new_command));
-    }
-    saved_arguments.clear();
-    return true;
+    return expand_extra_arguments(saved_arguments, commands, index);
 }
 
 /* Command ALU */
@@ -206,24 +217,38 @@ ICommand *CommandAlu::clone(void) const {
     return new CommandAlu(*this);
 }
 
+bool CommandAlu::parse_arguments(std::span<std::string> arguments) {
+    saved_arguments = parse_extra_arguments(arguments);
+    return true;
+}
+
+bool CommandAlu::expand_command(std::vector<std::unique_ptr<ICommand>>& commands, unsigned int index) {
+    return expand_extra_arguments(saved_arguments, commands, index);
+}
+
 /* JUMP command */
 bool CommandJump::parse_arguments(std::span<std::string> arguments) {
-    if(arguments.size() != 1) {
+    if(arguments.size() == 0) {
         return false;
     }
-    int arguemnt_1 = 0;
+    int arguement_1 = 0;
     try {
-        arguemnt_1 = std::stoi(arguments[0].data());
+        arguement_1 = std::stoi(arguments[0].data());
     } catch (...) {
         Logging::err("Failed integer conversion of: " + arguments[0]);
         assert(false);
     }
-    if((arguemnt_1 != 0) && (arguemnt_1 != 1)) {
+    if((arguement_1 != 0) && (arguement_1 != 1)) {
         Logging::err("Invalid jump condition ");
         assert(false);
     }
-    jump_condition = static_cast<bool>(arguemnt_1);
+    jump_condition = static_cast<bool>(arguement_1);
+    saved_arguments = parse_extra_arguments(arguments.subspan(1, arguments.size() - 1));
     return true;
+}
+
+bool CommandJump::expand_command(std::vector<std::unique_ptr<ICommand>>& commands, unsigned int index) {
+    return expand_extra_arguments(saved_arguments, commands, index);
 }
 
 uint8_t CommandJump::assemble(void) const {
@@ -233,10 +258,12 @@ uint8_t CommandJump::assemble(void) const {
 ICommand *CommandJump::clone(void) const {
     return new CommandJump(*this);
 }
+
 /* Command link */
 uint8_t CommandLink::assemble(void) const {
     return 0x00;
 }
+
 ICommand *CommandLink::clone(void) const {
     return new CommandLink(*this);
 }

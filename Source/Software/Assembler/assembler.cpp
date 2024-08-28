@@ -51,7 +51,9 @@ int main(int argc, char* argv[]) {
     read_lines(assembly_lines, inputFile);
     inputFile.close();
     CommandParser::parse_commands(assembly_lines, assembly_commands);
-    /* Find all links and update their expected (not final) sizes*/
+    /* Expand complex commands */
+    CommandParser::expand_commands_recursive(assembly_commands);
+    /* Find all links and update their expected (not final) sizes, prepare for link preallocation */
     Preprocessor::find_all_links(assembly_commands);
     Preprocessor::inform_all_links(assembly_commands);
     /* Expand complex commands, preallocate links */

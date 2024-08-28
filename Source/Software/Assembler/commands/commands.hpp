@@ -22,6 +22,7 @@ class CommandPush : public CommandBase {
         uint8_t assemble(void) const override;
         ICommand *clone(void) const override;
 
+        bool link_updated = false;
         bool signed_constant = false;
         std::variant<int, std::string> constant = ""; //TODO: getters setters
         bool will_be_signed_link = false;
@@ -53,8 +54,11 @@ class CommandBasic : public CommandBase {
 class CommandAlu : public CommandBase {
     private:
         uint8_t alu_code = 0x00;
+        std::vector<std::variant<int, std::string>> saved_arguments;
     public:
         CommandAlu(std::string _codeword, uint8_t _alu_code) : CommandBase(_codeword), alu_code(_alu_code) {};
+        bool parse_arguments(std::span<std::string> arguments) override;
+        bool expand_command(std::vector<std::unique_ptr<ICommand>>& commands, unsigned int index) override;
         uint8_t assemble(void) const override;
         ICommand *clone(void) const override;
 };
@@ -62,9 +66,11 @@ class CommandAlu : public CommandBase {
 class CommandJump : public CommandBase {
     private:
         bool jump_condition = false;
+        std::vector<std::variant<int, std::string>> saved_arguments;
     public:
         CommandJump() : CommandBase("JUMP") {};
         bool parse_arguments(std::span<std::string> arguments) override;
+        bool expand_command(std::vector<std::unique_ptr<ICommand>>& commands, unsigned int index) override;
         uint8_t assemble(void) const override;
         ICommand *clone(void) const override;
 };

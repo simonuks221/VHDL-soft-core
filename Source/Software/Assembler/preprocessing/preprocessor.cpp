@@ -52,6 +52,7 @@ void Preprocessor::inform_all_links(std::vector<std::unique_ptr<ICommand>> &comm
         int line_diff = link_line - static_cast<int>(i);
         push_command->will_be_signed_link = line_diff < 0;
         push_command->will_be_big_link = line_diff > 127;
+        push_command->link_updated = true;
     }
 }
 
