@@ -25,7 +25,8 @@ architecture Behavioral of processor is
             DATA_BUS_CORE_D : out STD_LOGIC_VECTOR(7 downto 0);
 		    DATA_BUS_MEMORY_D : in STD_LOGIC_VECTOR(7 downto 0);
 		    DATA_BUS_A : out STD_LOGIC_VECTOR(7 downto 0);
-            DATA_BUS_WR : out STD_LOGIC
+            DATA_BUS_WR : out STD_LOGIC;
+            INTERRUPT_ACTIVE : in STD_LOGIC
         );
     end component;
 
@@ -71,11 +72,16 @@ architecture Behavioral of processor is
     signal data_bus_memory_led1_d : STD_LOGIC_VECTOR(7 downto 0);
     --GPIO
     signal gpio_bank_1_7 : STD_LOGIC := '0';
+    --Interrupts
+    signal interrupt_active : STD_LOGIC := '0';
 begin
+
+--For TESTING TODO: delete
+interrupt_active <= BTN_2;
 
 data_bus_memory_d <= data_bus_memory_led1_d;
 
-core_1 : processor_core port map(CLK_12, program_memory_d, program_memory_a, data_bus_core_d, data_bus_memory_d, data_bus_a, data_bus_wr);
+core_1 : processor_core port map(CLK_12, program_memory_d, program_memory_a, data_bus_core_d, data_bus_memory_d, data_bus_a, data_bus_wr, interrupt_active);
 program_rom_1 : program_rom port map(CLK_12, program_memory_a, program_memory_d);
 gpio_bank_1 : gpio generic map (8, 8, 50, 7) port map(CLK_12, LED_1, LED_2, RGB_R, RGB_G, RGB_B, BTN_1, BTN_2, gpio_bank_1_7, data_bus_wr, data_bus_a, data_bus_core_d, data_bus_memory_led1_d);
 

@@ -47,6 +47,8 @@ begin
 	BTN_1 <= '1';
 	wait for 1 us;
 	BTN_1 <= '0';
+	wait for 100 ns;
+	BTN_2 <= '1';
 	wait;
 end process;
 

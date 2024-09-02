@@ -10,7 +10,8 @@ entity processor_core is
 		DATA_BUS_CORE_D : out STD_LOGIC_VECTOR(7 downto 0); --Data from core
 		DATA_BUS_MEMORY_D : in STD_LOGIC_VECTOR(7 downto 0); --Data from memory
 		DATA_BUS_A : out STD_LOGIC_VECTOR(7 downto 0);
-		DATA_BUS_WR : out STD_LOGIC
+		DATA_BUS_WR : out STD_LOGIC;
+		INTERRUPT_ACTIVE : in STD_LOGIC
 	);
 end processor_core;
 
@@ -101,8 +102,11 @@ architecture Behavioral of processor_core is
 	signal underflow : STD_LOGIC := '0';
 	--Decoder signals
 	signal stack_push : STD_LOGIC := '0';
+	signal stack_push_decoder : STD_LOGIC := '0';
 	signal stack_pop : STD_LOGIC := '0';
+	signal stack_pop_decoder : STD_LOGIC := '0';
 	signal stack_amount : STD_LOGIC_VECTOR(4 downto 0);
+	signal stack_amount_decoder : STD_LOGIC_VECTOR(4 downto 0);
 	signal decoder_data : STD_LOGIC_VECTOR(7 downto 0) := (others => '0');
 	signal stack_source: STD_LOGIC_VECTOR(1 downto 0) := (others => '0');
 	signal alu_op: STD_LOGIC_VECTOR(2 downto 0) := (others => '0');
@@ -114,19 +118,42 @@ architecture Behavioral of processor_core is
 	--Memory
 	signal memory_data_ram : std_Logic_vector(7 downto 0) := (others => '0');
 	signal memory_data : STD_LOGIC_VECTOR(7 downto 0) := (others => '0');
-	signal ram_memory_write: STD_LOGIC := '0';
+	signal ram_memory_write : STD_LOGIC := '0';
+	--Interrupts
+	signal interrupt_active_last : STD_LOGIC := '0';
+	signal interrupt_active_latched :  STD_LOGIC := '0';
 begin
 
-stack_data_in <= decoder_data when stack_source = stack_source_immediate else
+
+stack_data_in <= current_pc when (interrupt_active_latched ) = '1' else
+				decoder_data when stack_source = stack_source_immediate else
 				alu_data when stack_source = stack_source_alu else
 				memory_data when stack_source = stack_source_memory else
 				(others => '0');
 
-new_pc_en <= new_pc_condition and decoder_new_pc;
+stack_push <= '1' when (interrupt_active_latched) = '1' else
+				stack_push_decoder;
+stack_pop <= '0' when (interrupt_active_latched ) = '1' else
+				stack_pop_decoder;
+stack_amount <= std_logic_vector(to_unsigned(0, stack_amount'length)) when (interrupt_active_latched ) = '1' else
+				stack_amount_decoder;
+
+
+new_pc_en <= (new_pc_condition and decoder_new_pc) or (interrupt_active_latched );
 
 DATA_BUS_WR <= ram_memory_write;
 DATA_BUS_A <= stack_top; --when ram_memory_write = '1' else (others => '0');
 DATA_BUS_CORE_D <= stack_next; -- when ram_memory_write = '1' else (others => '0');
+
+process(CLK)
+begin
+	if rising_edge(CLK) then
+		interrupt_active_last <= INTERRUPT_ACTIVE;
+		if interrupt_active_last = '0' and INTERRUPT_ACTIVE = '1' then
+			interrupt_active_latched <= '1';
+		end if;
+	end if;
+end process;
 
 process(CLK)
 begin
@@ -143,7 +170,8 @@ begin
 	end if;
 end process;
 
-new_pc <= std_logic_vector(to_unsigned(to_integer(signed(stack_top)) + to_integer(unsigned(current_pc)), new_pc'length));
+new_pc <= std_logic_vector(to_unsigned(to_integer(signed(stack_top)) + to_integer(unsigned(current_pc)), new_pc'length)) when interrupt_active_latched = '0' else
+			(others => '0');
 ram_memory_write <= decoder_memory_write and STORE_EN;
 memory_data <= memory_data_ram or DATA_BUS_MEMORY_D;
 
@@ -154,7 +182,7 @@ pc_1 : pc port map(CLK, current_pc, decode_en, execute_en, store_en, new_pc_en, 
 stack_1 : stack port map(CLK, STORE_EN, stack_data_in, stack_top, stack_next, stack_push, stack_pop, stack_amount,
 						overflow, underflow);
 
-decoder_1 : decoder port map (CLK, DECODE_EN, PROGRAM_MEMORY_D, decoder_data, alu_op, stack_push, stack_pop, stack_amount,
+decoder_1 : decoder port map (CLK, DECODE_EN, PROGRAM_MEMORY_D, decoder_data, alu_op, stack_push_decoder, stack_pop_decoder, stack_amount_decoder,
 							stack_source, decoder_new_pc, new_pc_if_true, decoder_memory_write);
 
 alu_1 : alu port map (CLK, EXECUTE_EN, stack_top, stack_next, alu_op, alu_data);
